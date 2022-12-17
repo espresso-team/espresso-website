@@ -1,9 +1,6 @@
-from pymongo import MongoClient
-
 class Model:
-    def __init__(self, connection_string):
-        self.client = MongoClient(connection_string)
-        self.collection = self.client.database.models
+    def __init__(self, mongo):
+        self.collection = mongo.database.models
 
     def get_all(self):
         models = self.collection.find()
