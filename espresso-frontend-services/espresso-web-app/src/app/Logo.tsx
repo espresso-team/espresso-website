@@ -11,7 +11,7 @@ transition: all 0.2s ease;
     transform: scale(1.1);
 }
 `
-const Logo = () => {
+export const Logo = () => {
     return (
         <LogoText>
             Espresso
