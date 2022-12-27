@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, redirect, make_response, render_template
 from model import Model
+from work import Work
 from mongo import Mongo
 import os
 import re
@@ -26,6 +27,8 @@ jwt = JWTManager(app)
 mongo = Mongo().mongo
 # Create a Model instance
 model = Model(mongo)
+# Create a Work instance
+work = Work(mongo)
 
 
 @app.route('/api/models')
@@ -171,6 +174,62 @@ def profile():
         'email': user['email']
     })
 
+@app.route('/api/works/<user_id>')
+@jwt_required()
+def get_work_by_user_id(user_id):
+    username = get_jwt_identity()
+    user = mongo.database.users.find_one({'name': username})
+
+    if user["_id"] != user_id:
+      return jsonify({'error': 'Permission Denied.'}), 403
+    return jsonify(work.get_by_userid(user_id))
+
+
+@app.route('/api/works/<work_id>')
+@jwt_required()
+def get_work(work_id):
+    username = get_jwt_identity()
+    user = mongo.database.users.find_one({'name': username})
+
+    work_item = work.get_by_workid(work_id)
+
+    if work_item is None:
+        return jsonify({'error': 'Work not found'}), 404
+    
+    if work["user_id"] != user["_id"]:
+      return jsonify({'error': 'Permission Denied.'}), 403
+    return jsonify(work_item)
+
+@app.route('/api/work')
+@jwt_required()
+def create_work():
+    username = get_jwt_identity()
+    user = mongo.database.users.find_one({'name': username})
+
+    data = request.get_json()
+
+    work_id = work.create_work(data)
+    
+    if data["user_id"] != user["_id"]:
+      return jsonify({'error': 'Permission Denied.'}), 403
+    
+    return jsonify({'message': 'Work created!'}), 200
+
+@app.route("/works/<work_id>", methods=["DELETE"])
+@jwt_required()
+def delete_work(self, work_id):
+  username = get_jwt_identity()
+  user = mongo.database.users.find_one({'name': username})
+
+  work_item = work.get_by_workid(work_id)
+
+  if work_item is None:
+        return jsonify({'error': 'Work not found'}), 404
+  
+  if work_item["user_id"] != user["_id"]:
+    return jsonify({'error': 'Permission Denied.'}), 403
+  
+  return work.delete_work(work_id)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
