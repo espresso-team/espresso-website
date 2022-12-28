@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Logo from './Logo'
 import Button from './Button'
 import { ConnectWallet } from "@thirdweb-dev/react";
+import { Link } from '@web3uikit/icons';
 
 const Section = styled.section`
     width: 100vw;
@@ -98,7 +99,19 @@ const Navbar = () => {
                     <MenuItem>PK</MenuItem>
                     <MenuItem>Hot Artwork</MenuItem>
                 </Menu>
+                {/* <div className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                    <Link to={"/login"} className="nav-link">
+                        Login
+                    </Link>
+                    </li>
 
+                    <li className="nav-item">
+                    <Link to={"/register"} className="nav-link">
+                        Create Account
+                    </Link>
+                    </li>
+                </div> */}
                 <ConnectWallet />
 
             </Navigation>

@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify, redirect, make_response, render_template
 from model import Model
+<<<<<<< HEAD
 from work import Work
+=======
+>>>>>>> addLogin
 from mongo import Mongo
 import os
 import re
@@ -27,8 +30,11 @@ jwt = JWTManager(app)
 mongo = Mongo().mongo
 # Create a Model instance
 model = Model(mongo)
+<<<<<<< HEAD
 # Create a Work instance
 work = Work(mongo)
+=======
+>>>>>>> addLogin
 
 
 @app.route('/api/models')
@@ -174,6 +180,7 @@ def profile():
         'email': user['email']
     })
 
+<<<<<<< HEAD
 @app.route('/api/works/<user_id>')
 @jwt_required()
 def get_work_by_user_id(user_id):
@@ -230,6 +237,8 @@ def delete_work(self, work_id):
     return jsonify({'error': 'Permission Denied.'}), 403
   
   return work.delete_work(work_id)
+=======
+>>>>>>> addLogin
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
