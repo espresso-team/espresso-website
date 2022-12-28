@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Logo from './Logo'
 import Button from './Button'
-import { WalletModal } from '@web3uikit/web3';
+import { ConnectWallet } from "@thirdweb-dev/react";
 
 const Section = styled.section`
     width: 100vw;
@@ -99,9 +99,8 @@ const Navbar = () => {
                     <MenuItem>Hot Artwork</MenuItem>
                 </Menu>
 
-                <div className="desktop">
-                    <Button text="Connect Wallet" link="https://google.com" />
-                </div>
+                <ConnectWallet />
+
             </Navigation>
         </Section>
     )
