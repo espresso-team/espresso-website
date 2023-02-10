@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Typewriter from "typewriter-effect";
 import Button from './Button';
+import "@fontsource/akaya-telivigala"
 
 const Title = styled.h2`
   font-size: ${(props) => props.theme.fontxxl};
