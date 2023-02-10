@@ -11,6 +11,7 @@ import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
+import Cover from "./components/home/Cover";
 
 // This is the chainId will work on.
 const activeChainId = ChainId.Goerli;
@@ -27,24 +28,19 @@ class App extends Component<Props, State> {
   }
 
   render() {
-
     return (
       <div>
         <ThirdwebProvider desiredChainId={activeChainId}>
           <GlobalStyles />
           <ThemeProvider theme={light}>
-            <Navbar />
+            <Navbar/>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
           </ThemeProvider>
         </ThirdwebProvider>
-
-        <div className="container mt-3">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </div>
-
       </div>
     );
   }

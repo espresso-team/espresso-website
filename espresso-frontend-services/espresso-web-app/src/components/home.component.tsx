@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Cover from "./home/Cover"
 
 type Props = {};
 
@@ -11,17 +12,13 @@ export default class Home extends Component<Props, State> {
     super(props);
 
     this.state = {
-      content: ""
+      content: "home page"
     };
   }
 
   render() {
     return (
-      <div>
-        <header>
-          <h3>{this.state.content}</h3>
-        </header>
-      </div>
+      <Cover />
     );
   }
 }

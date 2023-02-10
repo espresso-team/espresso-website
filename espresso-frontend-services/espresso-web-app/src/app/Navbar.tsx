@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 import Logo from './Logo'
 import Button from './Button'
-import { ConnectWallet } from "@thirdweb-dev/react";
-import { Link } from '@web3uikit/icons';
 
 const Section = styled.section`
-    width: 100vw;
+    padding: 20px;
+    width: 95vw;
     background-color: ${props => props.theme.body}
 `
 const Navigation = styled.nav`
@@ -40,7 +39,7 @@ const Menu = styled.ul`
     @media (max-width: 64em) {
     /* 1024 px */
 
-    position: fixed;
+    position: relative;
     top: ${props => props.theme.navHeight};
     left: 0;
     right: 0;
@@ -112,7 +111,8 @@ const Navbar = () => {
                     </Link>
                     </li>
                 </div> */}
-                <ConnectWallet />
+                <Button text="Sign up" link="google.com"/>
+                
 
             </Navigation>
         </Section>
