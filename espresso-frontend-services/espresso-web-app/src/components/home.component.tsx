@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Footer from "../app/Footer";
 import Cover from "./home/Cover"
 
 type Props = {};
@@ -18,7 +19,10 @@ export default class Home extends Component<Props, State> {
 
   render() {
     return (
-      <Cover />
+      <>
+        <Cover />
+        <Footer/>
+      </>
     );
   }
 }
