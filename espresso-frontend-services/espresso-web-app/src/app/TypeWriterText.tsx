@@ -99,7 +99,7 @@ const TypeWriterText = () => {
       </Title>
       <SubTitle>Flushed by AIGC Arts? Reveal the Shining Ones.</SubTitle>
       <ButtonContainer>
-        <Button text="Explore" link="https://google.com" />
+        <Button text="Explore" link="/pk" />
       </ButtonContainer>
     </>
   );

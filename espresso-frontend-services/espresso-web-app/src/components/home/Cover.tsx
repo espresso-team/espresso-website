@@ -69,7 +69,6 @@ img{
   bottom: 100%;
 }
 @media (max-width: 48em) {
-  
   right: 1rem;
 }
 `
@@ -97,7 +96,6 @@ font-size:${props => props.theme.fontxl};
 font-size:${props => props.theme.fontlg};
 
 }
-
 `
 
 const Cover = () => {
@@ -120,7 +118,6 @@ const Cover = () => {
           </Circle>
           <img width={500} height={400} src={RoundTextBlack} alt="NFT" />
         </Round>
-
       </Container>
     </Section>
   )

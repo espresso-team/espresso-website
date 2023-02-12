@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Logo from './Logo'
 import Button from './Button'
+import { Link } from 'react-router-dom'
 
 const Section = styled.section`
     padding: 20px;
@@ -93,27 +94,12 @@ const Navbar = () => {
             <Navigation>
                 <Logo />
                 <Menu>
-                    <MenuItem>Home</MenuItem>
+                    <MenuItem><Link to={"/"} className="nav-link">Home</Link></MenuItem>
                     <MenuItem>Create</MenuItem>
-                    <MenuItem>PK</MenuItem>
+                    <MenuItem><Link to={"/pk"} className="nav-link">PK</Link></MenuItem>
                     <MenuItem>Hot Artwork</MenuItem>
                 </Menu>
-                {/* <div className="navbar-nav ml-auto">
-                    <li className="nav-item">
-                    <Link to={"/login"} className="nav-link">
-                        Login
-                    </Link>
-                    </li>
-
-                    <li className="nav-item">
-                    <Link to={"/register"} className="nav-link">
-                        Create Account
-                    </Link>
-                    </li>
-                </div> */}
-                <Button text="Sign up" link="google.com"/>
-                
-
+                <Button text="Sign up" link="/register"/>
             </Navigation>
         </Section>
     )
