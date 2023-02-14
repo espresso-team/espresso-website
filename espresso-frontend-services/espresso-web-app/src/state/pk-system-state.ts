@@ -1,7 +1,9 @@
 export const pkSystemState = {
-    isFlipped: false,
+    isFlippedCardOne: false,
+    isFlippedCardTwo: false,
 };
 
 export type PkSystemState = {
-    isFlipped: boolean | undefined;
+    isFlippedCardOne: boolean | undefined;
+    isFlippedCardTwo: boolean | undefined;
 };

@@ -1,11 +1,17 @@
 import { pkSystemApi } from "./pk-system-hook";
 
 export const pkSystemAction = {
-    handleCardFlip:
+    handleFlipCardOne:
     () =>
     ({ getState, setState  }: pkSystemApi) => {
         const currentState = getState();
-        setState({ isFlipped: !currentState.isFlipped });
+        setState({ isFlippedCardOne: !currentState.isFlippedCardOne });
+    },
+    handleFlipCardTwo:
+    () =>
+    ({ getState, setState  }: pkSystemApi) => {
+        const currentState = getState();
+        setState({ isFlippedCardTwo: !currentState.isFlippedCardTwo });
     },
 };
 
