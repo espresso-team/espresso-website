@@ -1,7 +1,8 @@
-import React, { lazy, Suspense } from 'react'
+import React, { ChangeEvent, lazy, Suspense } from 'react'
 import styled, { keyframes } from 'styled-components'
 import Loading from '../../app/Loading';
-import { LexicaAPI } from 'lexica-api';
+import ReactCardFlip from 'react-card-flip';
+import { usePkSystemHook } from '../../state/pk-system-hook';
 
 interface Props {
   userId: string;
@@ -74,31 +75,35 @@ const userImages = [
   { id: 3, src: testImagePath, userId: "test3" },
 ];
 
-//const result = lexica.generate('adventure');
-
 
 const Game: React.FC<Props> = ({ userId }) => {
+  // import hooks
+  const [state, action] = usePkSystemHook();
+
   //const result = lexica.generate('adventure');
   const userImagesList = userImages.filter(image => image.userId === userId);
   //console.log("userImagesList[0].src", userImagesList[0].src);
-
   //const result = lexica.generate('adventure');
   //const api = new LexicaAPI();
   // const lexica = new LexicaAPI();
   // const result = lexica.search('example query');
   return (
-    
     <Section id="home">
-      <div>which one do you prefer ?</div>
-      <div>A</div><div>B</div><div>Skip</div><div>Done</div>
+      <div>Choose the better one ?</div>
+      <button onClick={action.handleCardFlip}>Click to flip</button>
       <Container>
         {userImagesList.map(image => (
           <Box>
+            <ReactCardFlip isFlipped={state.isFlipped} flipDirection="vertical">
             <Suspense fallback={<Loading />}>
               <Frame>
                 <img key={image.id} src={image.src} width={600} height={600} alt={`Image-${image.id}`} />
               </Frame>
             </Suspense>
+              <Suspense fallback={<Loading />}>
+                This is the back of the card.
+              </Suspense>
+            </ReactCardFlip>
           </Box>
         ))}
       </Container>
