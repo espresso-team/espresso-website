@@ -20,7 +20,6 @@ export default class Pk extends Component<Props, State> {
   render() {
     return (
       <>
-
         <Game userId={"test1"}/>
         <Footer />
       </>

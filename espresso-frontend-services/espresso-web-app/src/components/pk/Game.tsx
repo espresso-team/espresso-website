@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { usePkSystemHook } from '../../state/pk-system-hook';
+import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import "@fontsource/akaya-telivigala"
 import { ImageCard } from './ImageCard';
+import axios from 'axios';
+import { ImageItems } from '../../state/pk-system-state';
+import { randomIntBetweenOneAndFive } from '../../util/randomIntBetweenOneAndFive';
 
 interface Props {
   userId: string;
 }
+
+var console = require("console-browserify")
 
 const Title = styled.h1`
     text-transform: uppercase;
@@ -40,37 +45,84 @@ align-items: center;
   }
 }
 `
+enum HttpStatus {
+  OK = 200,
+  CREATED = 201,
+  ACCEPTED = 202,
+  MOVED_PERMANENTLY = 301,
+  FOUND = 302,
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  INTERNAL_SERVER_ERROR = 500,
+  BAD_GATEWAY = 502,
+  SERVICE_UNAVAILABLE = 503,
+  GATEWAY_TIMEOUT = 504,
+}
 
-const testImagePath = "https://www.humanesociety.org/sites/default/files/styles/2000x850/public/2020-07/kitten-510651.jpg?h=f54c7448&itok=lJefJMMQ";
-const testImagePath2 = "https://media.npr.org/assets/img/2021/08/11/gettyimages-1279899488_wide-f3860ceb0ef19643c335cb34df3fa1de166e2761-s1100-c50.jpg"
-const userImages = [
-  { id: 1, src: testImagePath, userId: "test1", prompt: "this is the prompt of card one" },
-  { id: 2, src: testImagePath2, userId: "test1", prompt: "this is the prompt of card two" },
-];
+// const getImages = () => {
+//   return async ({ dispatch, setState, getState }: pkSystemApi) => {
+//     console.log("set Image start")
+//     const res = await axios
+//       .get(`https://lexica.art/api/v1/search?q=${getState().searchQuery}`)
+//     // .then((response) => {
+//     //   setState({images: response.data.images});
+//     // })
+//     // .catch((err) => console.log(err));
+//     if (res.status === HttpStatus.OK) {
+//       const imageData = res.data.images as ImageItems || [];
+//       if (imageData[0] && imageData[1]) {
+//         setState({ images: imageData });
+//       } else {
+//         console.log("Couldnt find Image 0 and 1")
+//       }
+//       console.log("set Image done")
+//       return true;
+//     }
+//     console.log("set Image failed with res.status:", res.status)
+//     return false;
+//   };
+// }
 
-const Game: React.FC<Props> = ({ userId }) => {
+const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
+  const [images, setImages] = useState<ImageItems>();
+  const [index, setIndex] = useState(0);
 
+  useEffect(() => {
+    const res = axios
+    .get(`https://lexica.art/api/v1/search?q=${state.searchQuery}`)
+    .then((response) => {
+      setImages(response.data.images);
+    })
+    .catch((err) => console.log(err));
+
+    // update index
+    setIndex(randomIntBetweenOneAndFive());
+  }, [state.searchQuery]);
   return (
+
     <Section id="home">
-        <Title>Which one do you prefer...</Title>
+        <Title>Click the one you prefer...</Title>
+        
       <Container>
-        <ImageCard
+        {images && <ImageCard
           idCardFlipped={state.isFlippedCardOne}
           imgOnClick={action.handleFlipCardOne}
-          imgKey={userImages[0].id}
-          imgSrc={userImages[0].src}
-          imgPrompt={userImages[0].prompt}
-        />
+          imgKey={images[index].id}
+          imgSrc={images[index].src}
+          imgPrompt={images[index].prompt}
+        />}
 
-        <ImageCard
+        {images && <ImageCard
           idCardFlipped={state.isFlippedCardTwo}
           imgOnClick={action.handleFlipCardTwo}
-          imgKey={userImages[1].id}
-          imgSrc={userImages[1].src}
-          imgPrompt={userImages[1].prompt}
-        />
+          imgKey={images[index + 1].id}
+          imgSrc={images[index + 1].src}
+          imgPrompt={images[index + 1].prompt}
+        />}
       </Container>
     </Section>
   )

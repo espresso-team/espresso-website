@@ -12,7 +12,7 @@ export const pkSystemAction = {
     ({ getState, setState  }: pkSystemApi) => {
         const currentState = getState();
         setState({ isFlippedCardTwo: !currentState.isFlippedCardTwo });
-    },
+    }
 };
 
 export type PkSystemAction = typeof pkSystemAction;

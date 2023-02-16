@@ -1,7 +1,5 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 import styled from 'styled-components'
-
-
 
 const Btn = styled.button`
   display: inline-block;
@@ -45,11 +43,12 @@ const Btn = styled.button`
   }
 `
 
-const Button = (props: { text: string, link: string }) => {
-  const { text, link } = props;
+const Button = (props: { text: string, link?: string, onclick?: () => void }) => {
+  const { text, link = '#' } = props;
   return (
+    
     <a href={link} target="_blank" rel="noreferrer" >
-      <Btn>
+      <Btn onClick={()=>onclick}>
         {text}
       </Btn>
     </a>

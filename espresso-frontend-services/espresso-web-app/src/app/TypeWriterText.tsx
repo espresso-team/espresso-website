@@ -69,7 +69,6 @@ const ButtonContainer = styled.div`
       margin: 0 auto;
     }
   }
-
 `
 const TypeWriterText = () => {
   return (
