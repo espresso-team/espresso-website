@@ -4,6 +4,7 @@ from work import Work
 from mongo import Mongo
 import os
 import re
+import time
 from flask import send_from_directory
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -239,6 +240,21 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
+@app.route('/api/choose')
+@jwt_required()
+def choose_model():
+    username = get_jwt_identity()
+    user = mongo.database.users.find_one({'name': username})
+    data = request.get_json()
+    model_id = data["model_id"]
+    user_choice = {'user_id': user['_id'], 'model_id': model_id, 'choose_time': time.time()}
+    
+    mongo.database.user_choice.insert_one(user_choice)
+
+    if data["user_id"] != user["_id"]:
+      return jsonify({'error': 'Permission Denied.'}), 403
+    
+    return jsonify({'message': 'Select successful!!'}), 200
 
 if __name__ == '__main__':
     app.run()

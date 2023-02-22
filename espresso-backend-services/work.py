@@ -20,13 +20,13 @@ class Work:
             "created_on": data["created_on"],
             "like_num": data["like_num"],
         }
-        result = self.works.insert_one(work)
+        result = self.collection.insert_one(work)
         return str(result.inserted_id)
     
     def delete_work(self, work_id, user_id):
-        result = self.works.find_one({"_id": work_id, "created_by": user_id})
+        result = self.collection.find_one({"_id": work_id, "created_by": user_id})
         if result:
-            delete_result = self.works.delete_one({"_id": work_id})
+            delete_result = self.collection.delete_one({"_id": work_id})
             if delete_result.deleted_count:
                 return {"success": "Work deleted"}
             else:
