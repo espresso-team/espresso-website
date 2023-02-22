@@ -5,11 +5,12 @@ import ReactCardFlip from 'react-card-flip';
 import "@fontsource/akaya-telivigala"
 import Button from '../../app/Button';
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
+import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
 
 interface Props {
   idCardFlipped: boolean | undefined,
   imgOnClick: () => void,
-  imgKey: string,
+  imgId: number,
   imgSrc: string,
   imgPrompt: string,
 }
@@ -166,14 +167,14 @@ flex-direction: column;
 }
 `
 
-export const ImageCard = ({ idCardFlipped, imgOnClick, imgKey, imgSrc, imgPrompt }: Props) => {
+export const ImageCard = ({ idCardFlipped, imgOnClick, imgId, imgSrc, imgPrompt }: Props) => {
   const [state] = usePkSystemHook();
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
       <Box>
         <Suspense fallback={<Loading />}>
           <Frame>
-            <img onClick={imgOnClick} key={imgKey} src={imgSrc} width={600} height={600} alt={`PK-${imgKey}`} />
+            <img onClick={imgOnClick} key={imgId} src={imgSrc} width={600} height={600} alt={`PK-${imgId}`} />
           </Frame>
         </Suspense>
       </Box>
@@ -184,13 +185,21 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgKey, imgSrc, imgPrompt
             <PromptText>Prompt:<br />{imgPrompt}</PromptText>
 
             <ExploreBtn onClick={() => {
-                  var console = require("console-browserify")
-                  console.log("newQuery", imgPrompt);
-                  state.searchQuery = imgPrompt;
-                }}>Keep Me!</ExploreBtn>
+              // var console = require("console-browserify")
+              // console.log("newQuery", imgPrompt);
+              if (imgId === state.images[state.leftImageId].id) {
+                // keep the left image
+                state.rightImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
+              }
+              else {
+                // keep the right image
+                state.leftImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
+              }
+            }}>
+              Keep Me
+            </ExploreBtn>
             <ButtonList>
-                <Btn>Use Prompt</Btn>
-                <Btn>Change Topic</Btn>
+              <ExploreBtn>Start a Chat</ExploreBtn>
             </ButtonList>
           </FrameFlipped>
         </Suspense>

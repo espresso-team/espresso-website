@@ -6,7 +6,8 @@ export const baseState = {
 
 export const baseActions = {
    ...pkSystemAction,
-}
+};
+
 export type BaseState = PkSystemState;
 
 export type BaseActions = PkSystemAction;

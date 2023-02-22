@@ -2,10 +2,10 @@ import React, { lazy, Suspense } from 'react'
 import styled from 'styled-components'
 import Logo from './Logo'
 
-import Facebook from '../Icons/Instagram'
-import Instagram from '../Icons/Twitter'
-import Twitter from '../Icons/Facebook'
-import LinkedIn from '../Icons/LinkedIn'
+import Facebook from '../assets/Icons/Instagram'
+import Instagram from '../assets/Icons/Twitter'
+import Twitter from '../assets/Icons/Facebook'
+import LinkedIn from '../assets/Icons/LinkedIn'
 import Loading from './Loading'
 
 const Banner = lazy(() => import("./Banner"));

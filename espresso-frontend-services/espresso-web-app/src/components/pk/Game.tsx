@@ -4,8 +4,6 @@ import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import "@fontsource/akaya-telivigala"
 import { ImageCard } from './ImageCard';
 import axios from 'axios';
-import { ImageItems } from '../../state/pk-system-state';
-import { randomIntBetweenOneAndFive } from '../../util/randomIntBetweenOneAndFive';
 
 interface Props {
   userId: string;
@@ -88,39 +86,41 @@ enum HttpStatus {
 const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
-  const [images, setImages] = useState<ImageItems>();
   const [index, setIndex] = useState(0);
+  const images = state.images;
+
+  console.log("images[state.leftImageId].src",images[state.leftImageId].src);
+  
 
   useEffect(() => {
-    const res = axios
-    .get(`https://lexica.art/api/v1/search?q=${state.searchQuery}`)
-    .then((response) => {
-      setImages(response.data.images);
-    })
-    .catch((err) => console.log(err));
+    // const res = axios
+    //   .get(`https://lexica.art/api/v1/search?q=${state.searchQuery}`)
+    //   .then((response) => {
+    //     setImages(response.data.images);
+    //   })
+    //   .catch((err) => console.log(err));
 
-    // update index
-    setIndex(randomIntBetweenOneAndFive());
-  }, [state.searchQuery]);
+    // // update index
+    // setIndex(randomIntBetweenOneAndFive());
+  }, [state.leftImageId, state.rightImageId]);
   return (
-
     <Section id="home">
-        <Title>Click the one you prefer...</Title>
-        
+      <Title>Click the one you prefer...</Title>
+
       <Container>
         {images && <ImageCard
           idCardFlipped={state.isFlippedCardOne}
           imgOnClick={action.handleFlipCardOne}
-          imgKey={images[index].id}
-          imgSrc={images[index].src}
-          imgPrompt={images[index].prompt}
+          imgId={images[state.leftImageId].id}
+          imgSrc={images[state.leftImageId].src}
+          imgPrompt={images[state.leftImageId].prompt}
         />}
 
         {images && <ImageCard
           idCardFlipped={state.isFlippedCardTwo}
           imgOnClick={action.handleFlipCardTwo}
-          imgKey={images[index + 1].id}
-          imgSrc={images[index + 1].src}
+          imgId={images[state.rightImageId].id}
+          imgSrc={images[state.rightImageId].src}
           imgPrompt={images[index + 1].prompt}
         />}
       </Container>
