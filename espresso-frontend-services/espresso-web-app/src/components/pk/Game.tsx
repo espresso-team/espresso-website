@@ -111,17 +111,13 @@ const Game: React.FC<Props> = () => {
         {images && <ImageCard
           idCardFlipped={state.isFlippedCardOne}
           imgOnClick={action.handleFlipCardOne}
-          imgId={images[state.leftImageId].id}
-          imgSrc={images[state.leftImageId].src}
-          imgPrompt={images[state.leftImageId].prompt}
+          imgItem={images[state.leftImageId]}
         />}
 
         {images && <ImageCard
           idCardFlipped={state.isFlippedCardTwo}
           imgOnClick={action.handleFlipCardTwo}
-          imgId={images[state.rightImageId].id}
-          imgSrc={images[state.rightImageId].src}
-          imgPrompt={images[index + 1].prompt}
+          imgItem={images[state.rightImageId]}
         />}
       </Container>
     </Section>

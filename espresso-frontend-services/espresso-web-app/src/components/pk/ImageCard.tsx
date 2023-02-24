@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { FormEvent, Suspense, useState } from 'react'
 import styled from 'styled-components'
 import Loading from '../../app/Loading';
 import ReactCardFlip from 'react-card-flip';
@@ -6,13 +6,12 @@ import "@fontsource/akaya-telivigala"
 import Button from '../../app/Button';
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
+import { ImageItem } from '../../types/ImageItem';
 
 interface Props {
   idCardFlipped: boolean | undefined,
   imgOnClick: () => void,
-  imgId: number,
-  imgSrc: string,
-  imgPrompt: string,
+  imgItem: ImageItem,
 }
 
 const Box = styled.div`
@@ -53,31 +52,14 @@ const FrameFlipped = styled.div`
 }
 `;
 
-const PromptText = styled.p`
-  color: #FFFFFF;
-  margin: 3rem;
-`;
-
-
-// const handleSearchQueryUpdate =
-//   (newQuery: string) =>
-//     ({ getState, setState }: pkSystemApi) => {
-//       var console = require("console-browserify")
-
-//       console.log("newQuery", newQuery);
-//       setState({ searchQuery: newQuery });
-
-//       console.log("searchQuery", getState().searchQuery);
-//     };
-
 
 const ExploreBtn = styled.button`
-  background-color: ${props => props.theme.text};
+  background-color: rgb(226, 118, 118);
   color: ${props => props.theme.body};
   outline: none;
   border: none;
   margin: 2rem;
-  margin-left: 13rem;
+  margin-left: 15rem;
   font-size: ${props => props.theme.fontmd};
   padding: 0.9rem 2.3rem;
   border-radius: 50px;
@@ -94,7 +76,7 @@ const ExploreBtn = styled.button`
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
-      border: 2px solid ${props => props.theme.text};
+      border: 2px solid rgb(226, 118, 118);
       width: 100%;
       height: 100%;
       border-radius: 50px;
@@ -119,7 +101,8 @@ const Btn = styled.button`
   outline: none;
   border: none;
   margin: 3rem;
-  margin-left: 4rem;
+  margin-left: 3rem;
+  width: 13rem;
   font-size: ${props => props.theme.fontmd};
   padding: 0.9rem 2.3rem;
   border-radius: 50px;
@@ -166,9 +149,33 @@ height: 5rem;
 flex-direction: column;
 }
 `
+const ImgInfoSection = styled.div`
+  color: #FFFFFF;
+  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+  margin: 3rem;
+`
+const ImgInfoText = styled.p`
 
-export const ImageCard = ({ idCardFlipped, imgOnClick, imgId, imgSrc, imgPrompt }: Props) => {
+`;
+
+const PromptText = styled.p`
+  color: #FFFFFF;
+  margin: 3rem;
+`;
+
+export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const [state] = usePkSystemHook();
+  const [isPromptOpen, setIsPromptOpen] = useState(false);
+  const imgPrompt = imgItem.prompt;
+  const imgId = imgItem.id;
+  const imgSrc = imgItem.src;
+  const imgName = imgItem.name;
+  const imgAge = imgItem.age;
+  const imgEducaton = imgItem.education;
+  const imgFigure = imgItem.figure;
+  const imgPersonality = imgItem.personality;
+  const imgHobby = imgItem.hobby;
+  
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
       <Box>
@@ -182,11 +189,21 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgId, imgSrc, imgPrompt 
       <Box>
         <Suspense fallback={<Loading />}>
           <FrameFlipped onClick={imgOnClick}>
-            <PromptText>Prompt:<br />{imgPrompt}</PromptText>
+            {
+              isPromptOpen ?
+                <PromptText>提示词: {imgPrompt}</PromptText>
+                :
+                <ImgInfoSection>
+                  <ImgInfoText>姓名: {imgName}</ImgInfoText>
+                  <ImgInfoText>年龄: {imgAge}</ImgInfoText>
+                  <ImgInfoText>身材: {imgFigure}</ImgInfoText>
+                  <ImgInfoText>学历: {imgEducaton}</ImgInfoText>
+                  <ImgInfoText>性格: {imgPersonality}</ImgInfoText>
+                  <ImgInfoText>爱好: {imgHobby}</ImgInfoText>
+                </ImgInfoSection>
+            }
 
             <ExploreBtn onClick={() => {
-              // var console = require("console-browserify")
-              // console.log("newQuery", imgPrompt);
               if (imgId === state.images[state.leftImageId].id) {
                 // keep the left image
                 state.rightImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
@@ -196,10 +213,14 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgId, imgSrc, imgPrompt 
                 state.leftImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
               }
             }}>
-              Keep Me
+              喜欢你
             </ExploreBtn>
             <ButtonList>
-              <ExploreBtn>Start a Chat</ExploreBtn>
+              <Btn>开始聊天</Btn>
+              <Btn onClick={() => {
+                // TBD: 生成我的提示词 避免翻转
+                setIsPromptOpen(!isPromptOpen);
+              }}>生成我的提示词</Btn>
             </ButtonList>
           </FrameFlipped>
         </Suspense>
