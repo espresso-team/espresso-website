@@ -86,7 +86,6 @@ enum HttpStatus {
 const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
-  const [index, setIndex] = useState(0);
   const images = state.images;
 
   console.log("images[state.leftImageId].src",images[state.leftImageId].src);
