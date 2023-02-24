@@ -71,8 +71,9 @@
 }
 
 .input-group input {
+  margin-top: 1rem;
   height: 100%;
-  background: #fff;
+  background: #e9d6d6;
 }
 
 .input-group ::placeholder {
@@ -137,9 +138,12 @@
   position: relative;
   height: 588px;
   letter-spacing: 0.5px;
-  background: #f8f9fb;
+  background: #e9d6d6;
   padding: 0 !important;
   box-sizing: border-box;
+  margin: 5rem;
+  border-color: #828080;
+  border-radius: 2rem;
 }
 
 .message-input {
