@@ -3,6 +3,7 @@ class User:
     self.email = email
     self.id = email
     self.client = mongo_client
+    self.collection = mongo_client.database.users
 
   def is_authenticated(self):
     return True
