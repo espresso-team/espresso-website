@@ -1,5 +1,5 @@
 import React, { FormEvent, Suspense, useState } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes }  from 'styled-components'
 import Loading from '../../app/Loading';
 import ReactCardFlip from 'react-card-flip';
 import "@fontsource/akaya-telivigala"
@@ -7,6 +7,7 @@ import Button from '../../app/Button';
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
 import { ImageItem } from '../../types/ImageItem';
+import { Link } from 'react-router-dom'
 
 interface Props {
   idCardFlipped: boolean | undefined,
@@ -163,6 +164,65 @@ const PromptText = styled.p`
   margin: 3rem;
 `;
 
+
+const HeartButton = styled.div`
+  margin-left: 250px;
+  position: relative;
+  width: 100px;
+  height: 90px;
+  &:before,
+  &:after {
+    position: absolute;
+    content: '';
+    left: 50px;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: #ca8888;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+  }
+  &:after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+  }
+  &:hover::after{
+    cursor: pointer;
+  }
+`;
+const heartBeat = keyframes`
+  0%
+  {
+    transform: scale( .75 );
+  }
+  20%
+  {
+    transform: scale( 1.1 );
+  }
+  40%
+  {
+    transform: scale( .75 );
+  }
+  60%
+  {
+    transform: scale( 1.1 );
+  }
+  80%
+  {
+    transform: scale( .75 );
+  }
+  100%
+  {
+    transform: scale( .75 );
+  }
+`;
+
+const AnimatedHeart = styled(HeartButton)`
+  animation: ${heartBeat} 1s infinite;
+`;
+
 export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const [state] = usePkSystemHook();
   const [isPromptOpen, setIsPromptOpen] = useState(false);
@@ -203,7 +263,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                 </ImgInfoSection>
             }
 
-            <ExploreBtn onClick={() => {
+            {/* <HeartButton onClick={() => {
               if (imgId === state.images[state.leftImageId].id) {
                 // keep the left image
                 state.rightImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
@@ -213,8 +273,20 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                 state.leftImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
               }
             }}>
-              喜欢你
-            </ExploreBtn>
+            </HeartButton> */}
+            <div onClick={() => {
+              if (imgId === state.images[state.leftImageId].id) {
+                // keep the left image
+                state.rightImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
+              }
+              else {
+                // keep the right image
+                state.leftImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
+              }
+            }}>
+            <AnimatedHeart />
+            </div>
+
             <ButtonList>
               <Btn>开始聊天</Btn>
               <Btn onClick={() => {

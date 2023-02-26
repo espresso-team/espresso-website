@@ -16,6 +16,8 @@ interface Props {
 }
 
 export const MessageList = ({ isLoading, messages, user }: Props) => {
+    var console = require("console-browserify")
+    console.log("user", user)
     return (
         <>
             <If condition={!isLoading && !messages.length}>

@@ -7,6 +7,7 @@
     "@fontsource/akaya-telivigala": "^4.5.8",
     "@fontsource/almendra-sc": "^4.5.8",
     "@fontsource/sora": "^4.5.10",
+    "@fontsource/zcool-kuaile": "^4.5.10",
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

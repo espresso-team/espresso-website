@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
-import "@fontsource/akaya-telivigala"
+import "@fontsource/zcool-kuaile"
 import { ImageCard } from './ImageCard';
-import axios from 'axios';
 
 interface Props {
   userId: string;
@@ -13,7 +12,7 @@ var console = require("console-browserify")
 
 const Title = styled.h1`
     text-transform: uppercase;
-    font-family: "Akaya Telivigala", cursive;
+    font-family: "ZCOOL KuaiLe", sans-serif;
 `
 
 const Section = styled.section`
@@ -104,7 +103,7 @@ const Game: React.FC<Props> = () => {
   }, [state.leftImageId, state.rightImageId]);
   return (
     <Section id="home">
-      <Title>Click the one you prefer...</Title>
+      <Title>点击卡片查看详细信息</Title>
 
       <Container>
         {images && <ImageCard
