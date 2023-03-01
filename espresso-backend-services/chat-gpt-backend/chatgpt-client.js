@@ -1,7 +1,8 @@
-
-const ChatGPTClient = require('@waylaidwanderer/chatgpt-api');
-const fs = require('fs/promises');
-require('dotenv').config();
+import ChatGPTClient from '@waylaidwanderer/chatgpt-api';
+import * as fs from "fs";
+import dotenv from 'dotenv';
+dotenv.config();
+// require('dotenv').config();
 
 const clientOptions = {
     // (Optional) Support for a reverse proxy for the completions endpoint (private API server).
@@ -39,8 +40,9 @@ const cacheOptions = {
 const chatGptClient = new ChatGPTClient(process.env.OPENAI_APIKEY, clientOptions, cacheOptions);
 
 // Initialize the chatgpt client
-async function init_client() {
+export async function init_client() {
   try {
+    console.log("Chat client inited!");
     return chatGptClient;
   } catch (err) {
     console.error("Error starting client:", err);
@@ -49,23 +51,16 @@ async function init_client() {
 }
 
 // Initialize first conv for a new user
-async function init_conv(model_id) {
+export async function init_conv(model_id) {
   try {
-      const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
-      const response = await chatGptClient.sendMessage(text);
-      console.log(response); 
-      return response;
+    const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
+    return await chatGptClient.sendMessage(text);
   } catch (err) {
-    console.error("Error starting client:", err);
+    console.error("Error initiating conversation:", err);
     return null;
   }
 }
 
-async function send_message(msg, conv_id, last_msg_id) {
-  const response = await chatGptClient.sendMessage(msg, { conversationId: conv_id, parentMessageId: last_msg_id });
+export async function send_message(msg, conv_id, last_msg_id) {
+  return await chatGptClient.sendMessage(msg, { conversationId: conv_id, parentMessageId: last_msg_id });
 }
-
-
-
-// Export the init_client function
-module.exports = { init_client, init_conv, send_message };

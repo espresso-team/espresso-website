@@ -2,9 +2,10 @@
   "name": "chat-gpt-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "nodemon server.js"
   },
   "author": "@emecii",
   "license": "ISC",
