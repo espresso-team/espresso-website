@@ -1,16 +1,16 @@
-const ConversationModel = require("../models/conversation");
- 
-exports.createConversation = async (conv) => {
-  return await ConversationModel.create(conv);
-};
-exports.getConvById = async (id) => {
-  return await ConversationModel.findById(id);
-};
- 
-exports.updateConv = async (id, conv) => {
-  return await ConversationModel.findByIdAndUpdate(id, conv);
-};
- 
-exports.deleteConv = async (id) => {
-  return await ConversationModel.findByIdAndDelete(id);
+import { ConversationModel } from "../models/conversation.js";
+
+export async function createConversation(conv) {
+    return await ConversationModel.create(conv);
+}
+export async function getConv(condition) {
+    return await ConversationModel.findOne(condition);
+}
+
+export async function updateConv(condition, conv) {
+    return await ConversationModel.findOneAndUpdate(condition, conv);
+}
+
+export async function deleteConv(condition) {
+    return await ConversationModel.findOneAndDelete(condition);
 };
