@@ -26,7 +26,7 @@ export const girls: Array<ImageItem> =  [
             hobby: "看书，追剧，旅游，画画",
             // Other informations like Sense of Humor, Morality etc
             other: "string",
-        },        
+        }, 
         {
             id: 1,
             // Link to this image

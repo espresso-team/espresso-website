@@ -8,6 +8,7 @@ import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
 import { ImageItem } from '../../types/ImageItem';
 import { Link } from 'react-router-dom'
+import Tooltip from 'rc-tooltip';
 
 interface Props {
   idCardFlipped: boolean | undefined,
@@ -238,6 +239,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
+      <Tooltip placement="left" trigger={['click']} overlay={<span>efewfefewfwfw</span>}>
       <Box>
         <Suspense fallback={<Loading />}>
           <Frame>
@@ -245,7 +247,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
           </Frame>
         </Suspense>
       </Box>
-
+      </Tooltip>
       <Box>
         <Suspense fallback={<Loading />}>
           <FrameFlipped onClick={imgOnClick}>
@@ -298,5 +300,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
         </Suspense>
       </Box>
     </ReactCardFlip>
+
+
   )
 }

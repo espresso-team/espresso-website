@@ -61,7 +61,8 @@ const Menu = styled.ul`
 `
 
 const MenuItem = styled.li`
-    margin: 0 1rem;
+    margin: 0 4rem;
+    padding-top: 1rem;
     color: ${props => props.theme.text};
     cursor: pointer;
     font-size: ${props => props.theme.fontlg};
@@ -94,12 +95,11 @@ const Navbar = () => {
             <Navigation>
                 <Logo />
                 <Menu>
-                    <MenuItem><Link to={"/"} className="nav-link">Home</Link></MenuItem>
-                    <MenuItem>Create</MenuItem>
+                    <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
                     <MenuItem><Link to={"/pk"} className="nav-link">PK</Link></MenuItem>
-                    <MenuItem>Hot Artwork</MenuItem>
+                    <MenuItem>聊天</MenuItem>
                 </Menu>
-                <Button text="Sign up" link="/register"/>
+                <Button text="注册" link="/register"/>
             </Navigation>
         </Section>
     )

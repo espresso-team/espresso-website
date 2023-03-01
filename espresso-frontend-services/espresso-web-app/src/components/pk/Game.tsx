@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import "@fontsource/zcool-kuaile"
 import { ImageCard } from './ImageCard';
+import Tooltip from 'rc-tooltip';
 
 interface Props {
   userId: string;
@@ -103,7 +104,7 @@ const Game: React.FC<Props> = () => {
   }, [state.leftImageId, state.rightImageId]);
   return (
     <Section id="home">
-      <Title>点击卡片查看详细信息</Title>
+      {/* <Title>点击卡片查看详细信息</Title> */}
 
       <Container>
         {images && <ImageCard
