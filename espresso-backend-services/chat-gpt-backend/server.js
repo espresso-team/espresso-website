@@ -7,8 +7,12 @@ import { createConversation, getConv, updateConv, deleteConv } from "./services/
 import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
+import cors from "cors";
 
 const app = express();
+app.use(cors({
+    origin: '*'
+}));
 const port = 3000;
 
 // connect mongo client
@@ -35,7 +39,8 @@ app.post("/send-message", async (req, res) => {
     conv.conv_id = response.conversationId;
     conv.last_msg_id = response.messageId;
     await updateConv(condition, conv);
-    res.json({ message: `Response: ${response.response}`, status: "success" });
+    res.json({ message: response.response, status: "success",
+               user_id: user_id, mode_id: model_id });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -57,7 +62,8 @@ app.post("/join-chat", async (req, res) => {
   
   try {
     await createConversation(conv);
-    res.json({ message: "Initialization complete!", status: "success" });
+    res.json({ message: response.response, status: "success",
+              user_id: user_id, model_id: model_id});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

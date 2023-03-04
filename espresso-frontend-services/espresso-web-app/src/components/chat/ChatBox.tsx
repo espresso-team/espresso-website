@@ -64,10 +64,10 @@ const ChatBox: React.FC<Props> = () => {
   useEffect(() => {
     // 这里写需要在第一次挂载时执行的代码
     const res = axios
-      .post(`https://f17261c0-2fda-4b2c-9bff-1e32c7ba6d65.mock.pstmn.io/join-chat`,
+      .post(`http://localhost:3000/join-chat`,
         {
-          "user_id": state.curUserId,
-          "model_id": state.curImageId
+          "user_id": state.curUserId.toString(),
+          "model_id": state.curImageId.toString()
         }
       )
       .then((response) => {
@@ -116,10 +116,10 @@ const ChatBox: React.FC<Props> = () => {
 
           // send post request
           const res = axios
-            .post(`https://b9265753-89c0-48bf-8269-659696e13cea.mock.pstmn.io/send-message`, 
+            .post(`http://localhost:3000/send-message`, 
             {
-              "user_id": state.curUserId,
-              "model_id": state.curImageId,
+              "user_id": state.curUserId.toString(),
+              "model_id": state.curImageId.toString(),
               "message": mes
               })
             .then((response) => {
