@@ -1,6 +1,7 @@
 import ChatGPTClient from '@waylaidwanderer/chatgpt-api';
 import * as fs from "fs";
 import dotenv from 'dotenv';
+import { getChatHistoryByConvId } from "./services/chatHistoryService.js";
 dotenv.config();
 // require('dotenv').config();
 
@@ -63,4 +64,31 @@ export async function init_conv(model_id) {
 
 export async function send_message(msg, conv_id, last_msg_id) {
   return await chatGptClient.sendMessage(msg, { conversationId: conv_id, parentMessageId: last_msg_id });
+}
+
+// Resend the initial prompy to an exitsing conv
+export async function reinit_conv(conv_id, last_msg_id, model_id, chat_history=null) {
+  try {
+    const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
+    if (chat_history == null) {
+      var chat_history = await getChatHistoryByConvId(conv_id);
+    }
+    // TODO: add summary of the chat history if token is above the limit
+    var reinit_promot = text + "你们之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
+    return await chatGptClient.sendMessage(reinit_promot, { conversationId: conv_id, parentMessageId: last_msg_id });
+  } catch (err) {
+    console.error("Error re-initiating conversation:", err);
+    return null;
+  }
+}
+
+function build_prompt_by_history(chat_history) {
+  var prompt = '';
+  chat_history.forEach(chat => {
+    var character = chat.is_user ? "男朋友：" : "你：";
+    var line = `${character} ${chat.message}\n`;
+    prompt = prompt + line;
+  });
+  console.log(prompt);
+  return prompt;
 }

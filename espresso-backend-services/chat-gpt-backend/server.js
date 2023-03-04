@@ -2,8 +2,9 @@
 // const express = require("express");
 import express from "express";
 import bodyParser from "body-parser";
-import { init_client, init_conv, send_message } from "./chatgpt-client.js";
+import { init_client, init_conv, send_message, reinit_conv } from "./chatgpt-client.js";
 import { createConversation, getConv, updateConv, deleteConv } from "./services/conversationService.js";
+import { insertChat, getChatHistoryByConvId } from "./services/chatHistoryService.js";
 import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
@@ -35,10 +36,13 @@ app.post("/send-message", async (req, res) => {
   try {
     console.log(`conv is ${conv.conv_id}, msg is ${conv.last_msg_id}`);
     const response = await send_message(message, conv.conv_id, conv.last_msg_id);
+    // TODO: implement bulk insertion
+    await insertChat({conv_id: conv.conv_id, message: message, is_user: true});
     console.log(response);
     conv.conv_id = response.conversationId;
     conv.last_msg_id = response.messageId;
     await updateConv(condition, conv);
+    await insertChat({conv_id: conv.conv_id, message: response.response, is_user: false});
     res.json({ message: response.response, status: "success",
                user_id: user_id, model_id: model_id });
   } catch (err) {
@@ -50,6 +54,28 @@ app.post("/send-message", async (req, res) => {
 app.post("/join-chat", async (req, res) => {
   const user_id = req.body.user_id;
   const model_id = req.body.model_id;
+  // check if user has an existing conv
+  var cond = {
+    user_id: user_id,
+    model_id: model_id
+  }
+  var existing_conv = await getConv(cond);
+  if (existing_conv != null) {
+    // find an existing conv
+    // TODO: change the hard-coded response
+    var conv = existing_conv.conv_id;
+    // TODO: return only X chat history
+    var chat_history = await getChatHistoryByConvId(conv);
+    // console.log(chat_history);
+    const return_mes = "哼，现在才想起来找人家。你今天过得怎么样呀？";
+    // TODO: make insertChat and return a transaction
+    await insertChat({conv_id: conv, message: return_mes, is_user: false});
+    await reinit_conv(conv, existing_conv.last_msg_id, model_id, chat_history);
+    res.json({ message: return_mes, status: "success",
+               user_id: user_id, model_id: model_id, 
+               chat_history: chat_history});
+    return;
+  }
   // init a new converstation for a new user
   var response = await init_conv(model_id);
   console.log(response);
@@ -62,6 +88,7 @@ app.post("/join-chat", async (req, res) => {
   
   try {
     await createConversation(conv);
+    await insertChat({conv_id: response.conversationId, message: response.response, is_user: false});
     res.json({ message: response.response, status: "success",
               user_id: user_id, model_id: model_id});
   } catch (err) {
