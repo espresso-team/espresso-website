@@ -1,23 +1,29 @@
 import React, { FormEvent, Suspense, useState } from 'react'
-import styled, { keyframes }  from 'styled-components'
+import styled from 'styled-components'
 import Loading from '../../app/Loading';
 import ReactCardFlip from 'react-card-flip';
 import "@fontsource/akaya-telivigala"
-import Button from '../../app/Button';
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
 import { ImageItem } from '../../types/ImageItem';
 import { Link } from 'react-router-dom'
-import Tooltip from 'rc-tooltip';
+import TinderCard from 'react-tinder-card'
 
 interface Props {
   idCardFlipped: boolean | undefined,
   imgOnClick: () => void,
   imgItem: ImageItem,
 }
+const onSwipe = (direction: any) => {
+  console.log('You swiped: ' + direction)
+}
+
+const onCardLeftScreen = (myIdentifier: any) => {
+  console.log(myIdentifier + ' left the screen')
+}
 
 const Box = styled.div`
-margin: 3rem;
+margin: 0rem;
 height: 100%;
 display: flex;
 flex-direction: column;
@@ -25,7 +31,7 @@ justify-content: center;
 align-items: center;
 `
 
-const Frame = styled.div`
+const ImgFrame = styled.img`
   display: inline-block;
   overflow: hidden;
   width: 600px;
@@ -166,66 +172,40 @@ const PromptText = styled.p`
 `;
 
 
-const HeartButton = styled.div`
-  margin-left: 250px;
-  position: relative;
-  width: 100px;
-  height: 90px;
-  &:before,
-  &:after {
-    position: absolute;
-    content: '';
-    left: 50px;
-    top: 0;
-    width: 50px;
-    height: 80px;
-    background: #ca8888;
-    border-radius: 50px 50px 0 0;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
+const XButton = styled.button`
+  border: none;
+  padding-left: 2rem;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
   }
-  &:after {
-    left: 0;
-    transform: rotate(45deg);
-    transform-origin: 100% 100%;
+
+  @media only screen and (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
   }
-  &:hover::after{
-    cursor: pointer;
-  }
-`;
-const heartBeat = keyframes`
-  0%
-  {
-    transform: scale( .75 );
-  }
-  20%
-  {
-    transform: scale( 1.1 );
-  }
-  40%
-  {
-    transform: scale( .75 );
-  }
-  60%
-  {
-    transform: scale( 1.1 );
-  }
-  80%
-  {
-    transform: scale( .75 );
-  }
-  100%
-  {
-    transform: scale( .75 );
+
+  @media only screen and (max-width: 480px) {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
   }
 `;
 
-const AnimatedHeart = styled(HeartButton)`
-  animation: ${heartBeat} 1s infinite;
-`;
-
+var console = require("console-browserify")
 export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
-  const [state] = usePkSystemHook();
+  const [state, action] = usePkSystemHook();
   const [isPromptOpen, setIsPromptOpen] = useState(false);
   const imgPrompt = imgItem.prompt;
   const imgId = imgItem.id;
@@ -236,18 +216,15 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const imgFigure = imgItem.figure;
   const imgPersonality = imgItem.personality;
   const imgHobby = imgItem.hobby;
-  
+  console.log("imgItem", imgItem)
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
-      <Tooltip placement="left" trigger={['click']} overlay={<span>efewfefewfwfw</span>}>
       <Box>
         <Suspense fallback={<Loading />}>
-          <Frame>
-            <img onClick={imgOnClick} key={imgId} src={imgSrc} width={600} height={600} alt={`PK-${imgId}`} />
-          </Frame>
+          <ImgFrame onClick={imgOnClick} key={imgId} src={imgSrc} width={600} height={600} alt={`PK-${imgId}`} />
         </Suspense>
       </Box>
-      </Tooltip>
+
       <Box>
         <Suspense fallback={<Loading />}>
           <FrameFlipped onClick={imgOnClick}>
@@ -265,42 +242,24 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                 </ImgInfoSection>
             }
 
-            {/* <HeartButton onClick={() => {
-              if (imgId === state.images[state.leftImageId].id) {
-                // keep the left image
-                state.rightImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
-              }
-              else {
-                // keep the right image
-                state.leftImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
-              }
-            }}>
-            </HeartButton> */}
-            <div onClick={() => {
-              if (imgId === state.images[state.leftImageId].id) {
-                // keep the left image
-                state.rightImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
-              }
-              else {
-                // keep the right image
-                state.leftImageId = randomIntBetweenZeroAndXButNotY(state.imageListLength, imgId);
-              }
-            }}>
-            <AnimatedHeart />
-            </div>
-
             <ButtonList>
-              <Btn>开始聊天</Btn>
+              <Link to={"/chat"} className="nav-link"><Btn>开始聊天</Btn></Link>
               <Btn onClick={() => {
+                 action.randomPickImageId();
+              }}>换人</Btn>
+              
+              {/* <Btn onClick={() => {
                 // TBD: 生成我的提示词 避免翻转
                 setIsPromptOpen(!isPromptOpen);
-              }}>生成我的提示词</Btn>
+              }}>查看生成词</Btn> */}
+              {/* <XButton onClick={() => {
+                // Random pick another image
+                action.randomPickImageId();
+              }}>X</XButton> */}
             </ButtonList>
           </FrameFlipped>
         </Suspense>
       </Box>
     </ReactCardFlip>
-
-
   )
 }

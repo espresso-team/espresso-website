@@ -97,7 +97,7 @@ const Navbar = () => {
                 <Menu>
                     <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
                     <MenuItem><Link to={"/pk"} className="nav-link">PK</Link></MenuItem>
-                    <MenuItem>聊天</MenuItem>
+                    <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
                 </Menu>
                 <Button text="注册" link="/register"/>
             </Navigation>

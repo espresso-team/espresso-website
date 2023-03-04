@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import PropTypes from 'prop-types';
 import {MessageList} from './MessageList';
 // import SendMessageForm from '../SendMessageForm/SendMessageForm';
-import './style.css';
 import { User } from '../../types/User';
 import { IMessage } from '../../types/IMessage';
+import './style.css';
 
 interface Props {
   messages: IMessage[];
@@ -12,9 +12,13 @@ interface Props {
   user: User;
   onSubmit: (mes: string) => void;
 }
+var console = require("console-browserify")
 
 export const Chat = ({ messages, isLoading, user, onSubmit }: Props) => {
   const [message, setMessage] = useState("")
+  useEffect(() => {
+    console.log("message", message)
+  }, [message]);
   return(
     <div className='chat-box'>
       <div className='msg-page'>

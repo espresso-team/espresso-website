@@ -1,3 +1,4 @@
+import { randomIntBetweenZeroAndXButNotY } from "../util/randomIntBetweenZeroAndX";
 import { pkSystemApi } from "./pk-system-hook";
 
 export const pkSystemAction = {
@@ -7,12 +8,12 @@ export const pkSystemAction = {
         const currentState = getState();
         setState({ isFlippedCardOne: !currentState.isFlippedCardOne });
     },
-    handleFlipCardTwo:
+    randomPickImageId:
     () =>
     ({ getState, setState  }: pkSystemApi) => {
-        const currentState = getState();
-        setState({ isFlippedCardTwo: !currentState.isFlippedCardTwo });
-    }
+        const newImageId = randomIntBetweenZeroAndXButNotY(getState().imageListLength, getState().curImageId);
+        setState({ curImageId: newImageId });
+    },
 };
 
 export type PkSystemAction = typeof pkSystemAction;

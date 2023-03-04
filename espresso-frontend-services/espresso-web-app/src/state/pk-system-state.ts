@@ -3,21 +3,25 @@ import { ImageItem } from "../types/ImageItem";
 
 export const pkSystemState = {
     isFlippedCardOne: false,
-    isFlippedCardTwo: false,
-    searchQuery: 'ikun 4k',
+    //isFlippedCardTwo: false,
+    //searchQuery: 'ikun 4k',
     images: girls,
-    leftImageId: 0,
-    rightImageId: 1,
-    imageListLength: girls.length
+    curImageId: 0,
+    //rightImageId: 1,
+    imageListLength: girls.length,
+    curUserId: 0,
+    curUserName: "LL",
 };
 
 export type PkSystemState = {
     isFlippedCardOne: boolean | undefined;
-    isFlippedCardTwo: boolean | undefined;
-    searchQuery: string;
+    //isFlippedCardTwo: boolean | undefined;
+    //searchQuery: string;
     images: Array<ImageItem>;
-    leftImageId: number;
-    rightImageId: number;
+    curImageId: number;
+   //rightImageId: number;
     imageListLength: number;
+    curUserId: number;
+    curUserName: string;
 };
 

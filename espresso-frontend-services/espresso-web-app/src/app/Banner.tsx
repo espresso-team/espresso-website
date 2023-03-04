@@ -130,11 +130,11 @@ font-size: ${props => props.theme.fontsm};
 const Banner = () => {
   return (
     <Section>
-        <Title>Join the  <br /> espresso discord  </Title>
+        <Title>使用过程中遇到问题?  <br /> 点击这里反馈  </Title>
         <BtnContainer>
         <a href="https://www.discord.com" aria-label={"Join Now"} target="_blank" rel="noreferrer" >
         <JoiNow>
-            Join Now
+            加入微信群
         </JoiNow>
         </a>
 

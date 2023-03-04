@@ -4,6 +4,7 @@ import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import { IMessage } from '../../types/IMessage';
 import { User } from '../../types/User';
 import { Chat } from './Chat';
+import axios from 'axios';
 
 
 interface Props {
@@ -51,20 +52,97 @@ const MockMessage = [
       "uid": "user1",
       "avatar": "https://s2.loli.net/2023/02/22/AsruGwFVWnyK23P.png",
     },
-  },
+  }
 ] as IMessage[]
+
+var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
   const [state, action] = usePkSystemHook();
+  const [messageList, setMessageList] = useState([] as IMessage[])
+
+  useEffect(() => {
+    // 这里写需要在第一次挂载时执行的代码
+    const res = axios
+      .post(`https://f17261c0-2fda-4b2c-9bff-1e32c7ba6d65.mock.pstmn.io/join-chat`,
+        {
+          "user_id": state.curUserId,
+          "model_id": state.curImageId
+        }
+      )
+      .then((response) => {
+        console.log("response", response.data)
+        const message = response.data.message;
+        const uID = response.data.user_id;
+        const mID = response.data.model_id;
+        const initialMessage =
+          {
+            "text": message,
+            "id": mID,
+            "sender": {
+              "name": state.images[mID].name,
+              "uid": uID,
+              "avatar": state.images[mID].src,
+            }
+          } as IMessage;
+        setMessageList([initialMessage])
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <Chat
-      messages={MockMessage}
+      messages={messageList}
       isLoading={false}
       user={MockUser1}
       onSubmit={
         (mes: string) => {
+          const newUserMessage = {
+            "text": mes,
+            "id": state.curImageId.toString(),
+            "sender": {
+              "name": state.curUserName,
+              "uid": state.curUserId.toString(),
+              "avatar": "https://data.cometchat.com/assets/images/avatars/ironman.png",
+            }
+          } as IMessage;
+
           var console = require("console-browserify")
-          console.log("mes", mes)
+          console.log("newUserMessage", newUserMessage)
+          // add newUserMessage to messageList
+          let newMessageList: IMessage[] = messageList;
+          newMessageList.push(newUserMessage);
+          setMessageList(newMessageList);
+
+          // send post request
+          const res = axios
+            .post(`https://b9265753-89c0-48bf-8269-659696e13cea.mock.pstmn.io/send-message`, 
+            {
+              "user_id": state.curUserId,
+              "model_id": state.curImageId,
+              "message": mes
+              })
+            .then((response) => {
+              console.log("new join-chat response", response.data)
+              const message = response.data.message;
+              const uID = response.data.user_id;
+              const mID = response.data.model_id;
+              const initialMessage =
+                {
+                  "text": message,
+                  "id": mID,
+                  "sender": {
+                    "name": state.images[mID].name,
+                    "uid": uID,
+                    "avatar": state.images[mID].src,
+                  }
+                } as IMessage;
+              let newMessageList: IMessage[] = messageList
+              console.log("newMessageList", newMessageList)
+              newMessageList.push(initialMessage)
+              setMessageList(newMessageList)
+            })
+            .catch((err) => console.log(err));
         }} />
   )
 };

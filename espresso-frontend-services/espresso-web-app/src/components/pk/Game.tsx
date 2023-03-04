@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import "@fontsource/zcool-kuaile"
 import { ImageCard } from './ImageCard';
 import Tooltip from 'rc-tooltip';
+import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
 
 interface Props {
   userId: string;
@@ -83,13 +84,75 @@ enum HttpStatus {
 //   };
 // }
 
+
+
+const HeartButton = styled.div`
+  margin-top:0;
+  margin-left: 250px;
+  position: relative;
+  width: 100px;
+  height: 90px;
+  &:before,
+  &:after {
+    position: absolute;
+    content: '';
+    left: 50px;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: #ca8888;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+  }
+  &:after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+  }
+  &:hover::after{
+    cursor: pointer;
+  }
+`;
+const heartBeat = keyframes`
+  0%
+  {
+    transform: scale( .75 );
+  }
+  20%
+  {
+    transform: scale( 1.1 );
+  }
+  40%
+  {
+    transform: scale( .75 );
+  }
+  60%
+  {
+    transform: scale( 1.1 );
+  }
+  80%
+  {
+    transform: scale( .75 );
+  }
+  100%
+  {
+    transform: scale( .75 );
+  }
+`;
+
+const AnimatedHeart = styled(HeartButton)`
+  animation: ${heartBeat} 1s infinite;
+`;
+
+
 const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
   const images = state.images;
 
-  console.log("images[state.leftImageId].src",images[state.leftImageId].src);
-  
+  console.log("images[state.curImageId].src", images[state.curImageId].src);
+
 
   useEffect(() => {
     // const res = axios
@@ -101,24 +164,28 @@ const Game: React.FC<Props> = () => {
 
     // // update index
     // setIndex(randomIntBetweenOneAndFive());
-  }, [state.leftImageId, state.rightImageId]);
+  }, [state.curImageId]);
   return (
     <Section id="home">
-      {/* <Title>点击卡片查看详细信息</Title> */}
+      <Title>点击卡片试试</Title>
 
       <Container>
         {images && <ImageCard
           idCardFlipped={state.isFlippedCardOne}
           imgOnClick={action.handleFlipCardOne}
-          imgItem={images[state.leftImageId]}
-        />}
-
-        {images && <ImageCard
-          idCardFlipped={state.isFlippedCardTwo}
-          imgOnClick={action.handleFlipCardTwo}
-          imgItem={images[state.rightImageId]}
+          imgItem={images[state.curImageId]}
         />}
       </Container>
+      <div>
+      {/* <AnimatedHeart /> */}
+
+        </div>
+
+      
+      
+
+      
+
     </Section>
   )
 }
