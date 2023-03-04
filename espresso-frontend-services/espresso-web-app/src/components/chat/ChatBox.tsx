@@ -125,20 +125,25 @@ const ChatBox: React.FC<Props> = () => {
             .then((response) => {
               console.log("new join-chat response", response.data)
               const message = response.data.message;
-              const uID = response.data.user_id;
-              const mID = response.data.model_id;
+              const uID:string = response.data.user_id;
+              const mID:string = response.data.model_id;
+              const mIDNumber: number = +mID;
+              console.log("debug uID", uID)
+              console.log("debug mID", mID)
               const initialMessage =
                 {
                   "text": message,
                   "id": mID,
                   "sender": {
-                    "name": state.images[mID].name,
+                    "name": state.images[mIDNumber].name,
                     "uid": uID,
-                    "avatar": state.images[mID].src,
+                    "avatar": state.images[mIDNumber].src,
                   }
                 } as IMessage;
+
+              console.log("debug initialMessage", initialMessage)
               let newMessageList: IMessage[] = messageList
-              console.log("newMessageList", newMessageList)
+              console.log("debug newMessageList", newMessageList)
               newMessageList.push(initialMessage)
               setMessageList(newMessageList)
             })

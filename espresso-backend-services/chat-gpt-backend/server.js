@@ -40,7 +40,7 @@ app.post("/send-message", async (req, res) => {
     conv.last_msg_id = response.messageId;
     await updateConv(condition, conv);
     res.json({ message: response.response, status: "success",
-               user_id: user_id, mode_id: model_id });
+               user_id: user_id, model_id: model_id });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
