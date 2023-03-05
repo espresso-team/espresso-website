@@ -151,9 +151,6 @@ const Game: React.FC<Props> = () => {
   const [state, action] = usePkSystemHook();
   const images = state.images;
 
-  console.log("images[state.curImageId].src", images[state.curImageId].src);
-
-
   useEffect(() => {
     // const res = axios
     //   .get(`https://lexica.art/api/v1/search?q=${state.searchQuery}`)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import { IMessage } from '../../types/IMessage';
@@ -57,49 +57,27 @@ const MockMessage = [
 var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
+  const messagesEnd = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    if (messagesEnd && messagesEnd.current) {
+      messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   const [state, action] = usePkSystemHook();
 
-  const messageList = state.messageList;
-  console.log("Chat box messageList", messageList);
-  //const [messageList, setMessageList] = useState([] as IMessage[])
-
   useEffect(() => {
-    // 这里写需要在第一次挂载时执行的代码
-    const res = axios
-      .post(`http://localhost:3000/join-chat`,
-        {
-          "user_id": state.curUserId.toString(),
-          "model_id": state.curImageId.toString()
-        }
-      )
-      .then((response) => {
-        console.log("response", response.data)
-        const message = response.data.message;
-        const uID = response.data.user_id;
-        const mID = response.data.model_id;
-        const initialMessage =
-          {
-            "text": message,
-            "id": mID,
-            "sender": {
-              "name": state.images[mID].name,
-              "uid": uID,
-              "avatar": state.images[mID].src,
-            }
-          } as IMessage;
-        action.updateMessageList(initialMessage);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    console.log("Chatbox messageList", state.messageList);
+    //scrollToBottom();
+  }, [state.messageList]);
 
   return (
     <Chat
       messages={state.messageList}
       isLoading={false}
       user={MockUser1}
+      pageRef={messagesEnd}
       onSubmit={
         (mes: string) => {
-
           const newUserMessage = {
             "text": mes,
             "id": state.curImageId.toString(),
@@ -111,7 +89,6 @@ const ChatBox: React.FC<Props> = () => {
           } as IMessage;
 
           action.updateMessageList(newUserMessage);
-
           // send post request
           const res = axios
             .post(`http://localhost:3000/send-message`, 
@@ -121,7 +98,7 @@ const ChatBox: React.FC<Props> = () => {
               "message": mes
               })
             .then((response) => {
-              console.log("new join-chat response", response.data)
+              // console.log("new join-chat response", response.data)
               const message = response.data.message;
               const uID:string = response.data.user_id;
               const mID:string = response.data.model_id;
@@ -136,6 +113,7 @@ const ChatBox: React.FC<Props> = () => {
                     "avatar": state.images[mIDNumber].src,
                   }
                 } as IMessage;
+              
               action.updateMessageList(receivedMessage);
             })
             .catch((err) => console.log(err));

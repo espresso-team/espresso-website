@@ -37,6 +37,10 @@
   height: 50px;
 }
 
+.chatSection {
+  margin-top: 4px;
+}
+
 .header-icons {
   width: 120px;
   float: right;

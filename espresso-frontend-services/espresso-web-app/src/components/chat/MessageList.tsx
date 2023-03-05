@@ -7,16 +7,19 @@ import { RenderMessageFunction } from '../../types/RenderMessageFunction';
 import { If } from '../../app/If';
 import { IMessage } from '../../types/IMessage';
 import { MessageListDetail } from './MessageListDetail';
+import { usePkSystemHook } from '../../state/pk-system-hook';
 
 interface Props {
     isLoading: boolean;
     messages: IMessage[];
     user: User;
+    pageRef: React.Ref<HTMLDivElement>
     //renderMessage?: RenderMessageFunction;
 }
 
-export const MessageList = ({ isLoading, messages, user }: Props) => {
+export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
     var console = require("console-browserify")
+    console.log("MessageList - messages",messages)
     return (
         <>
             <If condition={!isLoading && !messages.length}>
@@ -34,7 +37,7 @@ export const MessageList = ({ isLoading, messages, user }: Props) => {
                 </div>
             </If>
             <If condition={!isLoading && messages.length > 0}>
-                <MessageListDetail user={user} messages={messages}/>
+                <MessageListDetail user={user} messages={messages} pageRef={pageRef}/>
             </If>
             <If condition={isLoading}>
                 <div className='loading-messages-container'>

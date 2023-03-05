@@ -8,6 +8,8 @@ import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZero
 import { ImageItem } from '../../types/ImageItem';
 import { Link } from 'react-router-dom'
 import TinderCard from 'react-tinder-card'
+import axios from 'axios';
+import { IMessage } from '../../types/IMessage';
 
 interface Props {
   idCardFlipped: boolean | undefined,
@@ -216,7 +218,6 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const imgFigure = imgItem.figure;
   const imgPersonality = imgItem.personality;
   const imgHobby = imgItem.hobby;
-  console.log("imgItem", imgItem)
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
       <Box>
@@ -243,11 +244,41 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
             }
 
             <ButtonList>
-              <Link to={"/chat"} className="nav-link"><Btn>开始聊天</Btn></Link>
+              <Link to={"/chat"} className="nav-link">
+                <Btn onClick={() => {
+                  console.log("1state.messageList in card",state.messageList)
+                  const res = axios
+                    .post(`http://localhost:3000/join-chat`,
+                      {
+                        "user_id": state.curUserId.toString(),
+                        "model_id": state.curImageId.toString()
+                      }
+                    )
+                    .then((response) => {
+                      // console.log("response", response.data)
+                      console.log("state.messageList in card",state.messageList)
+                      const message = response.data.message;
+                      const uID = response.data.user_id;
+                      const mID = response.data.model_id;
+                      const initialMessage =
+                        {
+                          "text": message,
+                          "id": mID,
+                          "sender": {
+                            "name": state.images[mID].name,
+                            "uid": uID,
+                            "avatar": state.images[mID].src,
+                          }
+                        } as IMessage;
+                      action.updateMessageList(initialMessage);
+                    })
+                    .catch((err) => console.log(err));
+                }}>开始聊天</Btn>
+              </Link>
               <Btn onClick={() => {
-                 action.randomPickImageId();
+                action.randomPickImageId();
               }}>换人</Btn>
-              
+
               {/* <Btn onClick={() => {
                 // TBD: 生成我的提示词 避免翻转
                 setIsPromptOpen(!isPromptOpen);

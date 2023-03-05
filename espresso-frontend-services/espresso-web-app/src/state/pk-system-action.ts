@@ -18,9 +18,8 @@ export const pkSystemAction = {
     updateMessageList:
     (message: IMessage) =>
     ({ getState, setState  }: pkSystemApi) => {
-        let newMessageList: IMessage[] = getState().messageList;
+        const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
         newMessageList.push(message);
-        console.log("updateMessageList actions newMessageList:",newMessageList);
         setState({ messageList: newMessageList });
     },
 };

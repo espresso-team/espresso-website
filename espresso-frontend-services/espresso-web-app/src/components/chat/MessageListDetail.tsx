@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { usePkSystemHook } from '../../state/pk-system-hook';
 import { IMessage } from '../../types/IMessage';
 import { User } from '../../types/User';
 import "./style.css"
@@ -6,6 +7,7 @@ import "./style.css"
 interface Props {
   messages: { text: string; id: string; sender: User }[];
   user: User;
+  pageRef: React.Ref<HTMLDivElement>
 }
 const isUser = (user: User, message: IMessage) => {
   return user.uid === message.sender.uid;
@@ -20,13 +22,25 @@ const getRenderName = (isUser: boolean, message: IMessage) => {
   }
   return renderName
 }
-
-export const MessageListDetail = ({ messages, user }: Props) => {
+var console = require("console-browserify")
+export const MessageListDetail = ({ messages, user, pageRef }: Props) => {
+  const messagesEnd = useRef<HTMLDivElement>(null);
+  const [state] = usePkSystemHook();
+  const scrollToBottom = () => {
+    if (messagesEnd && messagesEnd.current) {
+      messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  useEffect(() => {
+    console.log("scrollToBottom()");
+    scrollToBottom();
+  }, [state.messageList]);
   return (
-    <>
+    <div className='chatSection'>
       {messages.map(message => {
         return (
           <div
+            ref={pageRef}
             key={message.id}
             className='chat-bubble-row'
             style={{ flexDirection: isUser(user, message) ? 'row-reverse' : 'row' }}>
@@ -47,6 +61,6 @@ export const MessageListDetail = ({ messages, user }: Props) => {
           </div>
         )
       })}
-    </>
+    </div>
   )
 }

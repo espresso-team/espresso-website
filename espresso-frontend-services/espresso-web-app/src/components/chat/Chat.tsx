@@ -5,27 +5,33 @@ import {MessageList} from './MessageList';
 import { User } from '../../types/User';
 import { IMessage } from '../../types/IMessage';
 import './style.css';
+import { usePkSystemHook } from '../../state/pk-system-hook';
 
 interface Props {
   messages: IMessage[];
   isLoading: boolean;
   user: User;
   onSubmit: (mes: string) => void;
+  pageRef: React.Ref<HTMLDivElement>
 }
 var console = require("console-browserify")
 
-export const Chat = ({ messages, isLoading, user, onSubmit }: Props) => {
+export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) => {
+  const [state] = usePkSystemHook();
   const [message, setMessage] = useState("")
+  console.log("Chat.tsx - messages", messages)
+
   useEffect(() => {
-    console.log("message", message)
-  }, [message]);
+    console.log("chat messageList", state.messageList);
+  }, [state.messageList]);
   return(
     <div className='chat-box'>
       <div className='msg-page'>
         <MessageList
           isLoading={isLoading}
-          messages={messages} 
+          messages={messages}
           user={user}
+          pageRef={pageRef}
         />
         <div className='chat-box-bottom'>
           <div id='end-of-chat'></div>
@@ -36,9 +42,9 @@ export const Chat = ({ messages, isLoading, user, onSubmit }: Props) => {
           className='message-form'
           onSubmit={
             (event: FormEvent) => {
-              event.preventDefault();
               onSubmit(message);
               setMessage("");
+              event.preventDefault();
             }
           }>
           <div className='input-group'>
