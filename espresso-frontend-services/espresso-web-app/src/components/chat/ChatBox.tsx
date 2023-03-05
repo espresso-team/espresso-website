@@ -6,7 +6,6 @@ import { User } from '../../types/User';
 import { Chat } from './Chat';
 import axios from 'axios';
 
-
 interface Props {
   userId: string;
 }
@@ -59,7 +58,10 @@ var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
   const [state, action] = usePkSystemHook();
-  const [messageList, setMessageList] = useState([] as IMessage[])
+
+  const messageList = state.messageList;
+  console.log("Chat box messageList", messageList);
+  //const [messageList, setMessageList] = useState([] as IMessage[])
 
   useEffect(() => {
     // 这里写需要在第一次挂载时执行的代码
@@ -85,18 +87,19 @@ const ChatBox: React.FC<Props> = () => {
               "avatar": state.images[mID].src,
             }
           } as IMessage;
-        setMessageList([initialMessage])
+        action.updateMessageList(initialMessage);
       })
       .catch((err) => console.log(err));
   }, []);
 
   return (
     <Chat
-      messages={messageList}
+      messages={state.messageList}
       isLoading={false}
       user={MockUser1}
       onSubmit={
         (mes: string) => {
+
           const newUserMessage = {
             "text": mes,
             "id": state.curImageId.toString(),
@@ -107,12 +110,7 @@ const ChatBox: React.FC<Props> = () => {
             }
           } as IMessage;
 
-          var console = require("console-browserify")
-          console.log("newUserMessage", newUserMessage)
-          // add newUserMessage to messageList
-          let newMessageList: IMessage[] = messageList;
-          newMessageList.push(newUserMessage);
-          setMessageList(newMessageList);
+          action.updateMessageList(newUserMessage);
 
           // send post request
           const res = axios
@@ -128,9 +126,7 @@ const ChatBox: React.FC<Props> = () => {
               const uID:string = response.data.user_id;
               const mID:string = response.data.model_id;
               const mIDNumber: number = +mID;
-              console.log("debug uID", uID)
-              console.log("debug mID", mID)
-              const initialMessage =
+              const receivedMessage =
                 {
                   "text": message,
                   "id": mID,
@@ -140,12 +136,7 @@ const ChatBox: React.FC<Props> = () => {
                     "avatar": state.images[mIDNumber].src,
                   }
                 } as IMessage;
-
-              console.log("debug initialMessage", initialMessage)
-              let newMessageList: IMessage[] = messageList
-              console.log("debug newMessageList", newMessageList)
-              newMessageList.push(initialMessage)
-              setMessageList(newMessageList)
+              action.updateMessageList(receivedMessage);
             })
             .catch((err) => console.log(err));
         }} />
