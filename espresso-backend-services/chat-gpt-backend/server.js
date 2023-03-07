@@ -35,14 +35,23 @@ app.post("/send-message", async (req, res) => {
   
   try {
     console.log(`conv is ${conv.conv_id}, msg is ${conv.last_msg_id}`);
-    const response = await send_message(message, conv.conv_id, conv.last_msg_id);
+    var response = await send_message(message, conv.conv_id, conv.last_msg_id);
     // TODO: implement bulk insertion
     await insertChat({conv_id: conv.conv_id, message: message, is_user: true});
     console.log(response);
+    var res_message = response.response;
+    if (res_message.includes('ChatGPT') || res_message.includes('AI') ||
+        res_message.includes('语言模型') || res_message.includes('很抱歉') || 
+        res_message.includes('language model')) {
+        console.log("Reinit ChatGPT since AI GF ends role play.");
+        var reinit_res = await reinit_conv(conv.conv_id, response.messageId, model_id);
+        // resend message to conv
+        response = await send_message(message, conv.conv_id, reinit_res.messageId);
+    }
     conv.conv_id = response.conversationId;
     conv.last_msg_id = response.messageId;
     await updateConv(condition, conv);
-    await insertChat({conv_id: conv.conv_id, message: response.response, is_user: false});
+    await insertChat({conv_id: conv.conv_id, message: res_message, is_user: false});
     res.json({ message: response.response, status: "success",
                user_id: user_id, model_id: model_id });
   } catch (err) {
