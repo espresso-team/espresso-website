@@ -73,18 +73,14 @@ export async function send_message(msg, conv_id, last_msg_id) {
 
 // Resend the initial prompy to an exitsing conv
 export async function reinit_conv(conv_id, last_msg_id, model_id, chat_history=null) {
-  try {
-    const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
-    if (chat_history == null) {
-      var chat_history = await getChatHistoryByConvId(conv_id);
-    }
-    // TODO: add summary of the chat history if token is above the limit
-    var reinit_promot = text + "你们之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
-    return await send_message(reinit_promot, conv_id, last_msg_id);
-  } catch (err) {
-    console.error("Error re-initiating conversation:", err);
-    return null;
+  // Fix the Invalid Encoding error handling.
+  const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
+  if (chat_history == null) {
+    var chat_history = await getChatHistoryByConvId(conv_id);
   }
+  // TODO: add summary of the chat history if token is above the limit
+  var reinit_promot = text + "你们之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
+  return await send_message(reinit_promot, conv_id, last_msg_id);
 }
 
 function dfs_split_prompt(prompt, prompt_array) {
