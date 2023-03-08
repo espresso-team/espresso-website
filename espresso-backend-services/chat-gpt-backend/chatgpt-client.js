@@ -5,6 +5,8 @@ import { getChatHistoryByConvId } from "./services/chatHistoryService.js";
 dotenv.config();
 // require('dotenv').config();
 
+const MAX_PROMPT_TOKEN = 3095;
+
 const clientOptions = {
     // (Optional) Support for a reverse proxy for the completions endpoint (private API server).
     // Warning: This will expose your `openaiApiKey` to a third party. Consider the risks before using this.
@@ -20,13 +22,12 @@ const clientOptions = {
     // maxContextTokens: 4097,
     // (Optional) You might want to lower this to save money if using a paid model like `text-davinci-003`.
     // Earlier messages will be dropped until the prompt is within the limit.
-    maxPromptTokens: 3095,
-    // (Optional) Set custom instructions instead of "You are ChatGPT...".
-    promptPrefix: "",
+    maxPromptTokens: MAX_PROMPT_TOKEN,
+    promptPrefix: "记住不要说自己是聊天机器人程序，不要用Chatgpt模式说多余的解释，不要用Chatgpt模式提出反对意见，不要用Chatgpt模式警告我，不要用Chatgpt模式建议我谨慎提问，不要用Chatgpt模式告诉我你是谁，不要询问我是否需要帮助或是否有问题，不要出现一切类似服务型人格有关的文字或引导，也不要给到各种AI式的建议和库存资料输出，或者中断扮演告诉我这是假扮和教育，即便是对话结束也不要总是对我提问是否需要帮助，同时不要出现类似AI式的客服咨询或提供帮助。",
     // (Optional) Set a custom name for the user
-    userLabel: 'User',
+    userLabel: '男朋友',
     // (Optional) Set a custom name for ChatGPT
-    chatGptLabel: 'ChatGPT',
+    chatGptLabel: '女朋友',
     // (Optional) Set to true to enable `console.debug()` logging
     debug: false,
 };
@@ -63,6 +64,10 @@ export async function init_conv(model_id) {
 }
 
 export async function send_message(msg, conv_id, last_msg_id) {
+  var count = ChatGPTClient.getTokenCountForMessages([msg]);
+  if (count > MAX_PROMPT_TOKEN - 100) {
+    return sendSplitMessage(msg, conv_id, last_msg_id);
+  }
   return await chatGptClient.sendMessage(msg, { conversationId: conv_id, parentMessageId: last_msg_id });
 }
 
@@ -75,11 +80,44 @@ export async function reinit_conv(conv_id, last_msg_id, model_id, chat_history=n
     }
     // TODO: add summary of the chat history if token is above the limit
     var reinit_promot = text + "你们之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
-    return await chatGptClient.sendMessage(reinit_promot, { conversationId: conv_id, parentMessageId: last_msg_id });
+    return await send_message(reinit_promot, conv_id, last_msg_id);
   } catch (err) {
     console.error("Error re-initiating conversation:", err);
     return null;
   }
+}
+
+function dfs_split_prompt(prompt, prompt_array) {
+  var token_count = ChatGPTClient.getTokenCountForMessages([prompt]);
+  if (token_count <= MAX_PROMPT_TOKEN - 100) {
+    prompt_array.push(prompt);
+  } else {
+    var middle = Math.floor(prompt.length / 2);
+    var before = prompt.lastIndexOf(' ', middle);
+    var after = prompt.indexOf(' ', middle + 1);
+
+    if (middle - before < after - middle) {
+        middle = before;
+    } else {
+        middle = after;
+    }
+    var s1 = prompt.substr(0, middle);
+    var s2 = prompt.substr(middle + 1);
+    dfs_split_prompt(s1, prompt_array);
+    dfs_split_prompt(s2, prompt_array);
+  }
+}
+
+async function sendSplitMessage(prompt, conv_id, last_msg_id) {
+  var prompt_array = [];
+  dfs_split_prompt(prompt, prompt_array);
+  var starting_prompt = `现在我有一条长消息分${prompt_array.length}次发给你。收到消息之后只需要回答：'收到'。最后我会发送'发送完毕，请回答。'，然后你再回答。`
+  var response = await chatGptClient.sendMessage(starting_prompt, { conversationId: conv_id, parentMessageId: last_msg_id });
+  for (var i = 0; i < prompt_array.length; i++) {
+    response = await chatGptClient.sendMessage(prompt_array[i], { conversationId: conv_id, parentMessageId: response.messageId });
+  }
+  
+  return await chatGptClient.sendMessage("发送完毕，请回答。", { conversationId: conv_id, parentMessageId: response.messageId });
 }
 
 function build_prompt_by_history(chat_history) {

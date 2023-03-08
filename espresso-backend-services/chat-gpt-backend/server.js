@@ -9,6 +9,8 @@ import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
 import cors from "cors";
+import { is_response_include_forbidden_words } from "./util.js";
+
 
 const app = express();
 app.use(cors({
@@ -40,19 +42,24 @@ app.post("/send-message", async (req, res) => {
     await insertChat({conv_id: conv.conv_id, message: message, is_user: true});
     console.log(response);
     var res_message = response.response;
-    if (res_message.includes('ChatGPT') || res_message.includes('AI') ||
-        res_message.includes('语言模型') || res_message.includes('很抱歉') || 
-        res_message.includes('language model')) {
+    if (is_response_include_forbidden_words(res_message)) {
         console.log("Reinit ChatGPT since AI GF ends role play.");
         var reinit_res = await reinit_conv(conv.conv_id, response.messageId, model_id);
         // resend message to conv
         response = await send_message(message, conv.conv_id, reinit_res.messageId);
     }
+
+    var new_msg = response.response;
+    if (is_response_include_forbidden_words(new_msg)) {
+        // Still contains forbidden word.
+        new_msg = "哎呀...人家不知道嘛...洗澡去了88~";
+    }
+
     conv.conv_id = response.conversationId;
     conv.last_msg_id = response.messageId;
     await updateConv(condition, conv);
-    await insertChat({conv_id: conv.conv_id, message: res_message, is_user: false});
-    res.json({ message: response.response, status: "success",
+    await insertChat({conv_id: conv.conv_id, message: new_msg, is_user: false});
+    res.json({ message: new_msg, status: "success",
                user_id: user_id, model_id: model_id });
   } catch (err) {
     res.status(500).json({ error: err.message });
