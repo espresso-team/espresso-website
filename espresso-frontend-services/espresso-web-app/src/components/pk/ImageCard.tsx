@@ -255,7 +255,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                       }
                     )
                     .then((response) => {
-                      // console.log("response", response.data)
+                      console.log("join chat response", response.data)
                       console.log("state.messageList in card",state.messageList)
                       const message = response.data.message;
                       const uID = response.data.user_id;
