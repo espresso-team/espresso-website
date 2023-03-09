@@ -22,6 +22,13 @@ export const pkSystemAction = {
         newMessageList.push(message);
         setState({ messageList: newMessageList });
     },
+    initailMessageList:
+    (message: IMessage) =>
+    ({ getState, setState  }: pkSystemApi) => {
+        const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
+        newMessageList.push(message);
+        setState({ messageList: newMessageList });
+    },
 };
 
 export type PkSystemAction = typeof pkSystemAction;

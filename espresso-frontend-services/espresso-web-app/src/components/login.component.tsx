@@ -2,6 +2,7 @@ import { Component } from "react";
 import { Navigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Button from "../app/Button";
 
 type Props = {};
 
@@ -70,8 +71,9 @@ export default class Login extends Component<Props, State> {
           >
             <Form>
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">手机号</label>
                 <Field name="username" type="text" className="form-control" />
+                <button >验证码</button>
                 <ErrorMessage
                   name="username"
                   component="div"
@@ -80,7 +82,7 @@ export default class Login extends Component<Props, State> {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">密码</label>
                 <Field name="password" type="password" className="form-control" />
                 <ErrorMessage
                   name="password"
@@ -94,7 +96,7 @@ export default class Login extends Component<Props, State> {
                   {loading && (
                     <span className="spinner-border spinner-border-sm" ></span>
                   )}
-                  <span>Login</span>
+                  <span>登录</span>
                 </button>
               </div>
 

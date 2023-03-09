@@ -255,8 +255,9 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                       }
                     )
                     .then((response) => {
-                      console.log("join chat response", response.data)
                       console.log("state.messageList in card",state.messageList)
+                      const chatHistory = response.data.chat_history;
+                      console.log("chatHistory", chatHistory)
                       const message = response.data.message;
                       const uID = response.data.user_id;
                       const mID = response.data.model_id;
