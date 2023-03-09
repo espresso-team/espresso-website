@@ -64,7 +64,8 @@ export async function init_conv(model_id) {
 }
 
 export async function send_message(msg, conv_id, last_msg_id) {
-  var count = ChatGPTClient.getTokenCountForMessages([msg]);
+  console.log(msg);
+  var count = ChatGPTClient.getTokenCountForMessages([`男朋友:${msg}`]);
   if (count > MAX_PROMPT_TOKEN - 100) {
     return sendSplitMessage(msg, conv_id, last_msg_id);
   }
@@ -79,7 +80,7 @@ export async function reinit_conv(conv_id, last_msg_id, model_id, chat_history=n
     var chat_history = await getChatHistoryByConvId(conv_id);
   }
   // TODO: add summary of the chat history if token is above the limit
-  var reinit_promot = text + "你们之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
+  var reinit_promot = text + "之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
   return await send_message(reinit_promot, conv_id, last_msg_id);
 }
 
@@ -106,7 +107,7 @@ function dfs_split_prompt(prompt, prompt_array) {
 
 async function sendSplitMessage(prompt, conv_id, last_msg_id) {
   var prompt_array = [];
-  dfs_split_prompt(prompt, prompt_array);
+  dfs_split_prompt(`消息开始：${prompt}`, prompt_array);
   var starting_prompt = `现在我有一条长消息分${prompt_array.length}次发给你。收到消息之后只需要回答：'收到'。最后我会发送'发送完毕，请回答。'，然后你再回答。`
   var response = await chatGptClient.sendMessage(starting_prompt, { conversationId: conv_id, parentMessageId: last_msg_id });
   for (var i = 0; i < prompt_array.length; i++) {
@@ -119,7 +120,7 @@ async function sendSplitMessage(prompt, conv_id, last_msg_id) {
 function build_prompt_by_history(chat_history) {
   var prompt = '';
   chat_history.forEach(chat => {
-    var character = chat.is_user ? "男朋友：" : "你：";
+    var character = chat.is_user ? "小蓝的男朋友：" : "小蓝：";
     var line = `${character} ${chat.message}\n`;
     prompt = prompt + line;
   });
