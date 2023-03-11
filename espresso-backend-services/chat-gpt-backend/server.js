@@ -85,8 +85,8 @@ app.post("/join-chat", async (req, res) => {
     // console.log(chat_history);
     const return_mes = "哼，现在才想起来找人家。你今天过得怎么样呀？";
     // TODO: make insertChat and return a transaction
-    // await insertChat({conv_id: conv, message: return_mes, is_user: false});
     await reinit_conv(conv, existing_conv.last_msg_id, model_id, chat_history);
+    await insertChat({conv_id: conv, message: return_mes, is_user: false});
     res.json({ message: return_mes, status: "success",
                user_id: user_id, model_id: model_id, 
                chat_history: chat_history});
