@@ -12,7 +12,7 @@ const Navigation = styled.nav`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 85%;
+    width: 75%;
     height: ${props => props.theme.navHeight};
     margin: 0 auto;
     
@@ -89,6 +89,8 @@ const MenuItem = styled.li`
 }
 `
 
+var console = require("console-browserify")
+
 const Navbar = () => {
     return (
         <Section>
@@ -99,7 +101,9 @@ const Navbar = () => {
                     <MenuItem><Link to={"/pk"} className="nav-link">PK</Link></MenuItem>
                     <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
                 </Menu>
-                <Button text="注册" link="/register"/>
+                <Button text="登录" onclick={() => {
+                    console.log("登录注册")
+                }}/>
             </Navigation>
         </Section>
     )

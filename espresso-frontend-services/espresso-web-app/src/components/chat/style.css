@@ -141,14 +141,21 @@
 .chat-box {
   font-family: 'Roboto';
   position: relative;
-  height: 588px;
+  height: 750px;
   letter-spacing: 0.5px;
   background: #e9d6d6;
   padding: 0 !important;
   box-sizing: border-box;
-  margin: 5rem;
+  margin: 0rem 3rem 5rem 5rem;
   border-color: #828080;
   border-radius: 2rem;
+}
+
+@media (max-width: 60em) {
+  .chat-box {
+    margin: 0rem 1rem 3rem 1rem;
+    height: 688px;
+  }
 }
 
 .message-input {

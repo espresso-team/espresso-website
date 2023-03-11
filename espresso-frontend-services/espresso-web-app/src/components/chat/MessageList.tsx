@@ -42,9 +42,10 @@ export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
             <If condition={isLoading}>
                 <div className='loading-messages-container'>
                     <MDSpinner size={100} />
-                    <span className='loading-text'>Loading Messages</span>
+                    <span className='loading-text'>我马上回来~</span>
                 </div>
             </If>
+            
         </>
     )
 };

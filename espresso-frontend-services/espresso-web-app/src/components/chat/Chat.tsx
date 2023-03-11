@@ -16,13 +16,24 @@ interface Props {
 }
 var console = require("console-browserify")
 
+
+
 export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) => {
+  const scrollToDiv = useRef<HTMLDivElement>(null);
   const [state] = usePkSystemHook();
   const [message, setMessage] = useState("")
   console.log("Chat.tsx - messages", messages)
 
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      if(scrollToDiv.current)
+      scrollToDiv.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }, 100);
+  }
+
   useEffect(() => {
     console.log("chat messageList", state.messageList);
+    scrollToBottom()
   }, [state.messageList]);
   return(
     <div className='chat-box'>
@@ -33,7 +44,7 @@ export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) =>
           user={user}
           pageRef={pageRef}
         />
-        <div className='chat-box-bottom'>
+        <div className='chat-box-bottom' ref={scrollToDiv}>
           <div id='end-of-chat'></div>
         </div>
       </div>

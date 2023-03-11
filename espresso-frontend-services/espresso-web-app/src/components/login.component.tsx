@@ -1,8 +1,6 @@
 import { Component } from "react";
-import { Navigate } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import Button from "../app/Button";
+import Footer from "../app/Footer";
+import Cover from "./home/Cover";
 
 type Props = {};
 
@@ -17,7 +15,7 @@ type State = {
 export default class Login extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.handleLogin = this.handleLogin.bind(this);
+    //this.handleLogin = this.handleLogin.bind(this);
 
     this.state = {
       redirect: null,
@@ -28,89 +26,42 @@ export default class Login extends Component<Props, State> {
     };
   }
 
-  componentWillUnmount() {
-    window.location.reload();
-  }
+  // componentWillUnmount() {
+  //   window.location.reload();
+  // }
 
-  validationSchema() {
-    return Yup.object().shape({
-      username: Yup.string().required("This field is required!"),
-      password: Yup.string().required("This field is required!"),
-    });
-  }
+  // validationSchema() {
+  //   return Yup.object().shape({
+  //     username: Yup.string().required("This field is required!"),
+  //     password: Yup.string().required("This field is required!"),
+  //   });
+  // }
 
-  handleLogin(formValue: { username: string; password: string }) {
-    const { username, password } = formValue;
+  // handleLogin(formValue: { username: string; password: string }) {
+  //   const { username, password } = formValue;
 
-    this.setState({
-      message: "",
-      loading: true
-    });
+  //   this.setState({
+  //     message: "",
+  //     loading: true
+  //   });
 
-  }
+  // }
 
   render() {
-    if (this.state.redirect) {
-      return <Navigate to={this.state.redirect} />
-    }
+    // if (this.state.redirect) {
+    //   return <Navigate to={this.state.redirect} />
+    // }
 
-    const { loading, message } = this.state;
+    // const { loading, message } = this.state;
 
-    const initialValues = {
-      username: "",
-      password: "",
-    };
-
+    // const initialValues = {
+    //   username: "",
+    //   password: "",
+    // };
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <Formik
-            initialValues={initialValues}
-            validationSchema={this.validationSchema}
-            onSubmit={this.handleLogin}
-          >
-            <Form>
-              <div className="form-group">
-                <label htmlFor="username">手机号</label>
-                <Field name="username" type="text" className="form-control" />
-                <button >验证码</button>
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">密码</label>
-                <Field name="password" type="password" className="form-control" />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-
-              <div className="form-group">
-                <button type="submit" className="btn btn-primary btn-block" style={{backgroundColor: "black"}} disabled={loading}>
-                  {loading && (
-                    <span className="spinner-border spinner-border-sm" ></span>
-                  )}
-                  <span>登录</span>
-                </button>
-              </div>
-
-              {message && (
-                <div className="form-group">
-                  <div className="alert alert-danger" role="alert">
-                    {message}
-                  </div>
-                </div>
-              )}
-            </Form>
-          </Formik>
-        </div>
-      </div>
+      <>
+        <Footer/>
+      </>
     );
   }
 }

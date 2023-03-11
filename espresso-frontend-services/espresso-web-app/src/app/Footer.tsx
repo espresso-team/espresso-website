@@ -136,7 +136,6 @@ const Footer = () => {
 
   return (
     <Section>
-
       <Suspense fallback={<Loading />}>
         <Banner /> </Suspense>
       <Container>

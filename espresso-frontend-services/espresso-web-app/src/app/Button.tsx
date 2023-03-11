@@ -2,14 +2,15 @@ import React, { MouseEventHandler } from 'react'
 import styled from 'styled-components'
 
 const Btn = styled.button`
-  display: inline-block;
+  display: inline;
   background-color: ${props => props.theme.text};
   color: ${props => props.theme.body};
   outline: none;
   border: none;
+  width: 120%;
 
   font-size: ${props => props.theme.fontmd};
-  padding: 0.9rem 2.3rem;
+  padding: 0.3rem 1.8rem;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -39,12 +40,11 @@ const Btn = styled.button`
 
   @media (max-width: 48em) {
   font-size: ${props => props.theme.fontsm};
-
   }
 `
 
 const Button = (props: { text: string, link?: string, onclick?: () => void }) => {
-  const { text, link = '#' } = props;
+  const { text, link = '#!' } = props;
   return (
     
     <a href={link} target="_blank" rel="noreferrer" >
