@@ -139,9 +139,9 @@
 }
 
 .chat-box {
-  font-family: 'Roboto';
+  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;;
   position: relative;
-  height: 750px;
+  height: 600px;
   letter-spacing: 0.5px;
   background: #e9d6d6;
   padding: 0 !important;
@@ -153,8 +153,7 @@
 
 @media (max-width: 60em) {
   .chat-box {
-    margin: 0rem 1rem 3rem 1rem;
-    height: 688px;
+    margin: 0rem 1rem 5rem 1rem;
   }
 }
 
@@ -195,7 +194,7 @@
 }
 
 .chat-bubble {
-  border-radius: 8px;
+  border-radius: 35px;
   font-size: 16px;
   padding: 15px;
   position: relative;

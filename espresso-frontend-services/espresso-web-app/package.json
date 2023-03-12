@@ -25,7 +25,6 @@
     "@web3uikit/web3": "^0.2.2",
     "antd": "^5.2.3",
     "boostrap": "^2.0.0",
-    "bootstrap": "^4.6.0",
     "buffer": "^6.0.3",
     "console-browserify": "^1.2.0",
     "formik": "^2.2.9",

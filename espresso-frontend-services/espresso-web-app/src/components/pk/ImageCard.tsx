@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import TinderCard from 'react-tinder-card'
 import axios from 'axios';
 import { IMessage } from '../../types/IMessage';
+import { ChatHistoryItem } from '../../types/ChatHistoryItem';
 
 interface Props {
   idCardFlipped: boolean | undefined,
@@ -256,11 +257,28 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                     )
                     .then((response) => {
                       console.log("state.messageList in card",state.messageList)
-                      const chatHistory = response.data.chat_history;
+                      const chatHistory:ChatHistoryItem[] = response.data.chat_history;
+
                       console.log("chatHistory", chatHistory)
                       const message = response.data.message;
                       const uID = response.data.user_id;
                       const mID = response.data.model_id;
+
+                      // Add chat history to messageList
+                      chatHistory.map(chat => {
+                        const isUser:boolean = chat.is_user;
+                        const messageItem = {
+                          "text": chat.message,
+                          "id": mID,
+                          "sender": {
+                            "name": isUser ? state.curUserName : state.images[mID].name,
+                            "uid": uID,
+                            "avatar": isUser ? "https://data.cometchat.com/assets/images/avatars/ironman.png" : state.images[mID].src,
+                          }
+                        } as IMessage;
+                        action.updateMessageList(messageItem);
+                      })
+
                       const initialMessage =
                         {
                           "text": message,
