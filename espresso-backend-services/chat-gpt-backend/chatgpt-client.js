@@ -64,15 +64,14 @@ export async function init_conv(model_id) {
 }
 
 export async function send_message(msg, conv_id, last_msg_id) {
-  console.log(msg);
-  var count = ChatGPTClient.getTokenCountForMessages([`男朋友:${msg}`]);
+  var count = chatGptClient.getTokenCountForMessage(msg);
   if (count > MAX_PROMPT_TOKEN - 100) {
     return sendSplitMessage(msg, conv_id, last_msg_id);
   }
   return await chatGptClient.sendMessage(msg, { conversationId: conv_id, parentMessageId: last_msg_id });
 }
 
-// Resend the initial prompy to an exitsing conv
+// Resend the initial prompt to an exitsing conv
 export async function reinit_conv(conv_id, last_msg_id, model_id, chat_history=null) {
   // Fix the Invalid Encoding error handling.
   const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
@@ -80,12 +79,12 @@ export async function reinit_conv(conv_id, last_msg_id, model_id, chat_history=n
     var chat_history = await getChatHistoryByConvId(conv_id);
   }
   // TODO: add summary of the chat history if token is above the limit
-  var reinit_promot = text + "之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
-  return await send_message(reinit_promot, conv_id, last_msg_id);
+  var reinit_prompt = text + "之前的聊天记录如下：\n" + build_prompt_by_history(chat_history);
+  return await send_message(reinit_prompt, conv_id, last_msg_id);
 }
 
 function dfs_split_prompt(prompt, prompt_array) {
-  var token_count = ChatGPTClient.getTokenCountForMessages([prompt]);
+  var token_count = chatGptClient.getTokenCountForMessage(prompt);
   if (token_count <= MAX_PROMPT_TOKEN - 100) {
     prompt_array.push(prompt);
   } else {
@@ -107,11 +106,16 @@ function dfs_split_prompt(prompt, prompt_array) {
 
 async function sendSplitMessage(prompt, conv_id, last_msg_id) {
   var prompt_array = [];
-  dfs_split_prompt(`消息开始：${prompt}`, prompt_array);
+  dfs_split_prompt(`${prompt}`, prompt_array);
+  // Fix the prompt to let chatgpt better handling long message.
   var starting_prompt = `现在我有一条长消息分${prompt_array.length}次发给你。收到消息之后只需要回答：'收到'。最后我会发送'发送完毕，请回答。'，然后你再回答。`
   var response = await chatGptClient.sendMessage(starting_prompt, { conversationId: conv_id, parentMessageId: last_msg_id });
   for (var i = 0; i < prompt_array.length; i++) {
+    console.log("*********\n");
+    console.log(`第${i+1}条消息是：${prompt_array[i]}`);
     response = await chatGptClient.sendMessage(prompt_array[i], { conversationId: conv_id, parentMessageId: response.messageId });
+    console.log("*********\n");
+    console.log(`第${i+1}条消息的回复是：${response.response}`);
   }
   
   return await chatGptClient.sendMessage("发送完毕，请回答。", { conversationId: conv_id, parentMessageId: response.messageId });
