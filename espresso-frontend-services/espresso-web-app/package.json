@@ -23,7 +23,7 @@
     "@web3uikit/core": "^0.2.33",
     "@web3uikit/icons": "^0.2.30",
     "@web3uikit/web3": "^0.2.2",
-    "antd": "^5.2.3",
+    "antd": "^5.3.1",
     "boostrap": "^2.0.0",
     "buffer": "^6.0.3",
     "console-browserify": "^1.2.0",

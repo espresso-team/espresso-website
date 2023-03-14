@@ -245,7 +245,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
             }
 
             <ButtonList>
-              <Link to={"/chat"} className="nav-link">
+              <Link to={"/chat"}>
                 <Btn onClick={() => {
                   console.log("1state.messageList in card",state.messageList)
                   const res = axios
@@ -292,20 +292,12 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                       action.updateMessageList(initialMessage);
                     })
                     .catch((err) => console.log(err));
-                }}>开始聊天</Btn>
+                }}>
+                  开始聊天</Btn>
               </Link>
               <Btn onClick={() => {
                 action.randomPickImageId();
               }}>换人</Btn>
-
-              {/* <Btn onClick={() => {
-                // TBD: 生成我的提示词 避免翻转
-                setIsPromptOpen(!isPromptOpen);
-              }}>查看生成词</Btn> */}
-              {/* <XButton onClick={() => {
-                // Random pick another image
-                action.randomPickImageId();
-              }}>X</XButton> */}
             </ButtonList>
           </FrameFlipped>
         </Suspense>

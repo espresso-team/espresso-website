@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import Logo from './Logo'
-import Button from './Button'
 import { Link } from 'react-router-dom'
+import { Button, Modal } from 'antd';
+import { useState } from 'react';
 
 const Section = styled.section`
     padding: 20px;
@@ -92,18 +93,50 @@ const MenuItem = styled.li`
 var console = require("console-browserify")
 
 const Navbar = () => {
+    const [open, setOpen] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [modalText, setModalText] = useState('Content of the modal');
+
+
+    const showModal = () => {
+        setOpen(true);
+    };
+
+    const handleOk = () => {
+        setModalText('The modal will be closed after two seconds');
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setOpen(false);
+            setConfirmLoading(false);
+        }, 2000);
+    };
+
+    const handleCancel = () => {
+        console.log('Clicked cancel button');
+        setOpen(false);
+    };
     return (
         <Section>
             <Navigation>
                 <Logo />
                 <Menu>
                     <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
-                    <MenuItem><Link to={"/pk"} className="nav-link">PK</Link></MenuItem>
+                    <MenuItem><Link to={"/pk"} className="nav-link">匹配</Link></MenuItem>
                     <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
                 </Menu>
-                <Button text="登录" onclick={() => {
-                    console.log("登录注册")
-                }}/>
+                <Button type="primary" style={{ background: "black", color: "white" }} onClick={showModal}>
+                    登录
+                </Button>
+                <Modal
+                    centered
+                    title="Title"
+                    open={open}
+                    onOk={handleOk}
+                    confirmLoading={confirmLoading}
+                    onCancel={handleCancel}
+                >
+                    <p>{modalText}</p>
+                </Modal>
             </Navigation>
         </Section>
     )
