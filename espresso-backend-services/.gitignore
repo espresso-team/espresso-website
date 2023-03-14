@@ -5,3 +5,4 @@ __pycache__
 chat-gpt-backend/.env
 chat-gpt-backend/node_modules
 chat-gpt-backend/package-lock.json
+chat-gpt-backend/cache.json
