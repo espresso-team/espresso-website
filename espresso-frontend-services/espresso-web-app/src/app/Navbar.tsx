@@ -3,6 +3,7 @@ import Logo from './Logo'
 import { Link } from 'react-router-dom'
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
+import RegisterBlock from './RegisterBlock';
 
 const Section = styled.section`
     padding: 20px;
@@ -129,17 +130,23 @@ const Navbar = () => {
                 </Button>
                 <Modal
                     centered
-                    title="Title"
+                    title="注册或登录"
                     open={open}
-                    onOk={handleOk}
+                    footer={null}
                     confirmLoading={confirmLoading}
                     onCancel={handleCancel}
+                    /* 
+                    okText={"登录"}
+                    cancelText={"取消"}
+                    onOk={handleOk}
+                    okButtonProps={{style: {backgroundColor: "black"}}} */
                 >
-                    <p>{modalText}</p>
+                    <RegisterBlock goToRegister={()=>{}}/>
                 </Modal>
             </Navigation>
         </Section>
     )
 }
-
+                    /* 
+                    <p>{modalText}</p> */
 export default Navbar;
