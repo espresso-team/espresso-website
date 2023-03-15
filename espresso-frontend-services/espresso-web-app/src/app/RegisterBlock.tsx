@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input, message, Spin, Row, Col } from 'antd';
+import { Button, Form, Input, message, Spin, Row, Col, Dropdown, MenuProps, Space } from 'antd';
 import { useDispatch } from 'react-redux'
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 interface Func {
   (value: string): void
@@ -8,6 +9,18 @@ interface Func {
 interface Props {
   goToRegister: Func
 }
+const items: MenuProps['items'] = [
+  {
+    label: '中国 +86',
+    key: '1',
+    icon: <UserOutlined />,
+  },
+  {
+    label: '美国 +1',
+    key: '2',
+    icon: <UserOutlined />,
+  }
+];
 
 const RegisterBlock = (props: Props) => {
   const [form] = Form.useForm();
@@ -18,6 +31,26 @@ const RegisterBlock = (props: Props) => {
   let time = 60, timer: any
   const [codetext, setCodeText] = useState<any>('获取验证码')
 
+  const [country, setCountry] = useState<string>('中国 +86')
+
+
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    var console = require("console-browserify")
+    if (e.key == "2") {
+      setCountry("美国 +1")
+      console.log('美国号码');
+    }
+    else {
+      setCountry("中国 +86")
+      console.log('中国号码');
+    }
+    
+  };
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
 
   const onFinish = (values:any) => {
     const data = {
@@ -81,7 +114,17 @@ const RegisterBlock = (props: Props) => {
             label="手机号"
           >
             <Row gutter={8}>
-              <Col span={24}>
+              <Col span={7}>
+                  <Dropdown menu={menuProps}>
+                    <Button>
+                      <Space>
+                        {country}
+                        <DownOutlined />
+                      </Space>
+                    </Button>
+                  </Dropdown>
+                </Col>
+              <Col span={17}>
                 <Form.Item
                   noStyle
                   name="phone"
