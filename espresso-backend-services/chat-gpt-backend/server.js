@@ -93,9 +93,10 @@ app.post("/join-chat", async (req, res) => {
     // TODO: make insertChat and return a transaction
     await chat_client.reinit_conv(conv, existing_conv.last_msg_id, model_id, chat_history);
     await insertChat({conv_id: conv, message: return_mes, is_user: false});
+    // get the last 10 chat history
     res.json({ message: return_mes, status: "success",
                user_id: user_id, model_id: model_id, 
-               chat_history: chat_history});
+               chat_history: chat_history.slice(-10)});
     return;
   }
   // init a new converstation for a new user
