@@ -12,7 +12,7 @@ import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
 import cors from "cors";
 import { is_response_include_forbidden_words, return_postpone_words } from "./util.js";
-
+import { authRoutes } from "./routes/auth.route.js";
 
 const app = express();
 app.use(cors({
@@ -86,7 +86,6 @@ app.post("/join-chat", async (req, res) => {
     // find an existing conv
     // TODO: change the hard-coded response
     var conv = existing_conv.conv_id;
-    // TODO: return only X chat history
     var chat_history = await getChatHistoryByConvId(conv);
     // console.log(chat_history);
     const return_mes = "哼，现在才想起来找人家。你今天过得怎么样呀？";
@@ -164,6 +163,8 @@ app.post("/user-profile", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.use("/api/auth", authRoutes);
 
 // Start the server
 app.listen(port, () => {
