@@ -12,7 +12,7 @@ import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
 import cors from "cors";
 import { is_response_include_forbidden_words, return_postpone_words } from "./util.js";
-
+import { authRoutes } from "./routes/auth.route.js";
 
 const app = express();
 app.use(cors({
@@ -86,16 +86,16 @@ app.post("/join-chat", async (req, res) => {
     // find an existing conv
     // TODO: change the hard-coded response
     var conv = existing_conv.conv_id;
-    // TODO: return only X chat history
     var chat_history = await getChatHistoryByConvId(conv);
     // console.log(chat_history);
     const return_mes = "哼，现在才想起来找人家。你今天过得怎么样呀？";
     // TODO: make insertChat and return a transaction
     await chat_client.reinit_conv(conv, existing_conv.last_msg_id, model_id, chat_history);
     await insertChat({conv_id: conv, message: return_mes, is_user: false});
+    // get the last 10 chat history
     res.json({ message: return_mes, status: "success",
                user_id: user_id, model_id: model_id, 
-               chat_history: chat_history});
+               chat_history: chat_history.slice(-10)});
     return;
   }
   // init a new converstation for a new user
@@ -141,6 +141,16 @@ app.post("/model-profile", async (req, res) => {
   }
 });
 
+app.get("/user-profile/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  var user = await getUserByUserId(user_id);
+  if (user) {
+    res.json({ message: `user ${user.user_name} found!`, data: user, status: "success" });
+  } else {
+    res.status(404).json({ error: 'User not found!'});
+  }
+});
+
 // Route when creating a new user profile
 app.post("/user-profile", async (req, res) => {
   const user_id = req.body.user_id;
@@ -163,6 +173,8 @@ app.post("/user-profile", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.use("/api/auth", authRoutes);
 
 // Start the server
 app.listen(port, () => {
