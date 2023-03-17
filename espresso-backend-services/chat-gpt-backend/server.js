@@ -141,7 +141,7 @@ app.post("/model-profile", async (req, res) => {
   }
 });
 
-app.get("user-profile/:user_id", async (req, res) => {
+app.get("/user-profile/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
   var user = await getUserByUserId(user_id);
   if (user) {
