@@ -12,7 +12,7 @@ import { generateOTP, fast2sms } from "../utils/otp.util.js";
 export async function loginOrRegisterUser(req, res, next) {
     try {
         const { phone } = req.body;
-        const user = await findByPhone(phone);
+        var user = await findByPhone(phone);
         // register if a new user
         if (!user) {
             await createNewUser(phone, next);
@@ -52,7 +52,7 @@ export async function loginOrRegisterUser(req, res, next) {
         user.isAccountVerified = true;
         await user.save();
         // send otp to phone number
-        await fast2sms( `验证码是: ${otp}`, user.phone, next);
+        await fast2sms(otp, user.phone, next);
    } catch (error) {
      next(error);
    }
@@ -76,7 +76,7 @@ async function createNewUser(phone, next) {
     user.phoneOtp = otp;
     await user.save();
     // send otp to phone number
-    await fast2sms( `验证码是: ${otp}`, user.phone, next);
+    await fast2sms(otp, user.phone, next);
   } catch (error) {
     next(error);
   }
@@ -86,8 +86,8 @@ async function createNewUser(phone, next) {
 
 export async function verifyOTP(req, res, next) {
   try {
-    const { otp, userId } = req.body;
-    const user = await findById(userId);
+    const { otp, phone } = req.body;
+    const user = await findByPhone(phone);
     if (!user) {
       next({ status: 400, message: USER_NOT_FOUND_ERR });
       return;
