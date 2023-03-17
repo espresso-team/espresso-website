@@ -28,12 +28,14 @@ export function generateOTP(otp_length) {
   return OTP;
 }
 
-export async function fast2sms(message, contactNumber, next) {
+export async function fast2sms(code, contactNumber, next) {
+  var code_json = {"code":code};
   try {
     var params = {
-        "PhoneNumbers": contactNumber,//接收短信的手机号码
-        "SignName": message,//短信签名名称
-        "TemplateCode": "tmp" //短信模板CODE
+      "PhoneNumbers": contactNumber,
+      "TemplateCode": "SMS_154950909",
+      "SignName": "阿里云短信测试",
+      "TemplateParam": JSON.stringify(code_json)
     }
     client.request('SendSms', params, requestOption).then((result) => {
         console.log(JSON.stringify(result));
