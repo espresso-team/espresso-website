@@ -145,7 +145,7 @@ app.get("user-profile/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
   var user = await getUserByUserId(user_id);
   if (user) {
-    res.json({ message: `user ${user.user_name} found!`, status: "success" });
+    res.json({ message: `user ${user.user_name} found!`, data: user, status: "success" });
   } else {
     res.status(404).json({ error: 'User not found!'});
   }
