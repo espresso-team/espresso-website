@@ -1,6 +1,7 @@
 import { girls } from "../api/mocks/girls";
 import { ImageItem } from "../types/ImageItem";
 import { IMessage } from "../types/IMessage";
+import GenderType from "../types/GenderType"
 
 export const pkSystemState = {
     //isFlippedCardTwo: false,
@@ -13,6 +14,7 @@ export const pkSystemState = {
     curUserId: 0,
     curUserName: "LL",
     messageList: [] as IMessage[],
+    userGender: GenderType.UNKNOWN
 };
 
 export type PkSystemState = {
@@ -26,4 +28,5 @@ export type PkSystemState = {
     curUserId: number;
     curUserName: string;
     messageList: IMessage[];
+    userGender: GenderType;
 };

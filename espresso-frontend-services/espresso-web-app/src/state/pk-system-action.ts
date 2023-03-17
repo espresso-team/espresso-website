@@ -1,8 +1,14 @@
+import GenderType from "../types/GenderType";
 import { IMessage } from "../types/IMessage";
 import { randomIntBetweenZeroAndXButNotY } from "../util/randomIntBetweenZeroAndX";
 import { pkSystemApi } from "./pk-system-hook";
 var console = require("console-browserify")
 export const pkSystemAction = {
+    setGender:
+    (gender: GenderType) =>
+    ({ setState  }: pkSystemApi) => {
+        setState({ userGender: gender });
+    },
     handleFlipCardOne:
     () =>
     ({ getState, setState  }: pkSystemApi) => {

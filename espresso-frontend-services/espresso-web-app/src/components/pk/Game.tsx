@@ -5,6 +5,8 @@ import "@fontsource/zcool-kuaile"
 import { ImageCard } from './ImageCard';
 import Tooltip from 'rc-tooltip';
 import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
+import GenderType from '../../types/GenderType';
+import SelectGender from './SelectGender';
 
 interface Props {
   userId: string;
@@ -150,6 +152,11 @@ const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
   const images = state.images;
+  const [selectedGender, setSelectedGender] = useState<GenderType>(GenderType.BOYS);
+
+  const handleSelectGender = (gender: GenderType) => {
+    setSelectedGender(gender);
+  };
 
   useEffect(() => {
     // const res = axios
@@ -164,8 +171,9 @@ const Game: React.FC<Props> = () => {
   }, [state.curImageId]);
   return (
     <Section id="home">
+      {state.userGender == GenderType.UNKNOWN ? <SelectGender selectedGender={selectedGender} /> :
+      <>
       <Title>点击卡片试试</Title>
-
       <Container>
         {images && <ImageCard
           idCardFlipped={state.isFlippedCardOne}
@@ -173,16 +181,8 @@ const Game: React.FC<Props> = () => {
           imgItem={images[state.curImageId]}
         />}
       </Container>
-      <div>
-      {/* <AnimatedHeart /> */}
-
-        </div>
-
-      
-      
-
-      
-
+      </>
+      }
     </Section>
   )
 }
