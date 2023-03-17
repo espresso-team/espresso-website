@@ -141,6 +141,16 @@ app.post("/model-profile", async (req, res) => {
   }
 });
 
+app.get("user-profile/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  var user = await getUserByUserId(user_id);
+  if (user) {
+    res.json({ message: `user ${user.user_name} found!`, status: "success" });
+  } else {
+    res.status(404).json({ error: 'User not found!'});
+  }
+});
+
 // Route when creating a new user profile
 app.post("/user-profile", async (req, res) => {
   const user_id = req.body.user_id;
