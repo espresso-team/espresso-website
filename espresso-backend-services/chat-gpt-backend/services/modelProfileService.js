@@ -10,3 +10,10 @@ export async function getModelByModelId(model_id) {
 export async function deleteModel(model) {
     return await AImodelModel.findOneAndDelete(model);
 };
+
+export async function getModelsByModelType(model_type) {
+    if (model_type == "all") {  // return all models
+        return await AImodelModel.find({});
+    }
+    return await AImodelModel.find({model_type: model_type});
+}
