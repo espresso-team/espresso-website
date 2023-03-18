@@ -133,6 +133,7 @@ app.get("/model-profile", async (req, res) => {
 app.post("/model-profile", async (req, res) => {
   const model_id = req.body.model_id;
   const model_name = req.body.model_name;
+  const model_type = req.body.model_type;
   const model_metadata = req.body.model_metadata;
   const model = {
     model_id: model_id,
