@@ -138,6 +138,7 @@ app.post("/model-profile", async (req, res) => {
   const model = {
     model_id: model_id,
     model_name: model_name,
+    model_type: model_type,
     model_metadata: model_metadata
   }
   var existing_model = await getModelByModelId(model_id);
