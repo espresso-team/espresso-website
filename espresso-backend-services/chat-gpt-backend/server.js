@@ -121,16 +121,9 @@ app.post("/join-chat", async (req, res) => {
 // Route when fetching all model profile
 app.get("/model-profile", async (req, res) => {
   const gender = req.query.gender;
-  var model_type = 'all';
-
-  if (gender == 'W') {
-    model_type = 'M';
-  } else if (gender == 'M') {
-    model_type = 'W';
-  }
 
   try {
-    var models = await getModelsByModelType(model_type);
+    var models = await getModelsByModelType(gender);
     res.json({ data: models, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
