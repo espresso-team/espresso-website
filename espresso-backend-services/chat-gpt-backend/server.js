@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import ChatClient from "./chatgpt-client.js";
 import { createConversation, getConv, updateConv, deleteConv } from "./services/conversationService.js";
 import { insertUser, getUserByUserId} from "./services/userProfileService.js";
-import { insertModel, getModelByModelId } from "./services/modelProfileService.js";
+import { insertModel, getModelByModelId, getModelsByModelType } from "./services/modelProfileService.js";
 import { insertChat, getChatHistoryByConvId } from "./services/chatHistoryService.js";
 import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
@@ -118,14 +118,40 @@ app.post("/join-chat", async (req, res) => {
   }
 });
 
+// Route when fetching all model profile
+app.get("/model-profile", async (req, res) => {
+  const user_id = req.body.user_id;
+  const gender = req.body.gender;
+  var model_type;
+  switch (gender) {
+    case 'W':
+      model_type = 'M';
+      break;
+    case 'M':
+      model_type = 'W';
+      break;
+    default:
+      model_type = 'all';
+  }
+
+  try {
+    var models = await getModelsByModelType(model_type);
+    res.json({ data: models, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+});
 // Route when creating a new model profile
 app.post("/model-profile", async (req, res) => {
   const model_id = req.body.model_id;
   const model_name = req.body.model_name;
+  const model_type = req.body.model_type;
   const model_metadata = req.body.model_metadata;
   const model = {
     model_id: model_id,
     model_name: model_name,
+    model_type: model_type,
     model_metadata: model_metadata
   }
   var existing_model = await getModelByModelId(model_id);

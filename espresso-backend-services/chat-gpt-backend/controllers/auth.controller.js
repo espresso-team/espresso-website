@@ -40,7 +40,7 @@ export async function loginOrRegisterUser(req, res, next) {
 
         res.status(201).json({
             type: "success",
-            message: "验证码以发送，请查收。",
+            message: "验证码已发送，请查收。",
             data: {
             userId: user._id,
             },

@@ -4,6 +4,7 @@ const modelProfileSchema = new Schema({
   model_id: String,
   model_name: String,
   model_metadata: Object,
+  model_type: String,
   createdAt: {
     type: Date,
     default: Date.now,
