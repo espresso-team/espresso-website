@@ -120,18 +120,13 @@ app.post("/join-chat", async (req, res) => {
 
 // Route when fetching all model profile
 app.get("/model-profile", async (req, res) => {
-  const user_id = req.body.user_id;
-  const gender = req.body.gender;
-  var model_type;
-  switch (gender) {
-    case 'W':
-      model_type = 'M';
-      break;
-    case 'M':
-      model_type = 'W';
-      break;
-    default:
-      model_type = 'all';
+  const gender = req.query.gender;
+  var model_type = 'all';
+
+  if (gender == 'W') {
+    model_type = 'M';
+  } else if (gender == 'M') {
+    model_type = 'W';
   }
 
   try {
