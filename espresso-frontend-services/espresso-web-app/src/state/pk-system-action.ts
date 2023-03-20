@@ -4,9 +4,28 @@ import { randomIntBetweenZeroAndXButNotY } from "../util/randomIntBetweenZeroAnd
 import { pkSystemApi } from "./pk-system-hook";
 var console = require("console-browserify")
 export const pkSystemAction = {
+    setUserName:
+    (uName: string) =>
+    ({ setState  }: pkSystemApi) => {
+        console.log("set user name: ", uName)
+        setState({ curUserName: uName });
+    },
+    setUserToken:
+    (uToken: string) =>
+    ({ setState  }: pkSystemApi) => {
+        console.log("set user Token: ", uToken)
+        setState({ userToken: uToken });
+    },
+    setUserId:
+    (uId: string) =>
+    ({ setState  }: pkSystemApi) => {
+        console.log("set userId: ", uId)
+        setState({ userId: uId });
+    },
     setGender:
     (gender: GenderType) =>
     ({ setState  }: pkSystemApi) => {
+        console.log("set gender: ", gender)
         setState({ userGender: gender });
     },
     handleFlipCardOne:

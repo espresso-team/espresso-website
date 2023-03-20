@@ -6,7 +6,8 @@ import { ImageCard } from './ImageCard';
 import Tooltip from 'rc-tooltip';
 import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
 import GenderType from '../../types/GenderType';
-import SelectGender from './SelectGender';
+import { If } from '../../app/If';
+import GenderSelector from './GenderSelector';
 
 interface Props {
   userId: string;
@@ -152,11 +153,6 @@ const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
   const images = state.images;
-  const [selectedGender, setSelectedGender] = useState<GenderType>(GenderType.BOYS);
-
-  const handleSelectGender = (gender: GenderType) => {
-    setSelectedGender(gender);
-  };
 
   useEffect(() => {
     // const res = axios
@@ -171,18 +167,19 @@ const Game: React.FC<Props> = () => {
   }, [state.curImageId]);
   return (
     <Section id="home">
-      {state.userGender == GenderType.UNKNOWN ? <SelectGender selectedGender={selectedGender} /> :
-      <>
-      <Title>点击卡片试试</Title>
+      <Title>{state.userGender === GenderType.UNKNOWN ? '请选择你的性别' : '点击卡片试试'}</Title>
       <Container>
-        {images && <ImageCard
-          idCardFlipped={state.isFlippedCardOne}
-          imgOnClick={action.handleFlipCardOne}
-          imgItem={images[state.curImageId]}
-        />}
+        <If condition={state.userGender === GenderType.UNKNOWN}>
+          <GenderSelector />
+        </If>
+        <If condition={state.userGender !== GenderType.UNKNOWN}>
+          {images && <ImageCard
+            idCardFlipped={state.isFlippedCardOne}
+            imgOnClick={action.handleFlipCardOne}
+            imgItem={images[state.curImageId]}
+          />}
+        </If>
       </Container>
-      </>
-      }
     </Section>
   )
 }

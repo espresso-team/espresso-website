@@ -1,7 +1,8 @@
 enum GenderType {
-    BOYS = "boys",
-    GIRLS = "girls",
+    MALE = "male",
+    FAMALE = "famale",
     UNKNOWN = "unknown",
+    OTHER = "other"
 }
 
 export default GenderType;

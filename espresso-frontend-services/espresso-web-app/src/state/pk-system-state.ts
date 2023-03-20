@@ -12,9 +12,11 @@ export const pkSystemState = {
     curImageId: 0,
     imageListLength: girls.length,
     curUserId: 0,
-    curUserName: "LL",
+    curUserName: "User",
     messageList: [] as IMessage[],
-    userGender: GenderType.UNKNOWN
+    userGender: GenderType.UNKNOWN,
+    userId: "unknown",
+    userToken: "unknown"
 };
 
 export type PkSystemState = {
@@ -29,4 +31,6 @@ export type PkSystemState = {
     curUserName: string;
     messageList: IMessage[];
     userGender: GenderType;
+    userId: string;
+    userToken: string;
 };

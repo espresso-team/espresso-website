@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
 import RegisterBlock from './RegisterBlock';
-
+import axios from 'axios';
+var console = require("console-browserify")
 const Section = styled.section`
     padding: 20px;
     width: 95vw;
@@ -135,18 +136,18 @@ const Navbar = () => {
                     footer={null}
                     confirmLoading={confirmLoading}
                     onCancel={handleCancel}
-                    /* 
-                    okText={"登录"}
-                    cancelText={"取消"}
-                    onOk={handleOk}
-                    okButtonProps={{style: {backgroundColor: "black"}}} */
+                /* 
+                okText={"登录"}
+                cancelText={"取消"}
+                onOk={handleOk}
+                okButtonProps={{style: {backgroundColor: "black"}}} */
                 >
-                    <RegisterBlock goToRegister={()=>{}}/>
+                    <RegisterBlock  />
                 </Modal>
             </Navigation>
         </Section>
     )
 }
-                    /* 
-                    <p>{modalText}</p> */
+/* 
+<p>{modalText}</p> */
 export default Navbar;
