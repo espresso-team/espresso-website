@@ -1,5 +1,8 @@
 import Core from '@alicloud/pop-core';
 import dotenv from 'dotenv';
+import axios from 'axios';
+import qs from 'querystring';
+
 dotenv.config();
 var client = new Core({
     accessKeyId: process.env.ACCESS_KEY_ID,
@@ -9,12 +12,18 @@ var client = new Core({
     apiVersion: '2017-05-25'
   });
 
-
-
 var requestOption = {
     method: 'POST'
 };
 
+var config = {
+  method: 'post',
+  url: 'https://dfsns.market.alicloudapi.com/data/send_sms',
+  headers: {
+    'Authorization': `APPCODE ${process.env.APP_CODE}`,
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+};
 
 
 export function generateOTP(otp_length) {
@@ -29,17 +38,18 @@ export function generateOTP(otp_length) {
 }
 
 export async function fast2sms(code, contactNumber, next) {
-  var code_json = {"code":code};
   try {
-    var params = {
-      "PhoneNumbers": contactNumber,
-      "TemplateCode": "SMS_154950909",
-      "SignName": "阿里云短信测试",
-      "TemplateParam": JSON.stringify(code_json)
-    }
-    client.request('SendSms', params, requestOption).then((result) => {
-        console.log(JSON.stringify(result));
-    })
+    var data = qs.stringify({
+      content: `code:${code}`,
+      phone_number: contactNumber,
+      template_id: 'CST_ptdie100'
+    });
+    config.data = data;
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    });
   } catch (error) {
     next(error);
   }
