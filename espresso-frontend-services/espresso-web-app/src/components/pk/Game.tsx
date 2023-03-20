@@ -152,18 +152,12 @@ const AnimatedHeart = styled(HeartButton)`
 const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
-  const images = state.images;
+  //const images = state.images;
+  const models = state.modelArrays;
+  if(models[0])
+  console.log("Game models", models, "Game models metadata", models[0].model_metadata)
 
   useEffect(() => {
-    // const res = axios
-    //   .get(`https://lexica.art/api/v1/search?q=${state.searchQuery}`)
-    //   .then((response) => {
-    //     setImages(response.data.images);
-    //   })
-    //   .catch((err) => console.log(err));
-
-    // // update index
-    // setIndex(randomIntBetweenOneAndFive());
   }, [state.curImageId]);
   return (
     <Section id="home">
@@ -173,10 +167,10 @@ const Game: React.FC<Props> = () => {
           <GenderSelector />
         </If>
         <If condition={state.userGender !== GenderType.UNKNOWN}>
-          {images && <ImageCard
+          {models[0] && <ImageCard
             idCardFlipped={state.isFlippedCardOne}
             imgOnClick={action.handleFlipCardOne}
-            imgItem={images[state.curImageId]}
+            imgItem={models[state.curImageId]}
           />}
         </If>
       </Container>

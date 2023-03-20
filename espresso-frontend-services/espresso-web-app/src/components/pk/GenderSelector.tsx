@@ -73,66 +73,66 @@ const SubmitButton = styled.button`
 `;
 
 const GenderSelector: React.FC = () => {
-    const [selectedGender, setSelectedGender] = useState<GenderType | null>(null);
-    const [nickname, setNickname] = useState<string>('');
-    const [state, action] = usePkSystemHook();
+  const [selectedGender, setSelectedGender] = useState<GenderType | null>(null);
+  const [nickname, setNickname] = useState<string>('');
+  const [state, action] = usePkSystemHook();
 
-    const handleGenderClick = (gender: GenderType) => {
-        setSelectedGender(gender);
-    };
+  const handleGenderClick = (gender: GenderType) => {
+    setSelectedGender(gender);
+  };
 
-    const handleSubmit = () => {
-        if (!selectedGender || !nickname) {
-            message.error('请选择性别并输入昵称');
-        } else {
-            // set userName and Gender to state
-            action.setUserName(nickname);
-            action.setGender(selectedGender);
-            // Fetch model-profile
-            
-        }
-    };
+  const handleSubmit = async () => {
+    if (!selectedGender || !nickname) {
+      message.error('请选择性别并输入昵称');
+    } else {
+      // set userName and Gender to state
+      action.setUserName(nickname);
+      action.setGender(selectedGender);
+      // Fetch model-profile
+      action.fetchModelProfile(selectedGender);
+    }
+  };
 
-    return (
-        <Container>
-            <FlexContainer>
-                <div>
-                    <GenderButton
-                        selected={selectedGender === GenderType.MALE}
-                        onClick={() => handleGenderClick(GenderType.MALE)}
-                    >
-                        ♂
-                    </GenderButton>
-                    <Label>男</Label>
-                </div>
-                <div>
-                    <GenderButton
-                        selected={selectedGender === GenderType.FAMALE}
-                        onClick={() => handleGenderClick(GenderType.FAMALE)}
-                    >
-                        ♀
-                    </GenderButton>
-                    <Label>女</Label>
-                </div>
-                <div>
-                    <GenderButton
-                        selected={selectedGender === GenderType.OTHER}
-                        onClick={() => handleGenderClick(GenderType.OTHER)}
-                    >
-                        ⚧
-                    </GenderButton>
-                    <Label>其他</Label>
-                </div>
-            </FlexContainer>
-            <NicknameInput
-                type="text"
-                placeholder="请输入昵称"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-            />
-            <SubmitButton onClick={handleSubmit}>开始匹配</SubmitButton>
-        </Container>
-    );
+  return (
+    <Container>
+      <FlexContainer>
+        <div>
+          <GenderButton
+            selected={selectedGender === GenderType.MALE}
+            onClick={() => handleGenderClick(GenderType.MALE)}
+          >
+            ♂
+          </GenderButton>
+          <Label>男</Label>
+        </div>
+        <div>
+          <GenderButton
+            selected={selectedGender === GenderType.FAMALE}
+            onClick={() => handleGenderClick(GenderType.FAMALE)}
+          >
+            ♀
+          </GenderButton>
+          <Label>女</Label>
+        </div>
+        <div>
+          <GenderButton
+            selected={selectedGender === GenderType.OTHER}
+            onClick={() => handleGenderClick(GenderType.OTHER)}
+          >
+            ⚧
+          </GenderButton>
+          <Label>其他</Label>
+        </div>
+      </FlexContainer>
+      <NicknameInput
+        type="text"
+        placeholder="请输入昵称"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+      />
+      <SubmitButton onClick={handleSubmit}>开始匹配</SubmitButton>
+    </Container>
+  );
 };
 
 export default GenderSelector;

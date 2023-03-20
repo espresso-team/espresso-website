@@ -11,11 +11,12 @@ import TinderCard from 'react-tinder-card'
 import axios from 'axios';
 import { IMessage } from '../../types/IMessage';
 import { ChatHistoryItem } from '../../types/ChatHistoryItem';
+import { Model } from '../../types/Model';
 
 interface Props {
   idCardFlipped: boolean | undefined,
   imgOnClick: () => void,
-  imgItem: ImageItem,
+  imgItem: Model,
 }
 const onSwipe = (direction: any) => {
   console.log('You swiped: ' + direction)
@@ -208,17 +209,21 @@ const XButton = styled.button`
 
 var console = require("console-browserify")
 export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
+  console.log("ImageCard imgItem", imgItem);
   const [state, action] = usePkSystemHook();
   const [isPromptOpen, setIsPromptOpen] = useState(false);
-  const imgPrompt = imgItem.prompt;
-  const imgId = imgItem.id;
-  const imgSrc = imgItem.src;
-  const imgName = imgItem.name;
-  const imgAge = imgItem.age;
-  const imgEducaton = imgItem.education;
-  const imgFigure = imgItem.figure;
-  const imgPersonality = imgItem.personality;
-  const imgHobby = imgItem.hobby;
+  const imgPrompt = "TBD";
+  const imgId = imgItem.model_id;
+  const imgSrc = imgItem.model_metadata.头像地址src;
+  const imgName = imgItem.model_name;
+  const imgAge = imgItem.model_metadata.年龄;
+  const imgEducaton = imgItem.model_metadata.职业;
+  const imgFigure = imgItem.model_metadata.身材;
+  const imgPersonality = imgItem.model_metadata.性格;
+  const imgHobby = imgItem.model_metadata.爱好;
+  const imgCharacter = imgItem.model_metadata.角色;
+  const imgRelationship = imgItem.model_metadata.和我的关系;
+  const imgOccupation = imgItem.model_metadata.职业;
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
       <Box>
@@ -235,24 +240,28 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                 <PromptText>提示词: {imgPrompt}</PromptText>
                 :
                 <ImgInfoSection>
+                  <ImgInfoText>角色: {imgCharacter}</ImgInfoText>
+                  <ImgInfoText>和我的关系: {imgRelationship}</ImgInfoText>
                   <ImgInfoText>姓名: {imgName}</ImgInfoText>
                   <ImgInfoText>年龄: {imgAge}</ImgInfoText>
                   <ImgInfoText>身材: {imgFigure}</ImgInfoText>
                   <ImgInfoText>学历: {imgEducaton}</ImgInfoText>
                   <ImgInfoText>性格: {imgPersonality}</ImgInfoText>
                   <ImgInfoText>爱好: {imgHobby}</ImgInfoText>
+                  <ImgInfoText>职业: {imgOccupation}</ImgInfoText>
                 </ImgInfoSection>
             }
 
             <ButtonList>
               <Link to={"/chat"}>
                 <Btn onClick={() => {
-                  console.log("1state.messageList in card",state.messageList)
+                  console.log("Start chatting, user id", state.userId, "model_id", imgId)
+                  
                   const res = axios
                     .post(`http://localhost:3000/join-chat`,
                       {
-                        "user_id": state.curUserId.toString(),
-                        "model_id": state.curImageId.toString()
+                        "user_id": state.userId,
+                        "model_id": imgId
                       }
                     )
                     .then((response) => {

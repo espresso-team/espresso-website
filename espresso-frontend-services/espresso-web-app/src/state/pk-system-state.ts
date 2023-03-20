@@ -2,6 +2,7 @@ import { girls } from "../api/mocks/girls";
 import { ImageItem } from "../types/ImageItem";
 import { IMessage } from "../types/IMessage";
 import GenderType from "../types/GenderType"
+import { Model } from "../types/Model";
 
 export const pkSystemState = {
     //isFlippedCardTwo: false,
@@ -16,7 +17,8 @@ export const pkSystemState = {
     messageList: [] as IMessage[],
     userGender: GenderType.UNKNOWN,
     userId: "unknown",
-    userToken: "unknown"
+    userToken: "unknown",
+    modelArrays: [] as Model[],
 };
 
 export type PkSystemState = {
@@ -33,4 +35,5 @@ export type PkSystemState = {
     userGender: GenderType;
     userId: string;
     userToken: string;
+    modelArrays: Model[];
 };
