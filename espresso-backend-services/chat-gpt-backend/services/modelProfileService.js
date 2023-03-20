@@ -12,7 +12,7 @@ export async function deleteModel(model) {
 };
 
 export async function getModelsByModelType(model_type) {
-    if (model_type == "all") {  // return all models
+    if (model_type == "O") {  // return all models
         return await AImodelModel.find({});
     }
     return await AImodelModel.find({model_type: model_type});
