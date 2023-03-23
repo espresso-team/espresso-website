@@ -90,6 +90,8 @@ const GenderSelector: React.FC = () => {
       action.setGender(selectedGender);
       // Fetch model-profile
       action.fetchModelProfile(selectedGender);
+      // Post user profile
+      action.fetchUserProfile(selectedGender, nickname);
     }
   };
 

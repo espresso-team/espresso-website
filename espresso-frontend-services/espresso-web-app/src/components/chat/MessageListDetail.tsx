@@ -37,11 +37,11 @@ export const MessageListDetail = ({ messages, user, pageRef }: Props) => {
   }, [state.messageList]);
   return (
     <div className='chatSection'>
-      {messages.map(message => {
+      {messages.map((message, index) => {
         return (
           <div
             ref={pageRef}
-            key={message.id}
+            key={`${message.id}-${index}`}
             className='chat-bubble-row'
             style={{ flexDirection: isUser(user, message) ? 'row-reverse' : 'row' }}>
             <img

@@ -213,6 +213,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const [state, action] = usePkSystemHook();
   const [isPromptOpen, setIsPromptOpen] = useState(false);
   const imgPrompt = "TBD";
+  const modelId = imgItem._id;
   const imgId = imgItem.model_id;
   const imgSrc = imgItem.model_metadata.头像地址src;
   const imgName = imgItem.model_name;
@@ -256,7 +257,8 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
               <Link to={"/chat"}>
                 <Btn onClick={() => {
                   console.log("Start chatting, user id", state.userId, "model_id", imgId)
-                  
+                  // update curImage id in state since we will use it on send message post, and convert it to string
+                  state.curImageId = +imgId;
                   const res = axios
                     .post(`http://localhost:3000/join-chat`,
                       {
@@ -266,8 +268,10 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                     )
                     .then((response) => {
                       console.log("state.messageList in card",state.messageList)
-                      const chatHistory:ChatHistoryItem[] = response.data.chat_history;
-
+                      let chatHistory:ChatHistoryItem[] = [];
+                      if(response.data.chat_history) {
+                       chatHistory = response.data.chat_history;
+                      }
                       console.log("chatHistory", chatHistory)
                       const message = response.data.message;
                       const uID = response.data.user_id;
@@ -293,9 +297,9 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                           "text": message,
                           "id": mID,
                           "sender": {
-                            "name": state.images[mID].name,
+                            "name": imgName,
                             "uid": uID,
-                            "avatar": state.images[mID].src,
+                            "avatar": imgSrc,
                           }
                         } as IMessage;
                       action.updateMessageList(initialMessage);

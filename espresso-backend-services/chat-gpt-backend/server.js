@@ -75,6 +75,7 @@ app.post("/join-chat", async (req, res) => {
   const model_id = req.body.model_id;
   var user = await getUserByUserId(user_id);
   var model = await getModelByModelId(model_id);
+  console.log("debug model-id: ", model_id, "model:", model);
   var chat_client = new ChatClient(user.user_name, model.model_name);
   // check if user has an existing conv
   var cond = {

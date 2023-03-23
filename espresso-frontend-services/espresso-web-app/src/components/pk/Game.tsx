@@ -154,9 +154,7 @@ const Game: React.FC<Props> = () => {
   const [state, action] = usePkSystemHook();
   //const images = state.images;
   const models = state.modelArrays;
-  if(models[0])
-  console.log("Game models", models, "Game models metadata", models[0].model_metadata)
-
+  
   useEffect(() => {
   }, [state.curImageId]);
   return (

@@ -5,14 +5,10 @@ import GenderType from "../types/GenderType"
 import { Model } from "../types/Model";
 
 export const pkSystemState = {
-    //isFlippedCardTwo: false,
-    //searchQuery: 'ikun 4k',
-    //rightImageId: 1,
     isFlippedCardOne: false,
     images: girls,
     curImageId: 0,
     imageListLength: girls.length,
-    curUserId: 0,
     curUserName: "User",
     messageList: [] as IMessage[],
     userGender: GenderType.UNKNOWN,
@@ -29,7 +25,6 @@ export type PkSystemState = {
     images: Array<ImageItem>;
     curImageId: number;
     imageListLength: number;
-    curUserId: number;
     curUserName: string;
     messageList: IMessage[];
     userGender: GenderType;

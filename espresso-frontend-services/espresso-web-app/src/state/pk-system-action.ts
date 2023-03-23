@@ -7,8 +7,42 @@ import { genderToRequiredGender } from "../util/genderToRequiredGender";
 import { HttpStatus } from "../types/HttpStatus";
 import { message } from "antd";
 import { Model } from "../types/Model";
+import { createRandomUserId } from "../util/createRandomUserId";
 var console = require("console-browserify")
 export const pkSystemAction = {
+    fetchUserProfile: (gender: GenderType, userName: string) =>
+    async ({ setState, getState }: pkSystemApi) => {
+        // if user id still unknow, will assgin a random id to this user
+        let curUserId = getState().userId;
+        if(curUserId === "unknown") {
+            curUserId = createRandomUserId();
+            setState({userId: curUserId});
+        }
+        console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
+        await axios
+            .post(`http://localhost:3000/user-profile`,
+                {
+                    "user_id" : curUserId,
+                    "user_name" : userName,
+                    "gender" : gender
+                })
+            .then((response) => {
+                console.log("fetchModelProfile", response)
+                if(response.status === HttpStatus.OK) {
+                    console.log("fetchModelProfile message", response.data.message)
+                }
+                else {
+                    message.error("页面错误，请刷新重试")
+                    console.log("fetchUserProfile response failed", response)
+                }
+                
+            })
+            .catch((err) => {
+                message.error("页面错误，请刷新重试");
+                console.log(err)
+            } );
+
+    },
     fetchModelProfile:
         (gender: GenderType) =>
             async ({ setState, getState }: pkSystemApi) => {

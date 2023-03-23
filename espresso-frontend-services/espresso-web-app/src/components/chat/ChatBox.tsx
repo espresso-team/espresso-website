@@ -83,7 +83,7 @@ const ChatBox: React.FC<Props> = () => {
             "id": state.curImageId.toString(),
             "sender": {
               "name": state.curUserName,
-              "uid": state.curUserId.toString(),
+              "uid": state.userId,
               "avatar": "https://data.cometchat.com/assets/images/avatars/ironman.png",
             }
           } as IMessage;
@@ -93,7 +93,7 @@ const ChatBox: React.FC<Props> = () => {
           const res = axios
             .post(`http://localhost:3000/send-message`, 
             {
-              "user_id": state.curUserId.toString(),
+              "user_id": state.userId,
               "model_id": state.curImageId.toString(),
               "message": mes
               })

@@ -5,16 +5,12 @@ import { ThemeProvider } from "styled-components";
 import Navbar from "./app/Navbar";
 import GlobalStyles from "./app/styles/GlobalStyles";
 import { light } from "./app/styles/Themes";
-import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 
 import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
-
-// This is the chainId will work on.
-const activeChainId = ChainId.Goerli;
 
 type Props = {};
 
@@ -30,7 +26,6 @@ class App extends Component<Props, State> {
   render() {
     return (
       <div>
-        <ThirdwebProvider desiredChainId={activeChainId}>
           <GlobalStyles />
           <ThemeProvider theme={light}>
             <Navbar/>
@@ -42,7 +37,6 @@ class App extends Component<Props, State> {
               <Route path="/chat" element={<Chat />}/>
             </Routes>
           </ThemeProvider>
-        </ThirdwebProvider>
       </div>
     );
   }
