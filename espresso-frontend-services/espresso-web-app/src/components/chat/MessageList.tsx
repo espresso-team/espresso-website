@@ -18,8 +18,8 @@ interface Props {
 }
 
 export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
+    const [state] = usePkSystemHook();
     var console = require("console-browserify")
-    console.log("MessageList - messages",messages)
     return (
         <>
             <If condition={!isLoading && !messages.length}>
@@ -42,7 +42,7 @@ export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
             <If condition={isLoading}>
                 <div className='loading-messages-container'>
                     <MDSpinner size={100} />
-                    <span className='loading-text'>我马上回来~</span>
+                    <span className='loading-text'>您的{state.curModelName}正在赶来的路上(*^▽^*)</span>
                 </div>
             </If>
             

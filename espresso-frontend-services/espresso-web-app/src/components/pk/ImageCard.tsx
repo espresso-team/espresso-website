@@ -241,9 +241,9 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                 <PromptText>提示词: {imgPrompt}</PromptText>
                 :
                 <ImgInfoSection>
+                  <ImgInfoText>姓名: {imgName}</ImgInfoText>
                   <ImgInfoText>角色: {imgCharacter}</ImgInfoText>
                   <ImgInfoText>和我的关系: {imgRelationship}</ImgInfoText>
-                  <ImgInfoText>姓名: {imgName}</ImgInfoText>
                   <ImgInfoText>年龄: {imgAge}</ImgInfoText>
                   <ImgInfoText>身材: {imgFigure}</ImgInfoText>
                   <ImgInfoText>学历: {imgEducaton}</ImgInfoText>
@@ -259,7 +259,9 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                   console.log("Start chatting, user id", state.userId, "model_id", imgId)
                   // update curImage id in state since we will use it on send message post, and convert it to string
                   state.curImageId = +imgId;
-                  const res = axios
+                  // update curModel name
+                  state.curModelName = imgName;
+                  axios
                     .post(`http://localhost:3000/join-chat`,
                       {
                         "user_id": state.userId,
@@ -267,7 +269,6 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                       }
                     )
                     .then((response) => {
-                      console.log("state.messageList in card",state.messageList)
                       let chatHistory:ChatHistoryItem[] = [];
                       if(response.data.chat_history) {
                        chatHistory = response.data.chat_history;

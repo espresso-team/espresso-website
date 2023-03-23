@@ -15,6 +15,7 @@ export const pkSystemState = {
     userId: "unknown",
     userToken: "unknown",
     modelArrays: [] as Model[],
+    curModelName: "虚拟伴侣"
 };
 
 export type PkSystemState = {
@@ -31,4 +32,5 @@ export type PkSystemState = {
     userId: string;
     userToken: string;
     modelArrays: Model[];
+    curModelName: string;
 };
