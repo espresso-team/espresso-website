@@ -59,7 +59,7 @@ export default class ChatClient {
   // Initialize first conv for a new user
   async init_conv(model_id) {
     try {
-      const text = fs.readFileSync(`espresso-backend-services/chat-gpt-backend/initial-prompt-${model_id}.txt`, 'utf8'); 
+      const text = fs.readFileSync(`/opt/render/project/src/espresso-backend-services/chat-gpt-backend/initial-prompt-${model_id}.txt`, 'utf8'); 
       return await this.client.sendMessage(text);
     } catch (err) {
       console.error("Error initiating conversation:", err);
@@ -78,7 +78,7 @@ export default class ChatClient {
   // Resend the initial prompt to an exitsing conv
   async reinit_conv(conv_id, last_msg_id, model_id, chat_history=null) {
     // Fix the Invalid Encoding error handling.
-    const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
+    const text = fs.readFileSync(`/opt/render/project/src/espresso-backend-services/chat-gpt-backend/initial-prompt-${model_id}.txt`, 'utf8'); 
     if (chat_history == null) {
       var chat_history = await getChatHistoryByConvId(conv_id);
     }
