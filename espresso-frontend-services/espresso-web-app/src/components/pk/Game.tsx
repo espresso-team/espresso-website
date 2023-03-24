@@ -152,7 +152,6 @@ const AnimatedHeart = styled(HeartButton)`
 const Game: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
-  //const images = state.images;
   const models = state.modelArrays;
   
   useEffect(() => {

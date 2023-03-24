@@ -8,14 +8,14 @@ export const pkSystemState = {
     isFlippedCardOne: false,
     images: girls,
     curImageId: 0,
-    imageListLength: girls.length,
     curUserName: "User",
     messageList: [] as IMessage[],
     userGender: GenderType.UNKNOWN,
     userId: "unknown",
     userToken: "unknown",
     modelArrays: [] as Model[],
-    curModelName: "虚拟伴侣"
+    curModelName: "虚拟伴侣",
+    curModelSrc: "",
 };
 
 export type PkSystemState = {
@@ -25,7 +25,6 @@ export type PkSystemState = {
     isFlippedCardOne: boolean | undefined;
     images: Array<ImageItem>;
     curImageId: number;
-    imageListLength: number;
     curUserName: string;
     messageList: IMessage[];
     userGender: GenderType;
@@ -33,4 +32,5 @@ export type PkSystemState = {
     userToken: string;
     modelArrays: Model[];
     curModelName: string;
+    curModelSrc: string;
 };

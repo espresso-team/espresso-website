@@ -105,7 +105,6 @@ const AnimatedHeart = styled(HeartButton)`
 const Gender: React.FC<Props> = () => {
   // import hooks
   const [state, action] = usePkSystemHook();
-  const images = state.images;
 
   useEffect(() => {
   }, [state.curImageId]);

@@ -128,7 +128,7 @@ const GenderSelector: React.FC = () => {
       </FlexContainer>
       <NicknameInput
         type="text"
-        placeholder="请输入昵称"
+        placeholder="请输入你的昵称"
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
       />

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
 import { IMessage } from '../../types/IMessage';
 import { User } from '../../types/User';
@@ -55,7 +54,7 @@ const ChatBox: React.FC<Props> = () => {
 
           action.updateMessageList(newUserMessage);
           // send post request
-          const res = axios
+          axios
             .post(`http://localhost:3000/send-message`, 
             {
               "user_id": state.userId,
@@ -63,19 +62,17 @@ const ChatBox: React.FC<Props> = () => {
               "message": mes
               })
             .then((response) => {
-              // console.log("new join-chat response", response.data)
               const message = response.data.message;
               const uID:string = response.data.user_id;
               const mID:string = response.data.model_id;
-              const mIDNumber: number = +mID;
               const receivedMessage =
                 {
                   "text": message,
                   "id": mID,
                   "sender": {
-                    "name": state.images[mIDNumber].name,
+                    "name": state.curModelName,
                     "uid": uID,
-                    "avatar": state.images[mIDNumber].src,
+                    "avatar": state.curModelSrc,
                   }
                 } as IMessage;
               

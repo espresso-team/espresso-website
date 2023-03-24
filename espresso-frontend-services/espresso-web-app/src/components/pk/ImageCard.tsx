@@ -259,8 +259,9 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                   console.log("Start chatting, user id", state.userId, "model_id", imgId)
                   // update curImage id in state since we will use it on send message post, and convert it to string
                   state.curImageId = +imgId;
-                  // update curModel name
+                  // update curModel name and src
                   state.curModelName = imgName;
+                  state.curModelSrc = imgSrc;
                   axios
                     .post(`http://localhost:3000/join-chat`,
                       {
@@ -285,9 +286,9 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                           "text": chat.message,
                           "id": mID,
                           "sender": {
-                            "name": isUser ? state.curUserName : state.images[mID].name,
+                            "name": isUser ? state.curUserName : imgName,
                             "uid": uID,
-                            "avatar": isUser ? "https://data.cometchat.com/assets/images/avatars/ironman.png" : state.images[mID].src,
+                            "avatar": isUser ? "https://data.cometchat.com/assets/images/avatars/ironman.png" : imgSrc,
                           }
                         } as IMessage;
                         action.updateMessageList(messageItem);
