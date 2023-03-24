@@ -59,7 +59,7 @@ export default class ChatClient {
   // Initialize first conv for a new user
   async init_conv(model_id) {
     try {
-      const text = fs.readFileSync(`./initial-prompt-${model_id}.txt`, 'utf8'); 
+      const text = fs.readFileSync(`espresso-backend-services/chat-gpt-backend/initial-prompt-${model_id}.txt`, 'utf8'); 
       return await this.client.sendMessage(text);
     } catch (err) {
       console.error("Error initiating conversation:", err);
