@@ -11,7 +11,7 @@ import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
 import cors from "cors";
-import { is_response_include_forbidden_words, return_postpone_words } from "./util.js";
+import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words } from "./util.js";
 import { authRoutes } from "./routes/auth.route.js";
 
 const app = express();
@@ -34,6 +34,7 @@ app.post("/send-message", async (req, res) => {
   const model_id = req.body.model_id;
   var user = await getUserByUserId(user_id);
   var model = await getModelByModelId(model_id);
+  const model_gender = model.model_type;
   var chat_client = new ChatClient(user.user_name, model.model_name);
   const condition = { 'user_id': user_id, 'model_id': model_id };
   var conv = await getConv(condition);
@@ -55,7 +56,7 @@ app.post("/send-message", async (req, res) => {
     var new_msg = response.response;
     if (is_response_include_forbidden_words(new_msg)) {
         // Still contains forbidden word.
-        new_msg = return_postpone_words();
+        new_msg = return_postpone_words(model_gender);
     }
 
     conv.conv_id = response.conversationId;
@@ -75,7 +76,7 @@ app.post("/join-chat", async (req, res) => {
   const model_id = req.body.model_id;
   var user = await getUserByUserId(user_id);
   var model = await getModelByModelId(model_id);
-  console.log("debug model-id: ", model_id, "model:", model);
+  const model_gender = model.model_type;
   var chat_client = new ChatClient(user.user_name, model.model_name);
   // check if user has an existing conv
   var cond = {
@@ -85,23 +86,36 @@ app.post("/join-chat", async (req, res) => {
   var existing_conv = await getConv(cond);
   if (existing_conv != null) {
     // find an existing conv
-    // TODO: change the hard-coded response
     var conv = existing_conv.conv_id;
     var chat_history = await getChatHistoryByConvId(conv);
+    var return_chat_history = chat_history.slice(-10);
+    if (!return_chat_history) {
+        return_chat_history = [];
+    }
     // console.log(chat_history);
-    const return_mes = "哼，现在才想起来找人家。你今天过得怎么样呀？";
+    const return_mes = return_greeting_words(model_gender);
     // TODO: make insertChat and return a transaction
     await chat_client.reinit_conv(conv, existing_conv.last_msg_id, model_id, chat_history);
     await insertChat({conv_id: conv, message: return_mes, is_user: false});
     // get the last 10 chat history
     res.json({ message: return_mes, status: "success",
                user_id: user_id, model_id: model_id, 
-               chat_history: chat_history.slice(-10)});
+               chat_history: return_chat_history});
     return;
   }
   // init a new converstation for a new user
   var response = await chat_client.init_conv(model_id);
   console.log(response);
+  // retry if response contains forbidden words
+  if (is_response_include_forbidden_words(response.response)) {
+    response = await chat_client.init_conv(model_id);
+  }
+
+  var msg = response.response;
+  // if still contains forbidden words, return a greeting message
+  if (is_response_include_forbidden_words(msg)) {
+    msg = return_greeting_words(model_gender);
+  }
   var conv = {
     user_id: user_id,
     model_id: model_id,
@@ -111,8 +125,8 @@ app.post("/join-chat", async (req, res) => {
   
   try {
     await createConversation(conv);
-    await insertChat({conv_id: response.conversationId, message: response.response, is_user: false});
-    res.json({ message: response.response, status: "success",
+    await insertChat({conv_id: response.conversationId, message: msg, is_user: false});
+    res.json({ message: msg, status: "success",
               user_id: user_id, model_id: model_id});
   } catch (err) {
     res.status(500).json({ error: err.message });
