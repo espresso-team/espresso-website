@@ -50,7 +50,7 @@ export default class ChatClient {
     tmp_clientOptions.chatGptLabel = model_name;
     var api_keys = process.env.OPENAI_APIKEY.split(",");
     var api_key = api_keys[Math.floor(Math.random()*api_keys.length)];
-    this.client = new ChatGPTClient(api_key, clientOptions, cacheOptions);
+    this.client = new ChatGPTClient(api_key, tmp_clientOptions, cacheOptions);
     this.user_name = user_name;
     this.model_name = model_name;
     console.log("Chat client inited!");
