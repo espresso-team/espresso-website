@@ -8,7 +8,7 @@ dotenv.config();
 // require('dotenv').config();
 
 const MAX_PROMPT_TOKEN = 3095;
-var file_prefix = process.env.ON_SERVER ? process.env.SERVER_FILE_PATH : "./";
+var file_prefix = process.env.ON_SERVER == 'true' ? process.env.SERVER_FILE_PATH : "./";
 
 const clientOptions = {
     // (Optional) Support for a reverse proxy for the completions endpoint (private API server).
