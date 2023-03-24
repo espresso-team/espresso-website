@@ -22,7 +22,6 @@ export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) =>
   const scrollToDiv = useRef<HTMLDivElement>(null);
   const [state] = usePkSystemHook();
   const [message, setMessage] = useState("")
-  console.log("Chat.tsx - messages", messages)
 
   const scrollToBottom = () => {
     setTimeout(() => {

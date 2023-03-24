@@ -11,26 +11,29 @@ const Section = styled.section`
     width: 95vw;
     background-color: ${props => props.theme.body}
 `
+
 const Navigation = styled.nav`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 75%;
+
+    width: 85%;
     height: ${props => props.theme.navHeight};
     margin: 0 auto;
-    
+
     .mobile{
-       display: none;
+    display: none;
     }
 
     @media (max-width: 64em) {
-        .desktop{
-        display: none;
+    .desktop{
+    display: none;
     }
     .mobile{
-        display: inline-block;
+    display: inline-block;
     }
-}
+
+    }
 `
 
 const Menu = styled.ul`
@@ -92,25 +95,15 @@ const MenuItem = styled.li`
 }
 `
 
+
 var console = require("console-browserify")
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState('Content of the modal');
-
 
     const showModal = () => {
         setOpen(true);
-    };
-
-    const handleOk = () => {
-        setModalText('The modal will be closed after two seconds');
-        setConfirmLoading(true);
-        setTimeout(() => {
-            setOpen(false);
-            setConfirmLoading(false);
-        }, 2000);
     };
 
     const handleCancel = () => {
@@ -118,7 +111,7 @@ const Navbar = () => {
         setOpen(false);
     };
     return (
-        <Section>
+        <Section id="navigation">
             <Navigation>
                 <Logo />
                 <Menu>
@@ -142,12 +135,10 @@ const Navbar = () => {
                 onOk={handleOk}
                 okButtonProps={{style: {backgroundColor: "black"}}} */
                 >
-                    <RegisterBlock  />
+                    <RegisterBlock />
                 </Modal>
             </Navigation>
         </Section>
     )
 }
-/* 
-<p>{modalText}</p> */
 export default Navbar;
