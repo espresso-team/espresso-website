@@ -1,4 +1,4 @@
-const onServer: boolean = process.env.ON_SERVER === 'true';
+const onServer: boolean = process.env.NODE_ENV === 'production';
 
 if (!onServer) {
   // Your code when ON_SERVER is false
