@@ -26,3 +26,5 @@ DS_Store
 yarn.lock
 ../../.DS_Store
 ../.DS_Store
+
+.env
