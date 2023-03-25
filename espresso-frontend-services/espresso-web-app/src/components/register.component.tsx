@@ -1,7 +1,6 @@
 import { Component } from "react";
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { LinkTo } from '@web3uikit/core';
 
 type Props = {};
 
@@ -167,22 +166,8 @@ export default class Register extends Component<Props, State> {
             }}
           >
             Already have an account?{' '}
-            <LinkTo
-              address="/login"
-              iconLayout="none"
-              onClick={function noRefCheck() { }}
-              text="Log in"
-              type="external"
-            />
           </div>
           {/* TODO add the link for explain */}
-          <LinkTo
-            address="/home"
-            fontSize="10px"
-            onClick={function noRefCheck() { }}
-            text="Why connect a wallet is better?"
-            type="internal"
-          />
         </div>
       </div>
     );

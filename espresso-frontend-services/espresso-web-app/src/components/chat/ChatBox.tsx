@@ -4,6 +4,7 @@ import { IMessage } from '../../types/IMessage';
 import { User } from '../../types/User';
 import { Chat } from './Chat';
 import axios from 'axios';
+import { ENDPOINT } from '../../types/Env';
 
 interface Props {
   userId: string;
@@ -48,14 +49,14 @@ const ChatBox: React.FC<Props> = () => {
             "sender": {
               "name": state.curUserName,
               "uid": state.userId,
-              "avatar": "https://data.cometchat.com/assets/images/avatars/ironman.png",
+              "avatar": "https://sm.ms/image/JjnqHlgpFrEaN97",
             }
           } as IMessage;
 
           action.updateMessageList(newUserMessage);
           // send post request
           axios
-            .post(`http://localhost:3000/send-message`, 
+            .post(`${ENDPOINT}/send-message`, 
             {
               "user_id": state.userId,
               "model_id": state.curImageId.toString(),

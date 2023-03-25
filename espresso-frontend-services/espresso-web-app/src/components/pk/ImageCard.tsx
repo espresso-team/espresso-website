@@ -12,6 +12,7 @@ import axios from 'axios';
 import { IMessage } from '../../types/IMessage';
 import { ChatHistoryItem } from '../../types/ChatHistoryItem';
 import { Model } from '../../types/Model';
+import { ENDPOINT } from '../../types/Env';
 
 interface Props {
   idCardFlipped: boolean | undefined,
@@ -263,7 +264,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                   state.curModelName = imgName;
                   state.curModelSrc = imgSrc;
                   axios
-                    .post(`http://localhost:3000/join-chat`,
+                    .post(`${ENDPOINT}/join-chat`,
                       {
                         "user_id": state.userId,
                         "model_id": imgId

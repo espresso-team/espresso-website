@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { HttpStatus } from '../types/HttpStatus';
 import { usePkSystemHook } from '../state/pk-system-hook';
+import { ENDPOINT } from '../types/Env';
 var console = require("console-browserify")
 
 // interface Func {
@@ -44,7 +45,7 @@ const RegisterBlock = () => {
   const goToRegister = async (phone: string, code: string) => {
     console.log("go to register")
     const res = await axios
-      .post(`http://localhost:3000/api/auth/verify`,
+      .post(`${ENDPOINT}/api/auth/verify`,
         {
           "otp": code,
           "phone": phone
@@ -112,7 +113,7 @@ const RegisterBlock = () => {
     }
     console.log("data.phoneNumber", data.phoneNumber)
     const res = await axios
-      .post(`http://localhost:3000/api/auth/login_or_register`,
+      .post(`${ENDPOINT}/api/auth/login_or_register`,
         {
           "phone": data.phoneNumber
         })
