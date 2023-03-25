@@ -49,7 +49,7 @@ const ChatBox: React.FC<Props> = () => {
             "sender": {
               "name": state.curUserName,
               "uid": state.userId,
-              "avatar": "https://sm.ms/image/JjnqHlgpFrEaN97",
+              "avatar": "https://s2.loli.net/2023/03/25/JjnqHlgpFrEaN97.png",
             }
           } as IMessage;
 

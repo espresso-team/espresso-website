@@ -89,6 +89,7 @@ const RegisterBlock = () => {
   };
 
   const onFinish = (values: any) => {
+    console.log("onFinish values:", values)
     const data = {
       phoneNumber: values.phone,
       verifyCode: values.verifyCode
