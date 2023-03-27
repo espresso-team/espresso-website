@@ -1,15 +1,14 @@
 import styled from 'styled-components'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 import { useState } from 'react';
 import RegisterBlock from './RegisterBlock';
 import axios from 'axios';
+import Button from './Button';
 var console = require("console-browserify")
 const Section = styled.section`
-    padding: 20px;
-    width: 95vw;
-    background-color: ${props => props.theme.body}
+    background-color: ${props => props.theme.navBackground}
 `
 
 const Navigation = styled.nav`
@@ -67,7 +66,7 @@ const Menu = styled.ul`
 `
 
 const MenuItem = styled.li`
-    margin: 0 4rem;
+    margin: 0 2rem;
     padding-top: 1rem;
     color: ${props => props.theme.text};
     cursor: pointer;
@@ -118,10 +117,13 @@ const Navbar = () => {
                     <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
                     <MenuItem><Link to={"/pk"} className="nav-link">匹配</Link></MenuItem>
                     <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
+                    <MenuItem><Link to={"/chat"} className="nav-link">论坛</Link></MenuItem>
+                    <MenuItem><Link to={"/chat"} className="nav-link">我的</Link></MenuItem>
                 </Menu>
-                <Button type="primary" style={{ background: "black", color: "white" }} onClick={showModal}>
-                    登录
-                </Button>
+                <div className="desktop">
+                    <Button text='注册登录' onClick={showModal}/>
+                </div>
+
                 <Modal
                     centered
                     title="注册或登录"

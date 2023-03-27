@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Typewriter from "typewriter-effect";
 import Button from './Button';
-import "@fontsource/akaya-telivigala"
+import "@fontsource/zcool-kuaile"
 
 const Title = styled.h2`
   font-size: ${(props) => props.theme.fontxxl};
@@ -13,7 +13,7 @@ const Title = styled.h2`
 
   span {
     text-transform: uppercase;
-    font-family: "Akaya Telivigala", cursive;
+    font-family: "ZCOOL KuaiLe", sans-serif; 
   }
   .text-1{
       color: blue;
@@ -74,7 +74,7 @@ const TypeWriterText = () => {
   return (
     <>
       <Title>
-        AIGC But Distilled
+        智能伴侣，陪伴成长
         <Typewriter
           options={{
             autoStart: true,
@@ -82,13 +82,13 @@ const TypeWriterText = () => {
           }}
           onInit={(typewriter) => {
             typewriter
-              .typeString(`<span class="text-1">Create AIGC Artworks!</span>`)
+              .typeString(`<span class="text-1">聊天陪伴新时代!</span>`)
               .pauseFor(2000)
               .deleteAll()
-              .typeString(`<span class="text-2">Play to Earn!</span>`)
+              .typeString(`<span class="text-2">个性化虚拟恋人!</span>`)
               .pauseFor(2000)
               .deleteAll()
-              .typeString(`<span class="text-3">Have Fun with AIGC!</span>`)
+              .typeString(`<span class="text-3">智能爱情引路人!</span>`)
               .pauseFor(2000)
               .deleteAll()
               .start();
@@ -96,9 +96,9 @@ const TypeWriterText = () => {
         />
 
       </Title>
-      <SubTitle>Flushed by AIGC Arts? Reveal the Shining Ones.</SubTitle>
+      <SubTitle>AI爱情新纪元？体验独一无二的陪伴</SubTitle>
       <ButtonContainer>
-        <Button text="Explore" link="/pk" />
+        <Button text="开始匹配" link="/pk" />
       </ButtonContainer>
     </>
   );

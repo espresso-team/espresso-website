@@ -1,10 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
-import '@fontsource/almendra-sc'
+import "@fontsource/zcool-kuaile"
+import logo from '../assets/temporary-logo.png';
+
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LogoImage = styled.img`
+  height: 2.5em;
+  margin-right: 0.5em;
+`;
 
 const LogoText = styled.h1`
-font-family: "Almendra SC", serif;
-font-size: 2em;
+font-family: "ZCOOL KuaiLe", sans-serif; 
+font-size: 2.5em;
 color: ${props => props.theme.text};
 transition: all 0.2s ease;
 &:hover {
@@ -13,9 +24,10 @@ transition: all 0.2s ease;
 `
 export const Logo = () => {
     return (
-        <LogoText>
-            Espresso
-        </LogoText>
+        <LogoContainer>
+            <LogoImage src={logo} alt="Logo" />
+            <LogoText>小伴</LogoText>
+        </LogoContainer>
     )
 }
 

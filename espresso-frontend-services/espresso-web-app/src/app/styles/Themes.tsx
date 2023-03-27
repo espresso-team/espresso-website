@@ -3,6 +3,7 @@
 export const light = {
     
     body:"#fff",
+    navBackground: '#f5f5f5',
     text:"#202020", // black shade
     bodyRgba : "255, 255, 255",
     textRgba:"32,32,32",

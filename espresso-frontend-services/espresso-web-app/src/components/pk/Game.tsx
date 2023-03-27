@@ -16,9 +16,16 @@ interface Props {
 var console = require("console-browserify")
 
 const Title = styled.h1`
-    text-transform: uppercase;
-    font-family: "ZCOOL KuaiLe", sans-serif;
-`
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  font-size: 2.8rem; /* Adjust font size */
+  font-weight: 500; /* Adjust font weight */
+  color: #151515cf; /* Change color to a modern, darker shade */
+  letter-spacing: 1.5px; /* Increase letter spacing */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add subtle text shadow */
+`;
+
 
 const Section = styled.section`
 min-height: ${props => `calc(100vh - ${props.theme.navHeight})`};
@@ -29,7 +36,7 @@ background-color: ${props => props.theme.body};
 
 const Container = styled.div`
 width: 75%;
-min-height: 80vh;
+min-height: 60vh;
 margin: 0 auto;
 display: flex;
 justify-content: center;
@@ -47,21 +54,6 @@ align-items: center;
   }
 }
 `
-enum HttpStatus {
-  OK = 200,
-  CREATED = 201,
-  ACCEPTED = 202,
-  MOVED_PERMANENTLY = 301,
-  FOUND = 302,
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  FORBIDDEN = 403,
-  NOT_FOUND = 404,
-  INTERNAL_SERVER_ERROR = 500,
-  BAD_GATEWAY = 502,
-  SERVICE_UNAVAILABLE = 503,
-  GATEWAY_TIMEOUT = 504,
-}
 
 // const getImages = () => {
 //   return async ({ dispatch, setState, getState }: pkSystemApi) => {
@@ -158,7 +150,7 @@ const Game: React.FC<Props> = () => {
   }, [state.curImageId]);
   return (
     <Section id="home">
-      <Title>{state.userGender === GenderType.UNKNOWN ? '请选择你的性别' : '点击卡片试试'}</Title>
+      <Title>{state.userGender === GenderType.UNKNOWN ? '请选择您的性别' : '点击卡片试试'}</Title>
       <Container>
         <If condition={state.userGender === GenderType.UNKNOWN}>
           <GenderSelector />
