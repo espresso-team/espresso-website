@@ -11,6 +11,10 @@ const Section = styled.section`
     background-color: ${props => props.theme.navBackground}
 `
 
+const NavWrapper = styled.div`
+    padding-bottom: 3rem;
+`
+
 const Navigation = styled.nav`
     display: flex;
     justify-content: space-between;
@@ -110,37 +114,39 @@ const Navbar = () => {
         setOpen(false);
     };
     return (
-        <Section id="navigation">
-            <Navigation>
-                <Logo />
-                <Menu>
-                    <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
-                    <MenuItem><Link to={"/pk"} className="nav-link">匹配</Link></MenuItem>
-                    <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
-                    <MenuItem><Link to={"/chat"} className="nav-link">论坛</Link></MenuItem>
-                    <MenuItem><Link to={"/chat"} className="nav-link">我的</Link></MenuItem>
-                </Menu>
-                <div className="desktop">
-                    <Button text='注册登录' onClick={showModal}/>
-                </div>
+        <NavWrapper>
+            <Section id="navigation">
+                <Navigation>
+                    <Logo />
+                    <Menu>
+                        <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
+                        <MenuItem><Link to={"/pk"} className="nav-link">匹配</Link></MenuItem>
+                        <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
+                        <MenuItem><Link to={"/chat"} className="nav-link">论坛</Link></MenuItem>
+                        <MenuItem><Link to={"/chat"} className="nav-link">我的</Link></MenuItem>
+                    </Menu>
+                    <div className="desktop">
+                        <Button text='注册登录' onClick={showModal} />
+                    </div>
 
-                <Modal
-                    centered
-                    title="注册或登录"
-                    open={open}
-                    footer={null}
-                    confirmLoading={confirmLoading}
-                    onCancel={handleCancel}
-                /* 
-                okText={"登录"}
-                cancelText={"取消"}
-                onOk={handleOk}
-                okButtonProps={{style: {backgroundColor: "black"}}} */
-                >
-                    <RegisterBlock />
-                </Modal>
-            </Navigation>
-        </Section>
+                    <Modal
+                        centered
+                        title="注册或登录"
+                        open={open}
+                        footer={null}
+                        confirmLoading={confirmLoading}
+                        onCancel={handleCancel}
+                    /* 
+                    okText={"登录"}
+                    cancelText={"取消"}
+                    onOk={handleOk}
+                    okButtonProps={{style: {backgroundColor: "black"}}} */
+                    >
+                        <RegisterBlock />
+                    </Modal>
+                </Navigation>
+            </Section>
+        </NavWrapper>
     )
 }
 export default Navbar;

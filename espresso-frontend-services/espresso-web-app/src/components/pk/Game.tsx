@@ -16,7 +16,6 @@ interface Props {
 var console = require("console-browserify")
 
 const Title = styled.h1`
-  padding-top: 3rem;
   padding-bottom: 2rem;
   font-family: "ZCOOL KuaiLe", sans-serif;
   font-size: 2.8rem; /* Adjust font size */
