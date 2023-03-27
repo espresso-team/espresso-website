@@ -169,15 +169,15 @@ const Footer = () => {
           </IconList>
         </Left>
         <MenuItems>
-          <Item onClick={() => scrollTo('home')}  >Home</Item>
-          <Item onClick={() => scrollTo('about')}  >Create</Item>
-          <Item onClick={() => scrollTo('roadmap')}  >PK</Item>
-          <Item onClick={() => scrollTo('showcase')}  >Hot Artwork</Item>
+          <Item onClick={() => scrollTo('home')}  >主页</Item>
+          <Item onClick={() => scrollTo('about')}  >匹配</Item>
+          <Item onClick={() => scrollTo('roadmap')}  >聊天</Item>
+          <Item onClick={() => scrollTo('showcase')}  >论坛</Item>
         </MenuItems>
       </Container>
       <Bottom>
         <span>
-          &copy; {new Date().getFullYear()} Espresso. All rights reserved.
+          &copy; {new Date().getFullYear()} 小伴. 沪ICP备12345号-12
         </span>
 
       </Bottom>
