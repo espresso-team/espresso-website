@@ -96,14 +96,6 @@ const RegisterBlock = () => {
     }
     setLoading(true)
     goToRegister(data.phoneNumber, data.verifyCode)
-    //setLoading(false)
-    // openApi.loginInNoPwd(data).then((res) => {
-    //   setLoading(false)
-    //   if (res) {
-    //     dispatch(loginIn(res, res.token))
-    //     history.push('/')
-    //   }
-    // })
   };
 
   const getCapcha = async () => {

@@ -103,7 +103,7 @@ var console = require("console-browserify")
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(true);
 
     const showModal = () => {
         setOpen(true);
