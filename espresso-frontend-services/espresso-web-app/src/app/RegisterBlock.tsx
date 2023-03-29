@@ -44,7 +44,7 @@ const RegisterBlock = () => {
 
   const goToRegister = async (phone: string, code: string) => {
     console.log("go to register")
-    const res = await axios
+    await axios
       .post(`${ENDPOINT}/api/auth/verify`,
         {
           "otp": code,
@@ -57,6 +57,8 @@ const RegisterBlock = () => {
           const uID = response.data.data.userId;
           action.setUserId(uID);
           setLoading(false)
+          // Close the modal
+          action.setModelOpen(false);
         }
         else {
           setLoading(false)

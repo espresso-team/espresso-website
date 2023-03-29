@@ -16,6 +16,7 @@ export const pkSystemState = {
     modelArrays: [] as Model[],
     curModelName: "虚拟伴侣",
     curModelSrc: "",
+    modalOpen: false,
 };
 
 export type PkSystemState = {
@@ -33,4 +34,5 @@ export type PkSystemState = {
     modelArrays: Model[];
     curModelName: string;
     curModelSrc: string;
+    modalOpen: boolean;
 };

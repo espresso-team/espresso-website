@@ -43,8 +43,8 @@ font-size: ${props => props.theme.fontsm};
 }
 `
 
-const Button = (props: { text: string, link?: string, onClick?: () => void}) => {
-  const { text, link = '#!', onClick} = props;
+const Button = (props: { text: string, link?: string, onClick?: () => void, disabled?: boolean}) => {
+  const { text, link = '#!', onClick, disabled} = props;
   const handleClick = (e: React.MouseEvent) => {
     if (onClick) {
       e.preventDefault(); // Prevent default behavior when an onClick function is provided
@@ -54,7 +54,7 @@ const Button = (props: { text: string, link?: string, onClick?: () => void}) => 
 
   return (
     <a href={link} target="_blank" rel="noreferrer" onClick={handleClick}>
-      <Btn>{text}</Btn>
+      <Btn disabled={disabled}>{text}</Btn>
     </a>
   )
 }

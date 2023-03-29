@@ -2,10 +2,11 @@ import styled from 'styled-components'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
 import { Modal } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RegisterBlock from './RegisterBlock';
-import axios from 'axios';
 import Button from './Button';
+import { usePkSystemHook } from '../state/pk-system-hook';
+import { If } from './If';
 var console = require("console-browserify")
 const Section = styled.section`
     background-color: ${props => props.theme.navBackground}
@@ -102,17 +103,15 @@ const MenuItem = styled.li`
 var console = require("console-browserify")
 
 const Navbar = () => {
-    const [open, setOpen] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(true);
+    const [state, action] = usePkSystemHook()
+
+    useEffect(() => {
+    }, [state.modalOpen]);
 
     const showModal = () => {
-        setOpen(true);
+        action.setModelOpen(true);
     };
 
-    const handleCancel = () => {
-        console.log('Clicked cancel button');
-        setOpen(false);
-    };
     return (
         <NavWrapper>
             <Section id="navigation">
@@ -125,17 +124,23 @@ const Navbar = () => {
                         <MenuItem><Link to={"/chat"} className="nav-link">论坛</Link></MenuItem>
                         <MenuItem><Link to={"/chat"} className="nav-link">我的</Link></MenuItem>
                     </Menu>
-                    <div className="desktop">
-                        <Button text='注册登录' onClick={showModal} />
-                    </div>
+                    <If condition={state.userToken === "unknown"}>
+                        <div className="desktop">
+                            <Button text='注册登录' onClick={showModal} />
+                        </div>
+                    </If>
+                    <If condition={state.userToken !== "unknown"}>
+                        <div className="desktop">
+                            <Button text={`用户${state.userId.substring(0, 7)}`} disabled={true}/>
+                        </div>
+                    </If>
+
 
                     <Modal
                         centered
                         title="注册或登录"
-                        open={open}
+                        open={state.modalOpen}
                         footer={null}
-                        confirmLoading={confirmLoading}
-                        onCancel={handleCancel}
                     /* 
                     okText={"登录"}
                     cancelText={"取消"}

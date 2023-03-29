@@ -12,38 +12,38 @@ import { ENDPOINT } from "../types/Env";
 var console = require("console-browserify")
 export const pkSystemAction = {
     fetchUserProfile: (gender: GenderType, userName: string) =>
-    async ({ setState, getState }: pkSystemApi) => {
-        // if user id still unknow, will assgin a random id to this user
-        let curUserId = getState().userId;
-        if(curUserId === "unknown") {
-            curUserId = createRandomUserId();
-            setState({userId: curUserId});
-        }
-        console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
-        await axios
-            .post(`${ENDPOINT}/user-profile`,
-                {
-                    "user_id" : curUserId,
-                    "user_name" : userName,
-                    "gender" : gender
-                })
-            .then((response) => {
-                console.log("fetchModelProfile", response)
-                if(response.status === HttpStatus.OK) {
-                    console.log("fetchModelProfile message", response.data.message)
-                }
-                else {
-                    message.error("页面错误，请刷新重试")
-                    console.log("fetchUserProfile response failed", response)
-                }
-                
-            })
-            .catch((err) => {
-                message.error("页面错误，请刷新重试");
-                console.log(err)
-            } );
+        async ({ setState, getState }: pkSystemApi) => {
+            // if user id still unknow, will assgin a random id to this user
+            let curUserId = getState().userId;
+            if (curUserId === "unknown") {
+                curUserId = createRandomUserId();
+                setState({ userId: curUserId });
+            }
+            console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
+            await axios
+                .post(`${ENDPOINT}/user-profile`,
+                    {
+                        "user_id": curUserId,
+                        "user_name": userName,
+                        "gender": gender
+                    })
+                .then((response) => {
+                    console.log("fetchModelProfile", response)
+                    if (response.status === HttpStatus.OK) {
+                        console.log("fetchModelProfile message", response.data.message)
+                    }
+                    else {
+                        message.error("页面错误，请刷新重试")
+                        console.log("fetchUserProfile response failed", response)
+                    }
 
-    },
+                })
+                .catch((err) => {
+                    message.error("页面错误，请刷新重试");
+                    console.log(err)
+                });
+
+        },
     fetchModelProfile:
         (gender: GenderType) =>
             async ({ setState, getState }: pkSystemApi) => {
@@ -58,21 +58,21 @@ export const pkSystemAction = {
                         })
                     .then((response) => {
                         console.log("fetchModelProfile", response)
-                        if(response.status === HttpStatus.OK) {
+                        if (response.status === HttpStatus.OK) {
                             const curModelArray = response.data.data as Model[];
-                            setState({modelArrays : curModelArray});
+                            setState({ modelArrays: curModelArray });
                             console.log("modelArray[0]", getState().modelArrays[0]);
                         }
                         else {
                             message.error("页面错误，请刷新重试")
                             console.log("fetchModelProfile response failed", response)
                         }
-                        
+
                     })
                     .catch((err) => {
                         message.error("页面错误，请刷新重试");
                         console.log(err)
-                    } );
+                    });
 
             },
     setUserName:
@@ -98,6 +98,12 @@ export const pkSystemAction = {
             ({ setState }: pkSystemApi) => {
                 console.log("set gender: ", gender)
                 setState({ userGender: gender });
+            },
+    setModelOpen:
+        (isOpen: boolean) =>
+            ({ setState }: pkSystemApi) => {
+                console.log("set model open: ", isOpen)
+                setState({ modalOpen: isOpen });
             },
     handleFlipCardOne:
         () =>
