@@ -99,8 +99,8 @@ export async function verifyOTP(req, res, next) {
     }
     const token = createJwtToken({ userId: user._id });
 
-    user.phoneOtp = "";
-    await user.save();
+    // user.phoneOtp = "";
+    // await user.save();
 
     res.status(201).json({
       type: "success",
