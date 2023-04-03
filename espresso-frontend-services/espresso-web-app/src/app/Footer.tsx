@@ -172,7 +172,7 @@ const Footer = () => {
           <Item onClick={() => scrollTo('home')}  >主页</Item>
           <Item onClick={() => scrollTo('about')}  >匹配</Item>
           <Item onClick={() => scrollTo('roadmap')}  >聊天</Item>
-          <Item onClick={() => scrollTo('showcase')}  >论坛</Item>
+          <Item onClick={() => scrollTo('showcase')}  >探索</Item>
         </MenuItems>
       </Container>
       <Bottom>

@@ -112,6 +112,9 @@ const Navbar = () => {
         action.setModelOpen(true);
     };
 
+    const handleCancel = () => {
+        action.setModelOpen(false);
+    };
     return (
         <NavWrapper>
             <Section id="navigation">
@@ -141,6 +144,7 @@ const Navbar = () => {
                         title="注册或登录"
                         open={state.modalOpen}
                         footer={null}
+                        onCancel={handleCancel}
                     /* 
                     okText={"登录"}
                     cancelText={"取消"}
