@@ -11,6 +11,7 @@ import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
+import Forum from "./components/forum.component";
 
 type Props = {};
 
@@ -35,6 +36,7 @@ class App extends Component<Props, State> {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/chat" element={<Chat />}/>
+              <Route path="/forum" element={<Forum />}/>
             </Routes>
           </ThemeProvider>
       </div>

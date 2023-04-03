@@ -121,7 +121,7 @@ const Navbar = () => {
                         <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
                         <MenuItem><Link to={"/pk"} className="nav-link">匹配</Link></MenuItem>
                         <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
-                        <MenuItem><Link to={"/chat"} className="nav-link">论坛</Link></MenuItem>
+                        <MenuItem><Link to={"/forum"} className="nav-link">探索</Link></MenuItem>
                         <MenuItem><Link to={"/chat"} className="nav-link">我的</Link></MenuItem>
                     </Menu>
                     <If condition={state.userToken === "unknown"}>
