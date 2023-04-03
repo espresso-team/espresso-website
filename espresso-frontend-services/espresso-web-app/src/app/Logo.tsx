@@ -26,7 +26,7 @@ export const Logo = () => {
     return (
         <LogoContainer>
             <LogoImage src={logo} alt="Logo" />
-            <LogoText>小伴</LogoText>
+            <LogoText>七洽</LogoText>
         </LogoContainer>
     )
 }

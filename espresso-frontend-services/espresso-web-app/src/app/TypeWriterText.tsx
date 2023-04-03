@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Typewriter from "typewriter-effect";
 import Button from './Button';
 import "@fontsource/zcool-kuaile"
+import { Link } from "react-router-dom";
 
 const Title = styled.h2`
   font-size: ${(props) => props.theme.fontxxl};
@@ -98,7 +99,7 @@ const TypeWriterText = () => {
       </Title>
       <SubTitle>AI爱情新纪元？体验独一无二的陪伴</SubTitle>
       <ButtonContainer>
-        <Button text="开始匹配" link="/pk" />
+        <Link to={"/pk"} className="nav-link"><Button text="开始匹配"/></Link>
       </ButtonContainer>
     </>
   );
