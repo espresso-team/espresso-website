@@ -7,6 +7,7 @@ import RegisterBlock from './RegisterBlock';
 import Button from './Button';
 import { usePkSystemHook } from '../state/pk-system-hook';
 import { If } from './If';
+import Hamburger from './Hamberger';
 var console = require("console-browserify")
 const Section = styled.section`
     background-color: ${props => props.theme.navBackground}
@@ -17,6 +18,7 @@ const NavWrapper = styled.div`
 `
 
 const Navigation = styled.nav`
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -39,29 +41,31 @@ const Navigation = styled.nav`
 
     }
 `
+interface MenuProps {
+  menuOpen: boolean;
+}
 
-const Menu = styled.ul`
+const Menu = styled.ul<MenuProps>`
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
     list-style: none;
-
-
+    
     @media (max-width: 64em) {
     /* 1024 px */
-
     position: relative;
-    top: ${props => props.theme.navHeight};
+    top: ${props => (props.menuOpen ? '265px' : '0')};
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100vw;
-    height: ${props => `calc(100vh - ${props.theme.navHeight})`};
+
+    width: 200px;
     z-index:50;
     background-color: ${props => `rgba(${props.theme.bodyRgba},0.85)`};
     backdrop-filter: blur(2px);
 
-    transform: ${props => props.onClick ? 'translateY(0)' : `translateY(1000%)`};
+    transform: ${props => (props.menuOpen ? 'translateY(0)' : 'translateY(-100%)')};
     transition: all 0.3s ease;
     flex-direction: column;
     justify-content: center;
@@ -90,23 +94,42 @@ const MenuItem = styled.li`
     }
 
     @media (max-width: 64em) {
-    margin: 1rem 0;
+        margin: 1rem 0;
     font-size: ${props => props.theme.fontmd};
 
-    &::after{
-    display: none;
+    &::after {
+      display: none;
     }
-}
+    }
+
 `
+const HamburgerWrapper = styled.div`
+    display: none;
+
+    @media (max-width: 64em) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2rem;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+`;
 
 
 var console = require("console-browserify")
 
 const Navbar = () => {
     const [state, action] = usePkSystemHook()
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
     }, [state.modalOpen]);
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
 
     const showModal = () => {
         action.setModelOpen(true);
@@ -120,13 +143,16 @@ const Navbar = () => {
             <Section id="navigation">
                 <Navigation>
                     <Logo />
-                    <Menu>
+                    <Menu menuOpen={menuOpen}>
                         <MenuItem><Link to={"/"} className="nav-link">主页</Link></MenuItem>
                         <MenuItem><Link to={"/pk"} className="nav-link">匹配</Link></MenuItem>
                         <MenuItem><Link to={"/chat"} className="nav-link">聊天</Link></MenuItem>
                         <MenuItem><Link to={"/forum"} className="nav-link">探索</Link></MenuItem>
                         <MenuItem><Link to={"/chat"} className="nav-link">我的</Link></MenuItem>
                     </Menu>
+                    <HamburgerWrapper>
+                        <Hamburger onClick={toggleMenu} isOpen={menuOpen} /> {/* 添加汉堡包按钮 */}
+                    </HamburgerWrapper>
                     <If condition={state.userToken === "unknown"}>
                         <div className="desktop">
                             <Button text='注册登录' onClick={showModal} />
@@ -153,6 +179,7 @@ const Navbar = () => {
                     >
                         <RegisterBlock />
                     </Modal>
+
                 </Navigation>
             </Section>
         </NavWrapper>

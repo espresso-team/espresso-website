@@ -67,9 +67,11 @@ img{
   left: none;
   right: 2rem;
   bottom: 100%;
+  display: none;
 }
 @media (max-width: 48em) {
   right: 1rem;
+  display: none;
 }
 `
 
@@ -116,7 +118,7 @@ const Cover = () => {
           <Circle>
             &#x2193;
           </Circle>
-          <img width={500} height={400} src={RoundTextBlack} alt="NFT" />
+          <img width={500} height={400} src={RoundTextBlack} alt="roundtext" />
         </Round>
       </Container>
     </Section>

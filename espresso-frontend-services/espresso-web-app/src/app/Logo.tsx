@@ -21,6 +21,11 @@ transition: all 0.2s ease;
 &:hover {
     transform: scale(1.1);
 }
+
+@media (max-width: 64em) {
+    font-size: 1.5em;
+}
+
 `
 export const Logo = () => {
     return (
