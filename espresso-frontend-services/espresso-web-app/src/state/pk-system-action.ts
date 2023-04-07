@@ -117,6 +117,13 @@ export const pkSystemAction = {
                 const newImageId = randomIntBetweenZeroAndXButNotY(getState().modelArrays.length, getState().curImageId);
                 setState({ curImageId: newImageId });
             },
+    isModelSelected:
+            () =>
+                ({ getState }: pkSystemApi) => {
+                    if(getState().curModelName === '虚拟伴侣')
+                        return false;
+                    return true;
+                },
     cleanMessageList:
         () =>
             ({ setState }: pkSystemApi) => {

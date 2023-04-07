@@ -6,6 +6,7 @@ import { User } from '../../types/User';
 import { IMessage } from '../../types/IMessage';
 import './style.css';
 import { usePkSystemHook } from '../../state/pk-system-hook';
+import { If } from '../../app/If';
 
 interface Props {
   messages: IMessage[];
@@ -20,7 +21,7 @@ var console = require("console-browserify")
 
 export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) => {
   const scrollToDiv = useRef<HTMLDivElement>(null);
-  const [state] = usePkSystemHook();
+  const [state,action] = usePkSystemHook();
   const [message, setMessage] = useState("")
 
   const scrollToBottom = () => {
@@ -57,6 +58,7 @@ export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) =>
               event.preventDefault();
             }
           }>
+          <If condition={action.isModelSelected() === true}>
           <div className='input-group'>
             <input
               type='text'
@@ -71,6 +73,7 @@ export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) =>
               required
             />
           </div>
+          </If>
         </form>
       </div>
   </div>

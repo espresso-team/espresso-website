@@ -18,20 +18,20 @@ interface Props {
 }
 
 export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
-    const [state] = usePkSystemHook();
+    const [state, action] = usePkSystemHook();
     var console = require("console-browserify")
     return (
         <>
-            <If condition={!isLoading && !messages.length}>
+            <If condition={action.isModelSelected() === false}>
                 <div className='text-center img-fluid empty-chat'>
                     <div className='empty-chat-holder'>
                         <img src={emptyChatImage} className='img-res' alt='empty chat' />
                     </div>
 
                     <div>
-                        <h2> 你好我是你的AI朋友 </h2>
+                        <h2> 你好欢迎使用七洽 </h2>
                         <h6 className='empty-chat-sub-title'>
-                            在下面输入你的第一条消息把~
+                            先去匹配页面选一个你喜欢的伴侣吧~
                         </h6>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
             <If condition={!isLoading && messages.length > 0}>
                 <MessageListDetail user={user} messages={messages} pageRef={pageRef}/>
             </If>
-            <If condition={isLoading}>
+            <If condition={action.isModelSelected() === true && isLoading}>
                 <div className='loading-messages-container'>
                     <MDSpinner size={100} />
                     <span className='loading-text'>您的{state.curModelName}正在赶来的路上(*^▽^*)</span>
