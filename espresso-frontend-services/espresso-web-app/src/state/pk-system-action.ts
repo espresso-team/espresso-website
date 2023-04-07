@@ -117,6 +117,11 @@ export const pkSystemAction = {
                 const newImageId = randomIntBetweenZeroAndXButNotY(getState().modelArrays.length, getState().curImageId);
                 setState({ curImageId: newImageId });
             },
+    cleanMessageList:
+        () =>
+            ({ setState }: pkSystemApi) => {
+                setState({ messageList: [] });
+            },
     updateMessageList:
         (message: IMessage) =>
             ({ getState, setState }: pkSystemApi) => {

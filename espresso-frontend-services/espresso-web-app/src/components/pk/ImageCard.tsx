@@ -271,6 +271,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
                       }
                     )
                     .then((response) => {
+                      action.cleanMessageList();
                       let chatHistory:ChatHistoryItem[] = [];
                       if(response.data.chat_history) {
                        chatHistory = response.data.chat_history;
