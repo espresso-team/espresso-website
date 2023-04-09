@@ -75,7 +75,7 @@ const TypeWriterText = () => {
   return (
     <>
       <Title>
-        智能伴侣，陪伴成长
+        智慧伴侣 七洽相伴
         <Typewriter
           options={{
             autoStart: true,
@@ -83,13 +83,13 @@ const TypeWriterText = () => {
           }}
           onInit={(typewriter) => {
             typewriter
-              .typeString(`<span class="text-1">聊天陪伴新时代!</span>`)
+              .typeString(`<span class="text-1">聊天陪伴新纪元!</span>`)
               .pauseFor(2000)
               .deleteAll()
-              .typeString(`<span class="text-2">个性化虚拟恋人!</span>`)
+              .typeString(`<span class="text-2">个性化虚拟伴侣!</span>`)
               .pauseFor(2000)
               .deleteAll()
-              .typeString(`<span class="text-3">智能爱情引路人!</span>`)
+              .typeString(`<span class="text-3">最懂你的AI伴侣!</span>`)
               .pauseFor(2000)
               .deleteAll()
               .start();
@@ -99,7 +99,7 @@ const TypeWriterText = () => {
       </Title>
       <SubTitle>AI爱情新纪元？体验独一无二的陪伴</SubTitle>
       <ButtonContainer>
-        <Link to={"/pk"}><Button text="开始匹配"/></Link>
+        <Link to={"/pk"}><Button text="开始洽洽"/></Link>
       </ButtonContainer>
     </>
   );

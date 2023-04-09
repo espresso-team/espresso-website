@@ -10,7 +10,7 @@ outline: none;
 border: none;
 
 font-size: ${props => props.theme.fontmd};
-padding: 0.4rem 1.9rem;
+padding: 0.9rem 2.3rem;
 border-radius: 50px;
 cursor: pointer;
 transition: all 0.2s ease;
@@ -33,7 +33,7 @@ position: relative;
 }
 
 &:hover::after{
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1);
     padding-top: 2.5rem;
 }
 

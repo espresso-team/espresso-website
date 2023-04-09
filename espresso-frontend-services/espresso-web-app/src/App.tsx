@@ -2,6 +2,7 @@ import { Component } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import { ThemeProvider } from "styled-components";
+import styled from 'styled-components'
 import Navbar from "./app/Navbar";
 import GlobalStyles from "./app/styles/GlobalStyles";
 import { light, dark } from "./app/styles/Themes";
@@ -12,6 +13,8 @@ import Home from "./components/home.component";
 import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
 import Forum from "./components/forum.component";
+import backgroundImage from './assets/backgroundImage.jpeg';
+
 
 type Props = {};
 

@@ -9,7 +9,7 @@ import { usePkSystemHook } from '../state/pk-system-hook';
 import { If } from './If';
 var console = require("console-browserify")
 const Section = styled.section`
-    background-color: ${props => props.theme.navBackground}
+    background-color: ${props => props.theme.navBackground};
 `
 
 const Navigation = styled.nav`
@@ -199,10 +199,10 @@ const Navbar = () => {
                     </HamburgerMenu>
                     <Menu click={click}>
                         <MenuItem><StyledLink to={"/"} >主页</StyledLink></MenuItem>
-                        <MenuItem><StyledLink to={"/pk"} >匹配</StyledLink></MenuItem>
+                        <MenuItem><StyledLink to={"/pk"} >洽洽</StyledLink></MenuItem>
                         <MenuItem><StyledLink to={"/chat"} >聊天</StyledLink></MenuItem>
                         <MenuItem><StyledLink to={"/forum"} >探索</StyledLink></MenuItem>
-                        <MenuItem><StyledLink to={"/chat"}>我的</StyledLink></MenuItem>
+                        <MenuItem><StyledLink to={"/chat"}>自洽</StyledLink></MenuItem>
                         <MenuItem>
                             <If condition={state.userToken === "unknown"}>
                                 <div className="mobile">
