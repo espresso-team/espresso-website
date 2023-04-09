@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Footer from "../app/Footer";
-import MyForum from "./forum/MyForum";
+import CreateNewBot from "./mybot/createNewBot";
 import styled from "styled-components";
 type Props = {};
 
@@ -8,10 +8,10 @@ type State = {
   content: string;
 }
 
-const ForumPageWrapper = styled.div`
-  padding-top: 20px;
+const MyBotPageWrapper = styled.div`
+  padding-top: 10px;
 `
-export default class Forum extends Component<Props, State> {
+export default class MyBot extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -22,10 +22,10 @@ export default class Forum extends Component<Props, State> {
 
   render() {
     return (
-      <ForumPageWrapper>
-        <MyForum />
+      <MyBotPageWrapper>
+        <CreateNewBot />
         <Footer />
-      </ForumPageWrapper>
+      </MyBotPageWrapper>
     );
   }
 }

@@ -13,6 +13,7 @@ import Home from "./components/home.component";
 import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
 import Forum from "./components/forum.component";
+import MyBot from "./components/myBot.component";
 import backgroundImage from './assets/backgroundImage.jpeg';
 
 
@@ -40,6 +41,7 @@ class App extends Component<Props, State> {
               <Route path="/register" element={<Register />} />
               <Route path="/chat" element={<Chat />}/>
               <Route path="/forum" element={<Forum />}/>
+              <Route path="/mybot" element={<MyBot />}/>
             </Routes>
           </ThemeProvider>
       </div>

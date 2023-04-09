@@ -202,7 +202,7 @@ const Navbar = () => {
                         <MenuItem><StyledLink to={"/pk"} >洽洽</StyledLink></MenuItem>
                         <MenuItem><StyledLink to={"/chat"} >聊天</StyledLink></MenuItem>
                         <MenuItem><StyledLink to={"/forum"} >探索</StyledLink></MenuItem>
-                        <MenuItem><StyledLink to={"/chat"}>自洽</StyledLink></MenuItem>
+                        <MenuItem><StyledLink to={"/mybot"}>自洽</StyledLink></MenuItem>
                         <MenuItem>
                             <If condition={state.userToken === "unknown"}>
                                 <div className="mobile">
