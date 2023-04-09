@@ -6,7 +6,7 @@ const VideoContainer = styled.div`
 width: 100%;
 
 video{
-    width: 90%;
+    width: 100%;
     height: auto;
 }
 
@@ -14,7 +14,6 @@ video{
   min-width: 40vh;
 }
 `
-
 const CoverVideo = () => {
   return (
     <VideoContainer>

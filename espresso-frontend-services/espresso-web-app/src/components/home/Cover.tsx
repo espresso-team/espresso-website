@@ -35,13 +35,14 @@ align-items: center;
 }
 `
 const Box = styled.div`
-width: 50%;
-height: 100%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
+
 const rotate = keyframes`
 100%{
   transform: rotate(1turn);
@@ -49,7 +50,7 @@ const rotate = keyframes`
 `
 const Round = styled.div`
 position: absolute;
-bottom: 4rem;
+bottom: 2rem;
 right: 90%;
 width: 7rem;
 height: 7rem;
@@ -67,11 +68,9 @@ img{
   left: none;
   right: 2rem;
   bottom: 100%;
-  display: none;
 }
 @media (max-width: 48em) {
   right: 1rem;
-  display: none;
 }
 `
 
@@ -106,7 +105,8 @@ const Cover = () => {
       <Container>
         <Box>
           <Suspense fallback={<Loading />}>
-            <TypeWriterText /></Suspense>
+            <TypeWriterText />
+          </Suspense>
         </Box>
         <Box>
           <Suspense fallback={<Loading />}>

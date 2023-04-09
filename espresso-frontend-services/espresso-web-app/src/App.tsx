@@ -4,7 +4,7 @@ import "./App.css";
 import { ThemeProvider } from "styled-components";
 import Navbar from "./app/Navbar";
 import GlobalStyles from "./app/styles/GlobalStyles";
-import { light } from "./app/styles/Themes";
+import { light, dark } from "./app/styles/Themes";
 
 import Login from "./components/login.component";
 import Register from "./components/register.component";

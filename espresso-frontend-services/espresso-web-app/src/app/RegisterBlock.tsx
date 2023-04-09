@@ -40,7 +40,7 @@ const RegisterBlock = () => {
   let time = 60, timer: any
   const [codetext, setCodeText] = useState<any>('获取验证码')
 
-  const [country, setCountry] = useState<string>('中国 +86')
+  const [country, setCountry] = useState<string>('+86')
 
   const goToRegister = async (phone: string, code: string) => {
     console.log("go to register")
@@ -75,11 +75,11 @@ const RegisterBlock = () => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     var console = require("console-browserify")
     if (e.key == "2") {
-      setCountry("美国 +1")
+      setCountry("+1")
       console.log('美国号码');
     }
     else {
-      setCountry("中国 +86")
+      setCountry("+86")
       console.log('中国号码');
     }
 
@@ -165,7 +165,7 @@ const RegisterBlock = () => {
               label="手机号"
             >
               <Row gutter={8}>
-                <Col span={7}>
+                <Col xs={7} sm={5}>
                   <Dropdown menu={menuProps}>
                     <Button>
                       <Space>
@@ -190,7 +190,7 @@ const RegisterBlock = () => {
               label="验证码"
             >
               <Row gutter={8}>
-                <Col span={16}>
+                <Col span={14}>
                   <Form.Item
                     name="verifyCode"
                     noStyle

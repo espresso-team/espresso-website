@@ -99,7 +99,7 @@ const TypeWriterText = () => {
       </Title>
       <SubTitle>AI爱情新纪元？体验独一无二的陪伴</SubTitle>
       <ButtonContainer>
-        <Link to={"/pk"} className="nav-link"><Button text="开始匹配"/></Link>
+        <Link to={"/pk"}><Button text="开始匹配"/></Link>
       </ButtonContainer>
     </>
   );
