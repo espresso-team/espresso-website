@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BsPlus } from 'react-icons/bs';
 
@@ -199,9 +199,10 @@ const CreateNewBot = () => {
     '自负',
     '虚荣',
   ]);
-  
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+
 
   const handleTagClick = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -211,17 +212,45 @@ const CreateNewBot = () => {
     }
   };
 
-
   const handleShareToWeChat = () => {
     // 在这里实现分享到微信朋友圈的功能
   };
 
-  return (
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      // 将所选文件转换为 Base64 编码的数据 URL
+      const imageDataUrl = await toBase64(file);
+
+      // 将 imageDataUrl 添加到已上传照片数组中
+      setUploadedImages([...uploadedImages, imageDataUrl]);
+    }
+  };
+  const toBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+
+  return (
     <Container>
       <Title>创建我的AI分身</Title>
-      <UploadArea>
+      {uploadedImages.map((image, index) => (
+      <UploadArea key={index} style={{ backgroundImage: `url(${image})` }} />
+      ))}
+      <UploadArea onClick={() => fileInputRef.current?.click()}>
         <BsPlus size={24} />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleFileChange}
+        />
       </UploadArea>
       <InputContainer>
         <SectionTitle>AI名称</SectionTitle>
