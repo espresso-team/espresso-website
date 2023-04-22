@@ -15,6 +15,7 @@ import Chat from "./components/chat.component";
 import Forum from "./components/forum.component";
 import MyBot from "./components/myBot.component";
 import backgroundImage from './assets/backgroundImage.jpeg';
+import { AuthProvider } from './app/AuthContext';
 
 
 type Props = {};
@@ -30,21 +31,23 @@ class App extends Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <AuthProvider>
+        <div>
           <GlobalStyles />
           <ThemeProvider theme={light}>
-            <Navbar/>
+            <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/pk" element={<Pk />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/chat" element={<Chat />}/>
-              <Route path="/forum" element={<Forum />}/>
-              <Route path="/mybot" element={<MyBot />}/>
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/forum" element={<Forum />} />
+              <Route path="/mybot" element={<MyBot />} />
             </Routes>
           </ThemeProvider>
-      </div>
+        </div>
+      </AuthProvider>
     );
   }
 }

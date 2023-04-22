@@ -7,6 +7,8 @@ import axios from 'axios';
 import { HttpStatus } from '../types/HttpStatus';
 import { usePkSystemHook } from '../state/pk-system-hook';
 import { ENDPOINT } from '../types/Env';
+import { useAuth } from './AuthContext';
+
 var console = require("console-browserify")
 
 // interface Func {
@@ -42,6 +44,8 @@ const RegisterBlock = () => {
 
   const [country, setCountry] = useState<string>('+86')
 
+  const { setIsLoggedIn } = useAuth();
+
   const goToRegister = async (phone: string, code: string) => {
     console.log("go to register")
     await axios
@@ -54,9 +58,12 @@ const RegisterBlock = () => {
         if(response.status === HttpStatus.OK || response.status === HttpStatus.CREATED) {
           const userToken = response.data.data.token;
           action.setUserToken(userToken);
+          localStorage.setItem('userToken', userToken);
           const uID = response.data.data.userId;
           action.setUserId(uID);
-          setLoading(false)
+          setLoading(false);
+          // Set the isLoggedIn state to true
+          setIsLoggedIn(true);
           // Close the modal
           action.setModelOpen(false);
         }

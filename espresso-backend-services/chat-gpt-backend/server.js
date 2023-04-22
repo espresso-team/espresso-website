@@ -15,12 +15,30 @@ import cors from "cors";
 import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words } from "./util.js";
 import { authRoutes } from "./routes/auth.route.js";
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app = express();
-app.use(cors({
-    origin: '*'
-}));
+const allowedOrigins = [
+  'https://chitchat-ai-mm27.onrender.com/',
+  'http://localhost:3001',
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const errorMsg = `The CORS policy for this site does not allow access from the specified origin: ${origin}`;
+        return callback(new Error(errorMsg), false);
+      }
+
+      return callback(null, true);
+    },
+    credentials: true, // Allow the server to accept cookies from the client
+  })
+);
 const port = 3000;
 
 // connect mongo client
@@ -28,6 +46,9 @@ connect();
 
 // Body parser middleware to parse JSON request bodies
 app.use(bodyParser.json());
+
+// Cookie Parser
+app.use(cookieParser());
 
 var file_prefix = process.env.ON_SERVER == 'true' ? process.env.SERVER_FILE_PATH : "./";
 

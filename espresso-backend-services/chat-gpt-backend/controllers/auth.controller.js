@@ -8,6 +8,8 @@ import { createJwtToken } from "../utils/token.util.js";
 
 import { generateOTP, fast2sms } from "../utils/otp.util.js";
 
+const COOKIE_NAME = 'auth_token';
+
 // --------------------- create new user ---------------------------------
 export async function loginOrRegisterUser(req, res, next) {
     try {
@@ -101,7 +103,7 @@ export async function verifyOTP(req, res, next) {
 
     // user.phoneOtp = "";
     // await user.save();
-
+    res.cookie(COOKIE_NAME, token, { httpOnly: true, secure: true, sameSite: 'strict' });
     res.status(201).json({
       type: "success",
       message: "登录成功",
@@ -120,14 +122,14 @@ export async function verifyOTP(req, res, next) {
 
 export async function fetchCurrentUser(req, res, next) {
   try {
-    const currentUser = res.locals.user;
+    const userId = res.locals.userId;
 
 
     return res.status(200).json({
       type: "success",
       message: "fetch current user",
       data: {
-        user:currentUser,
+        userId:userId,
       },
     });
   } catch (error) {
