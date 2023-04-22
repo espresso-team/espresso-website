@@ -4,6 +4,8 @@ import { ENDPOINT } from '../types/Env';
 interface AuthState {
   isLoggedIn: boolean;
   setIsLoggedIn: (loggedIn: boolean) => void;
+  userId: string | null;
+  setUserId: (userId: string | null) => void;
 }
 
 interface AuthProviderProps {
@@ -13,6 +15,8 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthState>({
   isLoggedIn: false,
   setIsLoggedIn: () => {}, // Provide a default empty function
+  userId: null,
+  setUserId: () => {},
 });
 
 const useAuth = () => {
@@ -21,7 +25,7 @@ const useAuth = () => {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -40,12 +44,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
 
         if (response.ok) {
+          const data = await response.json();
           setIsLoggedIn(true);
+          setUserId(data.data.userId);
         } else {
           setIsLoggedIn(false);
+          setUserId(null);
         }
       } catch (error) {
         setIsLoggedIn(false);
+        setUserId(null);
       }
     };
 
@@ -53,7 +61,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userId, setUserId }}>
       {children}
     </AuthContext.Provider>
   );

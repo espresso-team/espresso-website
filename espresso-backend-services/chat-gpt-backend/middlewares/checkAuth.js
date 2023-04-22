@@ -38,7 +38,7 @@ export async function checkAuth(req, res, next) {
         return;
       }
   
-      res.locals.user = user;
+      res.locals.userId = user._id;
   
       next();
     } catch (err) {

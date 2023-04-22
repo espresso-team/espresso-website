@@ -177,7 +177,7 @@ const Navbar = () => {
     const [state, action] = usePkSystemHook();
     const [menuOpen, setMenuOpen] = useState(false);
     const [click, setClick] = useState(false);
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, userId } = useAuth();
 
     useEffect(() => {
     }, [state.modalOpen]);
@@ -214,7 +214,7 @@ const Navbar = () => {
                             </If>
                             <If condition={isLoggedIn}>
                                 <div className="mobile">
-                                    <Button text={`用户${state.userId.substring(0, 7)}`} disabled={true} />
+                                    <Button text={`用户${userId?.substring(0, 7)}`} disabled={true} />
                                 </div>
                             </If>
                         </MenuItem>
@@ -227,7 +227,7 @@ const Navbar = () => {
                     </If>
                     <If condition={isLoggedIn}>
                         <div className="desktop">
-                            <Button text={`用户${state.userId.substring(0, 7)}`} disabled={true}/>
+                            <Button text={`用户${userId?.substring(0, 7)}`} disabled={true}/>
                         </div>
                     </If>
 
