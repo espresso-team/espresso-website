@@ -7,7 +7,9 @@ import RegisterBlock from './RegisterBlock';
 import Button from './Button';
 import { usePkSystemHook } from '../state/pk-system-hook';
 import { If } from './If';
-var console = require("console-browserify")
+import { useAuth } from './AuthContext';
+
+var console = require("console-browserify");
 const Section = styled.section`
     background-color: ${props => props.theme.navBackground};
 `
@@ -172,9 +174,10 @@ const HamburgerMenu = styled.span<HamburgerMenuProps>`
 var console = require("console-browserify")
 
 const Navbar = () => {
-    const [state, action] = usePkSystemHook()
+    const [state, action] = usePkSystemHook();
     const [menuOpen, setMenuOpen] = useState(false);
     const [click, setClick] = useState(false);
+    const { isLoggedIn } = useAuth();
 
     useEffect(() => {
     }, [state.modalOpen]);
@@ -204,12 +207,12 @@ const Navbar = () => {
                         <MenuItem><StyledLink to={"/forum"} >探索</StyledLink></MenuItem>
                         <MenuItem><StyledLink to={"/mybot"}>自洽</StyledLink></MenuItem>
                         <MenuItem>
-                            <If condition={state.userToken === "unknown"}>
+                            <If condition={!isLoggedIn}>
                                 <div className="mobile">
                                     <Button text='注册登录' onClick={showModal} />
                                 </div>
                             </If>
-                            <If condition={state.userToken !== "unknown"}>
+                            <If condition={isLoggedIn}>
                                 <div className="mobile">
                                     <Button text={`用户${state.userId.substring(0, 7)}`} disabled={true} />
                                 </div>
@@ -217,12 +220,12 @@ const Navbar = () => {
                         </MenuItem>
                     </Menu>
 
-                    <If condition={state.userToken === "unknown"}>
+                    <If condition={!isLoggedIn}>
                         <div className="desktop">
                             <Button text='注册登录' onClick={showModal} />
                         </div>
                     </If>
-                    <If condition={state.userToken !== "unknown"}>
+                    <If condition={isLoggedIn}>
                         <div className="desktop">
                             <Button text={`用户${state.userId.substring(0, 7)}`} disabled={true}/>
                         </div>
