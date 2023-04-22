@@ -3,6 +3,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import ChatClient from "./chatgpt-client.js";
+import * as fs from "fs";
 import { createConversation, getConv, updateConv, deleteConv } from "./services/conversationService.js";
 import { insertUser, getUserByUserId} from "./services/userProfileService.js";
 import { insertModel, getModelByModelId, getModelsByModelType } from "./services/modelProfileService.js";
@@ -13,7 +14,9 @@ import { ObjectId } from 'mongodb';
 import cors from "cors";
 import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words } from "./util.js";
 import { authRoutes } from "./routes/auth.route.js";
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
 app.use(cors({
     origin: '*'
@@ -25,6 +28,8 @@ connect();
 
 // Body parser middleware to parse JSON request bodies
 app.use(bodyParser.json());
+
+var file_prefix = process.env.ON_SERVER == 'true' ? process.env.SERVER_FILE_PATH : "./";
 
 // Route to handle incoming messages
 app.post("/send-message", async (req, res) => {
@@ -148,9 +153,13 @@ app.get("/model-profile", async (req, res) => {
 // Route when creating a new model profile
 app.post("/model-profile", async (req, res) => {
   const model_id = req.body.model_id;
+  const user_id = req.body.user_id;
   const model_name = req.body.model_name;
   const model_type = req.body.model_type;
-  const model_metadata = req.body.model_metadata;
+  var model_metadata = req.body.model_metadata;
+  const init_prompt = createInitPrompt(model_metadata);
+  model_metadata["user_id"] = user_id;
+  model_metadata["initial_prompt"] = init_prompt;
   const model = {
     model_id: model_id,
     model_name: model_name,
@@ -205,6 +214,20 @@ app.post("/user-profile", async (req, res) => {
 
 app.use("/api/auth", authRoutes);
 
+function createInitPrompt(data) {
+  var init_prompt = fs.readFileSync(`${file_prefix}self-prompt.txt`, 'utf8'); 
+  const replaced = init_prompt
+    .replace('{$gender}', data.gender)
+    .replace('{$age}', data.age)
+    .replace('{$name}', data.name)
+    .replace('{$occupation}', data.occupation)
+    .replace('{$personality}', data.personality.join(', '))
+    .replace('{$hobbies}', data.hobbies.join(', '))
+    .replace('{$freq_chats}', data.freq_chats.join(', '))
+    .replace('{$other_patterns}', data.other_patterns)
+    .replace('{$greetings}', data.greetings);
+  return replaced;
+}
 // Start the server
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

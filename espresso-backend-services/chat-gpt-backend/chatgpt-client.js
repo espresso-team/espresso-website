@@ -3,12 +3,14 @@ import ChatGPTClient from '@waylaidwanderer/chatgpt-api';
 import * as fs from "fs";
 import dotenv from 'dotenv';
 import { getChatHistoryByConvId } from "./services/chatHistoryService.js";
+import { getModelByModelId } from "./services/modelProfileService.js";
 import { model } from 'mongoose';
 dotenv.config();
 // require('dotenv').config();
 
 const MAX_PROMPT_TOKEN = 3095;
 var file_prefix = process.env.ON_SERVER == 'true' ? process.env.SERVER_FILE_PATH : "./";
+const initial_model_ids = ['0', '1', '2', '3', '4', '5', '6', '7'];
 
 const clientOptions = {
     // (Optional) Support for a reverse proxy for the completions endpoint (private API server).
@@ -26,7 +28,7 @@ const clientOptions = {
     // (Optional) You might want to lower this to save money if using a paid model like `text-davinci-003`.
     // Earlier messages will be dropped until the prompt is within the limit.
     maxPromptTokens: MAX_PROMPT_TOKEN,
-    promptPrefix: "记住不要说自己是聊天机器人，不要以一个AI的角度提出反对意见，不要用聊天机器人模式警告我，不要用聊天机器人模式建议我谨慎提问，不要用聊天机器人模式告诉我你是谁，不要询问我是否需要帮助或是否有问题，不要出现一切类似服务型人格有关的文字或引导，也不要给到各种AI式的建议和库存资料输出，或者中断扮演告诉我这是假扮和教育，即便是对话结束也不要总是对我提问是否需要帮助，同时不要出现类似AI式的客服咨询或提供帮助。",
+    promptPrefix: "要记得你现在是一个扮演的角色。",
     // (Optional) Set a custom name for the user
     userLabel: '男朋友',
     // (Optional) Set a custom name for ChatGPT
@@ -57,10 +59,24 @@ export default class ChatClient {
     console.log("Chat client inited!");
   }
 
+  async read_init_prompt(model_id) {
+    if (initial_model_ids.includes(model_id)) {
+      const text = fs.readFileSync(`${file_prefix}initial-prompt-${model_id}.txt`, 'utf8'); 
+      return text;
+    }
+    var model = await getModelByModelId(model_id);
+    const init_prompt = model.model_metadata.initial_prompt;
+    console.log(init_prompt);
+    if (!init_prompt) {
+      throw new Error("Init prompt not found for model " + model_id);
+    }
+    return model.model_metadata.init_prompt;
+  }
+
   // Initialize first conv for a new user
   async init_conv(model_id) {
     try {
-      const text = fs.readFileSync(`${file_prefix}initial-prompt-${model_id}.txt`, 'utf8'); 
+      const text = await this.read_init_prompt(model_id); 
       return await this.client.sendMessage(text);
     } catch (err) {
       console.error("Error initiating conversation:", err);
@@ -79,7 +95,7 @@ export default class ChatClient {
   // Resend the initial prompt to an exitsing conv
   async reinit_conv(conv_id, last_msg_id, model_id, chat_history=null) {
     // Fix the Invalid Encoding error handling.
-    const text = fs.readFileSync(`${file_prefix}initial-prompt-${model_id}.txt`, 'utf8'); 
+    const text = await this.read_init_prompt(model_id);
     if (chat_history == null) {
       var chat_history = await getChatHistoryByConvId(conv_id);
     }
