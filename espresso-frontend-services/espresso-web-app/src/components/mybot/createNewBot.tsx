@@ -1,7 +1,14 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BsPlus } from 'react-icons/bs';
-
+import MyBotTagItems from '../../types/MyBotTagItems';
+import axios from 'axios';
+import { ENDPOINT } from '../../types/Env';
+import { usePkSystemHook } from '../../state/pk-system-hook';
+import { createRandomUserId } from '../../util/createRandomUserId';
+import { genderChineseToRequiredType } from '../../util/genderChineseToRequiredType';
+import { HttpStatus } from '../../types/HttpStatus';
+import { message } from 'antd';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,7 +19,6 @@ const Container = styled.div`
   box-sizing: border-box;
   margin: 0 auto;
 `;
-
 
 const Title = styled.h1`
   font-size: 24px;
@@ -70,12 +76,11 @@ const TagItem = styled.div<{ selected: boolean }>`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
-  background-color: ${(props) => (props.selected ? "#2196f3" : "#f0f0f0")};
+  background-color: ${(props) => (props.selected ? "#000" : "#f0f0f0")};
   color: ${(props) => (props.selected ? "#fff" : "#000")};
   margin: 5px;
   cursor: pointer;
 `;
-
 
 const StyledTextarea = styled.textarea`
   width: 100%;
@@ -172,20 +177,6 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const StyledSelect = styled.select`
-  width: 100%;
-  height: 38px;
-  padding: 0 10px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  margin-bottom: 10px;
-`;
-
 const StyledRadioButtonContainer = styled.div`
   display: flex;
   align-items: center;
@@ -221,53 +212,22 @@ const StyledRadioButton = styled.input.attrs({ type: "radio" })`
 `;
 
 const CreateNewBot = () => {
-  const [tags, setTags] = useState([
-    '友好',
-    '幽默',
-    '严肃',
-    '热情',
-    '活泼',
-    '机智',
-    '负责',
-    '自信',
-    '乐观',
-    '善良',
-    '开朗',
-    '温柔',
-    '稳重',
-    '独立',
-    '务实',
-    '内敛',
-    '果断',
-    '谨慎',
-    '慷慨',
-    '忠诚',
-    '谦逊',
-    '犹豫',
-    '直率',
-    '颓废',
-    '矛盾',
-    '轻浮',
-    '悲观',
-    '敏感',
-    '充满活力',
-    '平静',
-    '感性',
-    '理性',
-    '拖延',
-    '自律',
-    '怀疑',
-    '嘲讽',
-    '坚定',
-    '迷茫',
-    '急躁',
-    '耐心',
-    '自负',
-    '虚荣',
-  ]);
-
+  const [state] = usePkSystemHook();
+  const [tags, setTags] = useState(MyBotTagItems);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+
+  const [aiName, setAiName] = useState('');
+  const [greeting, setGreeting] = useState('');
+  const [freqChats1, setFreqChats1] = useState('');
+  const [freqChats2, setfreqChats2] = useState('');
+  const [freqChats3, setfreqChats3] = useState('');
+  const [gender, setGender] = useState('');
+  const [occupation, setOccupation] = useState('');
+  const [hobby, setHobby] = useState('');
+  const [age, setAge] = useState('');
+  const [otherFeatures, setOtherFeatures] = useState('');
+  const [isPublicAiBot, setIsPublicAiBot] = useState(false);
 
 
   const handleTagClick = (tag: string) => {
@@ -283,7 +243,6 @@ const CreateNewBot = () => {
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
@@ -294,6 +253,7 @@ const CreateNewBot = () => {
       setUploadedImages([...uploadedImages, imageDataUrl]);
     }
   };
+
   const toBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -301,6 +261,54 @@ const CreateNewBot = () => {
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = (error) => reject(error);
     });
+
+
+  const handleSubmit = async () => {
+    const modelMetadata = {
+      name: aiName,
+      gender,
+      age,
+      occupation,
+      personality: selectedTags,
+      hobbies: [hobby],
+      freq_chats: [freqChats1, freqChats2, freqChats3],
+      other_patterns: otherFeatures,
+      is_public: isPublicAiBot,
+      greetings: greeting,
+    };
+
+    
+
+    const userId = state.userId === "unknown" ? createRandomUserId() : state.userId;
+    const modelId = createRandomUserId(); // Generate a random one;
+    console.log("myBot submitting:", modelMetadata);
+    console.log("userId", userId)
+    console.log("modelId", modelId)
+    console.log("api", `${ENDPOINT}/model-profile`)
+    try {
+      const response = await axios.post(`${ENDPOINT}/model-profile`, {
+        user_id: userId,
+        model_id: modelId,
+        model_name: aiName,
+        model_type: genderChineseToRequiredType(gender), // 根据需要Map为'M'或'W'
+        model_metadata: modelMetadata,
+      });
+  
+      if (response.status === HttpStatus.OK) {
+        message.success("AI角色创建成功");
+        if(state.userId) {
+          message.success("请及时注册保存当前角色");
+        }
+        console.log("set modelMetadata succeeded", response.data);
+      } else {
+        message.error("页面错误，请刷新重试");
+        console.log("set modelMetadata failed", response);
+      }
+    } catch (err) {
+      message.error("页面错误，请刷新重试");
+      console.log(err);
+    }
+  };
 
   return (
     <Container>
@@ -320,16 +328,33 @@ const CreateNewBot = () => {
       </UploadArea>
       <InputContainer>
         <SectionTitle>名称</SectionTitle>
-        <StyledInput type="text" placeholder="AI名称" />
+        <StyledInput
+          type="text"
+          placeholder="AI名称"
+          value={aiName}
+          onChange={(e) => setAiName(e.target.value)}
+        />
         <StyledLabel>姓名不能重复且在10个字符以内。创建后无法修改。</StyledLabel>
       </InputContainer>
 
       <InputContainer>
         <SectionTitle>性别</SectionTitle>
         <StyledRadioButtonContainer>
-          <StyledRadioButton id="male" name="gender" value="男" />
+          <StyledRadioButton
+            id="male"
+            name="gender"
+            value="男"
+            checked={gender === '男'}
+            onChange={() => setGender('男')}
+          />
           <StyledRadioButtonLabel htmlFor="male">男</StyledRadioButtonLabel>
-          <StyledRadioButton id="female" name="gender" value="女" />
+          <StyledRadioButton
+            id="female"
+            name="gender"
+            value="女"
+            checked={gender === '女'}
+            onChange={() => setGender('女')}
+          />
           <StyledRadioButtonLabel htmlFor="female">女</StyledRadioButtonLabel>
         </StyledRadioButtonContainer>
       </InputContainer>
@@ -339,7 +364,7 @@ const CreateNewBot = () => {
         {tags.map((tag, index) => (
           <TagItem
             key={index}
-            selected={selectedTags.includes(tag)} // 添加了这一行
+            selected={selectedTags.includes(tag)}
             onClick={() => handleTagClick(tag)}
           >
             {tag}
@@ -349,51 +374,83 @@ const CreateNewBot = () => {
       </TagsContainer>
 
       <InputContainer>
-          <SectionTitle>开局问候语</SectionTitle>
-          <StyledInput type="text" placeholder="开局问候语" />
-          <StyledLabel>开始与他人交流时，用来表示友好和礼貌的一句话或短语。</StyledLabel>
-        </InputContainer>
+        <SectionTitle>开局问候语</SectionTitle>
+        <StyledInput
+          type="text"
+          placeholder="开局问候语"
+          value={greeting}
+          onChange={(e) => setGreeting(e.target.value)}
+        />
+        <StyledLabel>开始与他人交流时，用来表示友好和礼貌的一句话或短语。</StyledLabel>
+      </InputContainer>
 
       <InputContainer>
-          <SectionTitle>聊天口头禅</SectionTitle>
-          <StyledInput type="text" placeholder="聊天口头禅1" />
-          <StyledInput type="text" placeholder="聊天口头禅2" />
-        <StyledInput type="text" placeholder="聊天口头禅3" />
-  
-          <StyledLabel>聊天口头禅可以是一些流行语、俚语、惯用语、感叹词或者个人特色的说法。</StyledLabel>
-        </InputContainer>
+        <SectionTitle>聊天口头禅</SectionTitle>
+        <StyledInput
+          type="text"
+          placeholder="聊天口头禅1"
+          value={freqChats1}
+          onChange={(e) => setFreqChats1(e.target.value)}
+        />
+        <StyledInput
+          type="text"
+          placeholder="聊天口头禅2"
+          value={freqChats2}
+          onChange={(e) => setfreqChats2(e.target.value)}
+        />
+        <StyledInput
+          type="text"
+          placeholder="聊天口头禅3"
+          value={freqChats3}
+          onChange={(e) => setfreqChats3(e.target.value)}
+        />
+        <StyledLabel>聊天口头禅可以是一些流行语、俚语、惯用语、感叹词或者个人特色的说法。</StyledLabel>
+      </InputContainer>
 
-        
+
       <FormContainer>
         <InputContainer>
           <SectionTitle>职业</SectionTitle>
-          <StyledInput type="text" placeholder="职业" />
+          <StyledInput
+            type="text"
+            placeholder="职业"
+            value={occupation}
+            onChange={(e) => setOccupation(e.target.value)}
+          />
         </InputContainer>
 
         <InputContainer>
           <SectionTitle>爱好</SectionTitle>
-          <StyledInput type="text" placeholder="爱好" />
+          <StyledInput
+            type="text"
+            placeholder="爱好"
+            value={hobby}
+            onChange={(e) => setHobby(e.target.value)}
+          />
         </InputContainer>
 
         <InputContainer>
           <SectionTitle>年龄</SectionTitle>
-          <StyledInput type="text" placeholder="年龄" />
+          <StyledInput
+            type="text"
+            placeholder="年龄"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+          />
         </InputContainer>
       </FormContainer>
 
-
-
-        <InputContainer>
-          <SectionTitle>其他特征</SectionTitle>
-          <StyledTextarea />
-          <StyledLabel>包括但不限于，癖好：如摆弄手指、喜欢喝咖啡、痴迷音乐等。成长背景：AI角色的家庭背景、教育经历、成长经历等。擅长领域：如编程、绘画、写作、烹饪等。信仰与价值观：AI角色可能有一定的宗教信仰、道德观念、人生观等。</StyledLabel>
-        </InputContainer>
+      <InputContainer>
+        <SectionTitle>其他特征</SectionTitle>
+        <StyledTextarea value={otherFeatures} onChange={(e) => setOtherFeatures(e.target.value)} />
+        <StyledLabel>包括但不限于，癖好：如摆弄手指、喜欢喝咖啡、痴迷音乐等。成长背景：AI角色的家庭背景、教育经历、成长经历等。擅长领域：如编程、绘画、写作、烹饪等。信仰与价值观：AI角色可能有一定的宗教信仰、道德观念、人生观等。</StyledLabel>
+      </InputContainer>
 
       <SwitchContainer>
         <SwitchContainerWrapper>
           <SectionTitle>是否公开此角色</SectionTitle>
           <StyledSwitch>
-            <input type="checkbox" />
+            <input type="checkbox" checked={isPublicAiBot} onChange={() => setIsPublicAiBot(!isPublicAiBot)} />
             <span></span>
           </StyledSwitch>
         </SwitchContainerWrapper>
@@ -401,7 +458,8 @@ const CreateNewBot = () => {
         <StyledLabel>公开后其他人可以在探索页面查看</StyledLabel>
       </SwitchContainer>
 
-      <StyledButton primary>创建AI</StyledButton>
+      <StyledButton primary onClick={handleSubmit}>创建AI</StyledButton>
+
       <StyledButton onClick={handleShareToWeChat}>分享到朋友圈赚取点数</StyledButton>
     </Container>
   );
