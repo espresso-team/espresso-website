@@ -28,7 +28,7 @@ const clientOptions = {
     // (Optional) You might want to lower this to save money if using a paid model like `text-davinci-003`.
     // Earlier messages will be dropped until the prompt is within the limit.
     maxPromptTokens: MAX_PROMPT_TOKEN,
-    promptPrefix: "要记得你现在是一个扮演的角色。",
+    promptPrefix: "请开始扮演角色，但不要说你在角色扮演。",
     // (Optional) Set a custom name for the user
     userLabel: '男朋友',
     // (Optional) Set a custom name for ChatGPT
