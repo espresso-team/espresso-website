@@ -37,20 +37,22 @@ const UploadArea = styled.div`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
+  align-items: center;
+  margin: 5px;
 `;
 
 const StyledInput = styled.input`
   width: 100%;
   padding: 5px;
+  margin-bottom:5px;
+  margin-top:5px;
   border-radius: 5px;
 `;
 
 const StyledLabel = styled.label`
   font-size: 14px;
   color: #666;
+  margin-right: 10px;
 `;
 
 const SectionTitle = styled.h2`
@@ -83,13 +85,21 @@ const StyledTextarea = styled.textarea`
 `;
 
 const SwitchContainer = styled.div`
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+`;
+
+const SwitchContainerWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 0;
+  margin: 0;
+  padding: 0;
 `;
 
 const StyledSwitch = styled.label`
+  margin: 10px;
   position: relative;
   display: inline-block;
   width: 60px;
@@ -153,6 +163,62 @@ const StyledButton = styled.button<{ primary?: boolean }>`
   }
 `;
 
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 20px;
+`;
+
+const StyledSelect = styled.select`
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  margin-bottom: 10px;
+`;
+
+const StyledRadioButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const StyledRadioButtonLabel = styled.label`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+`;
+
+const StyledRadioButton = styled.input.attrs({ type: "radio" })`
+  display: none;
+
+  &:checked + ${StyledRadioButtonLabel} {
+    background-color: #333;
+    color: #fff;
+  }
+`;
 
 const CreateNewBot = () => {
   const [tags, setTags] = useState([
@@ -238,9 +304,9 @@ const CreateNewBot = () => {
 
   return (
     <Container>
-      <Title>创建我的AI分身</Title>
+      <Title>创建我的AI角色</Title>
       {uploadedImages.map((image, index) => (
-      <UploadArea key={index} style={{ backgroundImage: `url(${image})` }} />
+        <UploadArea key={index} style={{ backgroundImage: `url(${image})` }} />
       ))}
       <UploadArea onClick={() => fileInputRef.current?.click()}>
         <BsPlus size={24} />
@@ -253,11 +319,22 @@ const CreateNewBot = () => {
         />
       </UploadArea>
       <InputContainer>
-        <SectionTitle>AI名称</SectionTitle>
+        <SectionTitle>名称</SectionTitle>
         <StyledInput type="text" placeholder="AI名称" />
-        <StyledLabel>AI姓名不能重复且在10个字符以内。创建后无法修改。</StyledLabel>
+        <StyledLabel>姓名不能重复且在10个字符以内。创建后无法修改。</StyledLabel>
       </InputContainer>
-      <SectionTitle>AI描述</SectionTitle>
+
+      <InputContainer>
+        <SectionTitle>性别</SectionTitle>
+        <StyledRadioButtonContainer>
+          <StyledRadioButton id="male" name="gender" value="男" />
+          <StyledRadioButtonLabel htmlFor="male">男</StyledRadioButtonLabel>
+          <StyledRadioButton id="female" name="gender" value="女" />
+          <StyledRadioButtonLabel htmlFor="female">女</StyledRadioButtonLabel>
+        </StyledRadioButtonContainer>
+      </InputContainer>
+
+      <SectionTitle>性格</SectionTitle>
       <TagsContainer>
         {tags.map((tag, index) => (
           <TagItem
@@ -270,15 +347,60 @@ const CreateNewBot = () => {
         ))}
 
       </TagsContainer>
-      <SectionTitle>其他提示词</SectionTitle>
-      <StyledTextarea />
+
+      <InputContainer>
+          <SectionTitle>开局问候语</SectionTitle>
+          <StyledInput type="text" placeholder="开局问候语" />
+          <StyledLabel>开始与他人交流时，用来表示友好和礼貌的一句话或短语。</StyledLabel>
+        </InputContainer>
+
+      <InputContainer>
+          <SectionTitle>聊天口头禅</SectionTitle>
+          <StyledInput type="text" placeholder="聊天口头禅1" />
+          <StyledInput type="text" placeholder="聊天口头禅2" />
+        <StyledInput type="text" placeholder="聊天口头禅3" />
+  
+          <StyledLabel>聊天口头禅可以是一些流行语、俚语、惯用语、感叹词或者个人特色的说法。</StyledLabel>
+        </InputContainer>
+
+        
+      <FormContainer>
+        <InputContainer>
+          <SectionTitle>职业</SectionTitle>
+          <StyledInput type="text" placeholder="职业" />
+        </InputContainer>
+
+        <InputContainer>
+          <SectionTitle>爱好</SectionTitle>
+          <StyledInput type="text" placeholder="爱好" />
+        </InputContainer>
+
+        <InputContainer>
+          <SectionTitle>年龄</SectionTitle>
+          <StyledInput type="text" placeholder="年龄" />
+        </InputContainer>
+      </FormContainer>
+
+
+
+        <InputContainer>
+          <SectionTitle>其他特征</SectionTitle>
+          <StyledTextarea />
+          <StyledLabel>包括但不限于，癖好：如摆弄手指、喜欢喝咖啡、痴迷音乐等。成长背景：AI角色的家庭背景、教育经历、成长经历等。擅长领域：如编程、绘画、写作、烹饪等。信仰与价值观：AI角色可能有一定的宗教信仰、道德观念、人生观等。</StyledLabel>
+        </InputContainer>
+
       <SwitchContainer>
-        <StyledLabel>公开显示提示词</StyledLabel>
-        <StyledSwitch>
-          <input type="checkbox" />
-          <span></span>
-        </StyledSwitch>
+        <SwitchContainerWrapper>
+          <SectionTitle>是否公开此角色</SectionTitle>
+          <StyledSwitch>
+            <input type="checkbox" />
+            <span></span>
+          </StyledSwitch>
+        </SwitchContainerWrapper>
+
+        <StyledLabel>公开后其他人可以在探索页面查看</StyledLabel>
       </SwitchContainer>
+
       <StyledButton primary>创建AI</StyledButton>
       <StyledButton onClick={handleShareToWeChat}>分享到朋友圈赚取点数</StyledButton>
     </Container>
