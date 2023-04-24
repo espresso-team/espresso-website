@@ -38,6 +38,7 @@ class App extends Component<Props, State> {
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/index" element={<Home />} />
               <Route path="/pk" element={<Pk />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

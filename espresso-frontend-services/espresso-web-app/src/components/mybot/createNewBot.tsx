@@ -8,7 +8,8 @@ import { usePkSystemHook } from '../../state/pk-system-hook';
 import { createRandomUserId } from '../../util/createRandomUserId';
 import { genderChineseToRequiredType } from '../../util/genderChineseToRequiredType';
 import { HttpStatus } from '../../types/HttpStatus';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
+import RegisterBlock from '../../app/RegisterBlock';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -228,6 +229,7 @@ const CreateNewBot = () => {
   const [age, setAge] = useState('');
   const [otherFeatures, setOtherFeatures] = useState('');
   const [isPublicAiBot, setIsPublicAiBot] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   const handleTagClick = (tag: string) => {
@@ -262,6 +264,13 @@ const CreateNewBot = () => {
       reader.onerror = (error) => reject(error);
     });
 
+  const handleModalCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
 
   const handleSubmit = async () => {
     const modelMetadata = {
@@ -276,8 +285,6 @@ const CreateNewBot = () => {
       is_public: isPublicAiBot,
       greetings: greeting,
     };
-
-    
 
     const userId = state.userId === "unknown" ? createRandomUserId() : state.userId;
     const modelId = createRandomUserId(); // Generate a random one;
@@ -300,6 +307,9 @@ const CreateNewBot = () => {
           message.success("请及时注册保存当前角色");
         }
         console.log("set modelMetadata succeeded", response.data);
+        // show model
+        handleModalOpen();
+        
       } else {
         message.error("页面错误，请刷新重试");
         console.log("set modelMetadata failed", response);
@@ -309,7 +319,6 @@ const CreateNewBot = () => {
       console.log(err);
     }
   };
-
   return (
     <Container>
       <Title>创建我的AI角色</Title>
@@ -460,7 +469,19 @@ const CreateNewBot = () => {
 
       <StyledButton primary onClick={handleSubmit}>创建AI</StyledButton>
 
-      <StyledButton onClick={handleShareToWeChat}>分享到朋友圈赚取点数</StyledButton>
+      
+      <Modal
+        centered
+        title="AI角色创建成功"
+        open={isModalOpen}
+        footer={null}
+        onCancel={handleModalCancel}
+      >
+        <StyledButton primary onClick={handleShareToWeChat}>开始聊天</StyledButton>
+        <StyledButton onClick={handleShareToWeChat}>分享到朋友圈赚取点数</StyledButton>
+
+      </Modal>
+                    
     </Container>
   );
 };
