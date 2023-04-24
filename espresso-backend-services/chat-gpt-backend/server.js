@@ -14,6 +14,7 @@ import { ObjectId } from 'mongodb';
 import cors from "cors";
 import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words } from "./util.js";
 import { authRoutes } from "./routes/auth.route.js";
+import { apiRoutes } from "./routes/api.route.js";
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -235,6 +236,8 @@ app.post("/user-profile", async (req, res) => {
 
 app.use("/api/auth", authRoutes);
 
+app.use("/api", apiRoutes);
+
 function createInitPrompt(data) {
   var init_prompt = fs.readFileSync(`${file_prefix}self-prompt.txt`, 'utf8'); 
   const replaced = init_prompt
@@ -244,7 +247,7 @@ function createInitPrompt(data) {
     .replace('{$occupation}', data.occupation)
     .replace('{$personality}', data.personality.join(', '))
     .replace('{$hobbies}', data.hobbies.join(', '))
-    .replace('{$freq_chats}', data.freq_chats.join(', '))
+    .replace('{$freq_chats}', data.freq_chats.join('| '))
     .replace('{$other_patterns}', data.other_patterns)
     .replace('{$greetings}', data.greetings);
   return replaced;
