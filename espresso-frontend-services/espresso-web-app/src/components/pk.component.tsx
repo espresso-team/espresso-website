@@ -2,6 +2,7 @@ import { Component } from "react";
 import Footer from "../app/Footer";
 import Game from "./pk/Game"
 import styled from "styled-components"
+import Navbar from "../app/Navbar";
 
 type Props = {};
 
@@ -24,10 +25,13 @@ export default class Pk extends Component<Props, State> {
 
   render() {
     return (
-      <PKPageWrapper>
-        <Game userId={"test1"}/>
-        <Footer />
-      </PKPageWrapper>
+      <>
+        <Navbar />
+        <PKPageWrapper>
+          <Game userId={"test1"}/>
+          <Footer />
+        </PKPageWrapper>
+      </>
     );
   }
 }

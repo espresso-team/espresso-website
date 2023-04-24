@@ -39,7 +39,7 @@ const Navigation = styled.nav`
     }
 `
 interface MenuProps {
-  click: boolean;
+    click: boolean;
 }
 
 const Menu = styled.ul<MenuProps>`
@@ -122,7 +122,7 @@ const StyledLink = styled(Link)`
 `;
 
 interface HamburgerMenuProps {
-  click: boolean;
+    click: boolean;
 }
 
 const HamburgerMenu = styled.span<HamburgerMenuProps>`
@@ -194,61 +194,61 @@ const Navbar = () => {
         action.setModelOpen(false);
     };
     return (
-            <Section id="navigation">
-                <Navigation>
-                    <Logo />
-                    <HamburgerMenu click={click} onClick={() => setClick(!click)}>
+        <Section id="navigation">
+            <Navigation>
+                <Logo />
+                <HamburgerMenu click={click} onClick={() => setClick(!click)}>
                     &nbsp;
-                    </HamburgerMenu>
-                    <Menu click={click}>
-                        <MenuItem><StyledLink to={"/"} >主页</StyledLink></MenuItem>
-                        <MenuItem><StyledLink to={"/pk"} >洽洽</StyledLink></MenuItem>
-                        <MenuItem><StyledLink to={"/chat"} >聊天</StyledLink></MenuItem>
-                        <MenuItem><StyledLink to={"/forum"} >探索</StyledLink></MenuItem>
-                        <MenuItem><StyledLink to={"/mybot"}>自洽</StyledLink></MenuItem>
-                        <MenuItem>
-                            <If condition={!isLoggedIn}>
-                                <div className="mobile">
-                                    <Button text='注册登录' onClick={showModal} />
-                                </div>
-                            </If>
-                            <If condition={isLoggedIn}>
-                                <div className="mobile">
-                                    <Button text={`用户${userId?.substring(0, 7)}`} disabled={true} />
-                                </div>
-                            </If>
-                        </MenuItem>
-                    </Menu>
+                </HamburgerMenu>
+                <Menu click={click}>
+                    <MenuItem><StyledLink to={"/"} >主页</StyledLink></MenuItem>
+                    <MenuItem><StyledLink to={"/pk"} >洽洽</StyledLink></MenuItem>
+                    <MenuItem><StyledLink to={"/chat"} >聊天</StyledLink></MenuItem>
+                    <MenuItem><StyledLink to={"/forum"} >探索</StyledLink></MenuItem>
+                    <MenuItem><StyledLink to={"/mybot"}>自洽</StyledLink></MenuItem>
+                    <MenuItem>
+                        <If condition={!isLoggedIn}>
+                            <div className="mobile">
+                                <Button text='注册登录' onClick={showModal} />
+                            </div>
+                        </If>
+                        <If condition={isLoggedIn}>
+                            <div className="mobile">
+                                <Button text={`用户${userId?.substring(0, 7)}`} disabled={true} />
+                            </div>
+                        </If>
+                    </MenuItem>
+                </Menu>
 
-                    <If condition={!isLoggedIn}>
-                        <div className="desktop">
-                            <Button text='注册登录' onClick={showModal} />
-                        </div>
-                    </If>
-                    <If condition={isLoggedIn}>
-                        <div className="desktop">
-                            <Button text={`用户${userId?.substring(0, 7)}`} disabled={true}/>
-                        </div>
-                    </If>
+                <If condition={!isLoggedIn}>
+                    <div className="desktop">
+                        <Button text='注册登录' onClick={showModal} />
+                    </div>
+                </If>
+                <If condition={isLoggedIn}>
+                    <div className="desktop">
+                        <Button text={`用户${userId?.substring(0, 7)}`} disabled={true} />
+                    </div>
+                </If>
 
 
-                    <Modal
-                        centered
-                        title="注册或登录"
-                        open={state.modalOpen}
-                        footer={null}
-                        onCancel={handleCancel}
-                    /* 
-                    okText={"登录"}
-                    cancelText={"取消"}
-                    onOk={handleOk}
-                    okButtonProps={{style: {backgroundColor: "black"}}} */
-                    >
-                        <RegisterBlock />
-                    </Modal>
+                <Modal
+                    centered
+                    title="注册或登录"
+                    open={state.modalOpen}
+                    footer={null}
+                    onCancel={handleCancel}
+                /* 
+                okText={"登录"}
+                cancelText={"取消"}
+                onOk={handleOk}
+                okButtonProps={{style: {backgroundColor: "black"}}} */
+                >
+                    <RegisterBlock />
+                </Modal>
 
-                </Navigation>
-            </Section>
+            </Navigation>
+        </Section>
     )
 }
 export default Navbar;

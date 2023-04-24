@@ -2,6 +2,7 @@ import { Component } from "react";
 import Footer from "../app/Footer";
 import CreateNewBot from "./mybot/createNewBot";
 import styled from "styled-components";
+import Navbar from "../app/Navbar";
 type Props = {};
 
 type State = {
@@ -22,10 +23,13 @@ export default class MyBot extends Component<Props, State> {
 
   render() {
     return (
+      <>
+      <Navbar />
       <MyBotPageWrapper>
         <CreateNewBot />
         <Footer />
       </MyBotPageWrapper>
+      </>
     );
   }
 }

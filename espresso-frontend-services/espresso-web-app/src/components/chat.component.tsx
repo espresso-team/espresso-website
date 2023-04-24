@@ -2,6 +2,7 @@ import { Component } from "react";
 import Footer from "../app/Footer";
 import ChatBox from "./chat/ChatBox";
 import styled from "styled-components";
+import Navbar from "../app/Navbar";
 type Props = {};
 
 type State = {
@@ -23,10 +24,13 @@ export default class Chat extends Component<Props, State> {
 
   render() {
     return (
-      <ChatPageWrapper>
-        <ChatBox userId={"test1"}/>
-        <Footer />
-      </ChatPageWrapper>
+      <>
+      <Navbar />
+        <ChatPageWrapper>
+          <ChatBox userId={"test1"}/>
+          <Footer />
+        </ChatPageWrapper>
+      </>
     );
   }
 }
