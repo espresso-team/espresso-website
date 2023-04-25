@@ -20,6 +20,7 @@ export async function upload_image(req, res) {
 
     // Generate the COS key (file path) and upload the image
     const cosKey = `images/${user_id}-${model_id}`;
+    const image_url = `https://${process.env.TENCENT_BUCKET}.cos.${process.env.TENCENT_REGION}.myqcloud.com/${cosKey}`;
     cos.putObject(
         {
         Bucket: process.env.TENCENT_BUCKET,
@@ -34,7 +35,7 @@ export async function upload_image(req, res) {
         }
 
         console.log('Uploaded to Tencent Cloud:', data);
-        res.status(200).json({ message: 'Image uploaded successfully', cosKey });
+        res.status(200).json({ message: 'Image uploaded successfully', image_url });
         }
     );
 }

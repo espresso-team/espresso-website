@@ -1,7 +1,8 @@
 import { findById } from "../services/userServices.js";
 
 import { AUTH_TOKEN_MISSING_ERR, AUTH_HEADER_MISSING_ERR, JWT_DECODE_ERR, USER_NOT_FOUND_ERR } from "../errors.js"
-import { verifyJwtToken } from "../utils/token.util.js"
+import { verifyJwtToken } from "../utils/token.util.js";
+import jwt from 'jsonwebtoken';
 
 
 const COOKIE_NAME = 'auth_token';
@@ -23,12 +24,18 @@ export async function checkAuth(req, res, next) {
         next({ status: 403, message: AUTH_TOKEN_MISSING_ERR });
         return;
       }
-  
-      const userId = verifyJwtToken(token, next);
-  
-      if (!userId) {
-        next({ status: 403, message: JWT_DECODE_ERR });
-        return;
+
+      let userId;
+      try {
+        userId = verifyJwtToken(token, next);
+      } catch (err) {
+        if (err instanceof jwt.TokenExpiredError) {
+          // Handle the expired token case
+          return next({ status: 401, message: "Token has expired" });
+        } else {
+          // Handle other errors
+          return next({ status: 403, message: JWT_DECODE_ERR });
+        }
       }
   
       const user = await findById(userId);

@@ -14,6 +14,6 @@ export function verifyJwtToken(token, next) {
     const { userId } = verify(token, JWT_SECRET);
     return userId;
   } catch (err) {
-    next(err);
+    throw (err);
   }
 }

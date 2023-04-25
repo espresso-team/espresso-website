@@ -268,16 +268,10 @@ const CreateNewBot = () => {
         const result = await response.json();
   
         // Assuming the backend returns the uploaded image URL in the response
-        const cosKey = result.cosKey;
-
-         // Construct the image URL
-         // TODO: Replace the bucket and region with ENV variables
-         const bucket = "chichat-images-1317940514";
-         const region = "ap-nanjing";
-         const imageUrl = `https://${bucket}.cos.${region}.myqcloud.com/${cosKey}`;
+        const image_url = result.image_url;
   
         // Add the uploaded image URL to the state
-        setUploadedImages([...uploadedImages, imageUrl]);
+        setUploadedImages([...uploadedImages, image_url]);
       } catch (error) {
         console.error('Error uploading image, please retry.', error);
         // Handle the error accordingly, e.g., show an error message to the user
