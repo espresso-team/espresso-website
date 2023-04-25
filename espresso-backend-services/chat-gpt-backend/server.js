@@ -6,7 +6,7 @@ import ChatClient from "./chatgpt-client.js";
 import * as fs from "fs";
 import { createConversation, getConv, updateConv, deleteConv } from "./services/conversationService.js";
 import { insertUser, getUserByUserId} from "./services/userProfileService.js";
-import { insertModel, getModelByModelId, getModelsByModelType } from "./services/modelProfileService.js";
+import { insertModel, getModelByModelId, getModelsByFilters } from "./services/modelProfileService.js";
 import { insertChat, getChatHistoryByConvId } from "./services/chatHistoryService.js";
 import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
@@ -162,16 +162,21 @@ app.post("/join-chat", async (req, res) => {
 
 // Route when fetching all model profile
 app.get("/model-profile", async (req, res) => {
-  const gender = req.query.gender;
-
+  const { user_id, gender, is_public } = req.body;
   try {
-    var models = await getModelsByModelType(gender);
+    const filters = {
+      user_id: user_id,
+      gender: gender,
+      is_public: is_public
+    };
+    const models = await getModelsByFilters(filters);
     res.json({ data: models, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 
 });
+
 // Route when creating a new model profile
 app.post("/model-profile", async (req, res) => {
   const model_id = req.body.model_id;

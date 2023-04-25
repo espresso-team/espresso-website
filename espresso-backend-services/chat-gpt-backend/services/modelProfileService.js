@@ -11,9 +11,23 @@ export async function deleteModel(model) {
     return await AImodelModel.findOneAndDelete(model);
 };
 
-export async function getModelsByModelType(model_type) {
-    if (model_type == "O") {  // return all models
-        return await AImodelModel.find({});
+export async function getModelsByFilters(filters) {
+    const query = {};
+
+    if (filters.user_id) {
+      query["user_id"] = filters.user_id;
     }
-    return await AImodelModel.find({model_type: model_type});
+  
+    if (filters.gender) {
+      if (filters.gender === "O") {
+        // Do nothing, all models will be returned
+      } else {
+        query["model_type"] = filters.gender;
+      }
+    }
+  
+    if (filters.is_public !== undefined) {
+      query["model_metadata.is_public"] = filters.is_public;
+    }
+    return await AImodelModel.find(query);
 }
