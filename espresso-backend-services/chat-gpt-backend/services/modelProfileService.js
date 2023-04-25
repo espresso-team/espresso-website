@@ -11,6 +11,22 @@ export async function deleteModel(model) {
     return await AImodelModel.findOneAndDelete(model);
 };
 
+export async function updateModel(model_id, updatedModel) {
+    return await AImodelModel.updateOne({ model_id: model_id }, updatedModel);
+};
+
+export async function updateModelVotes(model_id, upVote, downVote) {
+    const update = {};
+    if (upVote) {
+      update['model_metadata.upVote'] = upVote;
+    }
+    if (downVote) {
+      update['model_metadata.downVote'] = downVote;
+    }
+  
+    return await AImodelModel.updateOne({ model_id: model_id }, { $inc: update });
+  }
+  
 export async function getModelsByFilters(filters) {
     const query = {};
 

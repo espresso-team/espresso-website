@@ -6,7 +6,7 @@ import ChatClient from "./chatgpt-client.js";
 import * as fs from "fs";
 import { createConversation, getConv, updateConv, deleteConv } from "./services/conversationService.js";
 import { insertUser, getUserByUserId} from "./services/userProfileService.js";
-import { insertModel, getModelByModelId, getModelsByFilters } from "./services/modelProfileService.js";
+import { insertModel, getModelByModelId, getModelsByFilters, updateModel, updateModelVotes } from "./services/modelProfileService.js";
 import { insertChat, getChatHistoryByConvId } from "./services/chatHistoryService.js";
 import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
@@ -213,6 +213,69 @@ app.get("/user-profile/:user_id", async (req, res) => {
     res.json({ message: `user ${user.user_name} found!`, data: user, status: "success" });
   } else {
     res.status(404).json({ error: 'User not found!'});
+  }
+});
+
+// Route when updating an existing model profile
+app.put("/model-profile", async (req, res) => {
+  const model_id = req.body.model_id;
+  const user_id = req.body.user_id;
+  const model_name = req.body.model_name;
+  const model_type = req.body.model_type;
+  var model_metadata = req.body.model_metadata;
+
+  if (!model_id) {
+    res.status(400).json({ error: 'Model ID is required!' });
+    return;
+  }
+
+  const existing_model = await getModelByModelId(model_id);
+
+  if (!existing_model) {
+    res.status(404).json({ error: 'Model not found!' });
+    return;
+  }
+
+  const updatedModel = {
+    model_id: model_id,
+    user_id: user_id || existing_model.user_id,
+    model_name: model_name || existing_model.model_name,
+    model_type: model_type || existing_model.model_type,
+    model_metadata: model_metadata || existing_model.model_metadata,
+  };
+
+  try {
+    await updateModel(model_id, updatedModel);
+    res.json({ message: `Model ${model_name} updated!`, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Route for updating upVote and downVote
+app.patch("/model-profile/votes", async (req, res) => {
+  const model_id = req.body.model_id;
+  const upVote = req.body.upVote;
+  const downVote = req.body.downVote;
+
+  if (!model_id) {
+    res.status(400).json({ error: 'Model ID is required!' });
+    return;
+  }
+
+  const existing_model = await getModelByModelId(model_id);
+
+  if (!existing_model) {
+    res.status(404).json({ error: 'Model not found!' });
+    return;
+  }
+
+  try {
+    await updateModelVotes(model_id, upVote, downVote);
+    res.json({ message: `Model ${model_id} votes updated!`, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
