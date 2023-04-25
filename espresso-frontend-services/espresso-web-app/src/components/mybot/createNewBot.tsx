@@ -245,14 +245,43 @@ const CreateNewBot = () => {
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>, userId: string, modelId: string) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
-      // 将所选文件转换为 Base64 编码的数据 URL
-      const imageDataUrl = await toBase64(file);
+      try {
+        // Upload the image to the backend
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("user_id", userId);
+        formData.append("model_id", modelId);
 
-      // 将 imageDataUrl 添加到已上传照片数组中
-      setUploadedImages([...uploadedImages, imageDataUrl]);
+  
+        const response = await fetch(`${ENDPOINT}/api/upload-image`, {
+          method: 'POST',
+          body: formData
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to upload the image');
+        }
+  
+        const result = await response.json();
+  
+        // Assuming the backend returns the uploaded image URL in the response
+        const cosKey = result.cosKey;
+
+         // Construct the image URL
+         // TODO: Replace the bucket and region with ENV variables
+         const bucket = "chichat-images-1317940514";
+         const region = "ap-nanjing";
+         const imageUrl = `https://${bucket}.cos.${region}.myqcloud.com/${cosKey}`;
+  
+        // Add the uploaded image URL to the state
+        setUploadedImages([...uploadedImages, imageUrl]);
+      } catch (error) {
+        console.error('Error uploading image, please retry.', error);
+        // Handle the error accordingly, e.g., show an error message to the user
+      }
     }
   };
 
@@ -272,6 +301,9 @@ const CreateNewBot = () => {
     setIsModalOpen(true);
   };
 
+  const userId = state.userId === "unknown" ? createRandomUserId() : state.userId;
+  const modelId = createRandomUserId(); // Generate a random one;
+
   const handleSubmit = async () => {
     const modelMetadata = {
       name: aiName,
@@ -286,8 +318,6 @@ const CreateNewBot = () => {
       greetings: greeting,
     };
 
-    const userId = state.userId === "unknown" ? createRandomUserId() : state.userId;
-    const modelId = createRandomUserId(); // Generate a random one;
     console.log("myBot submitting:", modelMetadata);
     console.log("userId", userId)
     console.log("modelId", modelId)
@@ -322,8 +352,10 @@ const CreateNewBot = () => {
   return (
     <Container>
       <Title>创建我的AI角色</Title>
-      {uploadedImages.map((image, index) => (
-        <UploadArea key={index} style={{ backgroundImage: `url(${image})` }} />
+      {uploadedImages.map((imageUrl, index) => (
+        <UploadArea key={index} style={{ backgroundImage: `url(${imageUrl})`,
+                                         backgroundSize: 'cover', 
+                                         backgroundPosition: 'center', }} />
       ))}
       <UploadArea onClick={() => fileInputRef.current?.click()}>
         <BsPlus size={24} />
@@ -332,7 +364,7 @@ const CreateNewBot = () => {
           type="file"
           accept="image/*"
           hidden
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, userId, modelId)}
         />
       </UploadArea>
       <InputContainer>
