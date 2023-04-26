@@ -9,3 +9,4 @@ if (!onServer) {
 }
 
 export const ENDPOINT = onServer ? "https://chitchat-ai-backend.onrender.com" : "http://localhost:3000";
+export const FRONT_ENDPOINT = onServer ? "https://chitchat-ai-mm27.onrender.com" : "http://localhost:3001";
