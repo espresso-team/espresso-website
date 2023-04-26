@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BsPlus } from 'react-icons/bs';
 import MyBotTagItems from '../../types/MyBotTagItems';
@@ -13,7 +13,6 @@ import RegisterBlock from '../../app/RegisterBlock';
 import Loading from '../../app/Loading';
 import { useShareToWechat } from './shareToWeChat';
 import { useNavigate } from 'react-router-dom';
-
 
 const Container = styled.div`
   display: flex;
