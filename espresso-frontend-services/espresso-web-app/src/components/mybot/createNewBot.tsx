@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BsPlus } from 'react-icons/bs';
 import MyBotTagItems from '../../types/MyBotTagItems';
@@ -10,6 +10,7 @@ import { genderChineseToRequiredType } from '../../util/genderChineseToRequiredT
 import { HttpStatus } from '../../types/HttpStatus';
 import { message, Modal } from 'antd';
 import RegisterBlock from '../../app/RegisterBlock';
+import Loading from '../../app/Loading';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -230,6 +231,7 @@ const CreateNewBot = () => {
   const [otherFeatures, setOtherFeatures] = useState('');
   const [isPublicAiBot, setIsPublicAiBot] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
 
   const handleTagClick = (tag: string) => {
@@ -250,42 +252,40 @@ const CreateNewBot = () => {
     if (file) {
       try {
         // Upload the image to the backend
+        setIsUploading(true);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("user_id", userId);
         formData.append("model_id", modelId);
 
-  
         const response = await fetch(`${ENDPOINT}/api/upload-image`, {
           method: 'POST',
           body: formData
         });
-  
+
         if (!response.ok) {
+          message.error("图片上传失败，请刷新重试");
           throw new Error('Failed to upload the image');
         }
-  
+
         const result = await response.json();
-  
+
         // Assuming the backend returns the uploaded image URL in the response
         const image_url = result.image_url;
-  
+        setIsUploading(false);
+
         // Add the uploaded image URL to the state
         setUploadedImages([...uploadedImages, image_url]);
+        message.success("图片上传成功");
       } catch (error) {
         console.error('Error uploading image, please retry.', error);
         // Handle the error accordingly, e.g., show an error message to the user
+        message.error("图片上传失败，请刷新重试");
+      } finally {
+        setIsUploading(false);
       }
     }
   };
-
-  const toBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
 
   const handleModalCancel = () => {
     setIsModalOpen(false);
@@ -324,16 +324,16 @@ const CreateNewBot = () => {
         model_type: genderChineseToRequiredType(gender), // 根据需要Map为'M'或'W'
         model_metadata: modelMetadata,
       });
-  
+
       if (response.status === HttpStatus.OK) {
         message.success("AI角色创建成功");
-        if(state.userId) {
+        if (state.userId) {
           message.success("请及时注册保存当前角色");
         }
         console.log("set modelMetadata succeeded", response.data);
         // show model
         handleModalOpen();
-        
+
       } else {
         message.error("页面错误，请刷新重试");
         console.log("set modelMetadata failed", response);
@@ -347,20 +347,28 @@ const CreateNewBot = () => {
     <Container>
       <Title>创建我的AI角色</Title>
       {uploadedImages.map((imageUrl, index) => (
-        <UploadArea key={index} style={{ backgroundImage: `url(${imageUrl})`,
-                                         backgroundSize: 'cover', 
-                                         backgroundPosition: 'center', }} />
+        <UploadArea key={index} style={{
+          backgroundImage: `url(${imageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }} />
       ))}
-      <UploadArea onClick={() => fileInputRef.current?.click()}>
-        <BsPlus size={24} />
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={(e) => handleFileChange(e, userId, modelId)}
-        />
-      </UploadArea>
+      {uploadedImages.length === 0 && (
+        <UploadArea onClick={() => fileInputRef.current?.click()}>
+          <BsPlus size={24} />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={(e) => handleFileChange(e, userId, modelId)}
+          />
+        </UploadArea>
+      )}
+      <Suspense fallback={<Loading />}>
+        {isUploading && <Loading />}
+      </Suspense>
+      <StyledLabel>头像大小请不要超过2MB。</StyledLabel>
       <InputContainer>
         <SectionTitle>名称</SectionTitle>
         <StyledInput
@@ -495,7 +503,7 @@ const CreateNewBot = () => {
 
       <StyledButton primary onClick={handleSubmit}>创建AI</StyledButton>
 
-      
+
       <Modal
         centered
         title="AI角色创建成功"
@@ -507,7 +515,7 @@ const CreateNewBot = () => {
         <StyledButton onClick={handleShareToWeChat}>分享到朋友圈赚取点数</StyledButton>
 
       </Modal>
-                    
+
     </Container>
   );
 };
