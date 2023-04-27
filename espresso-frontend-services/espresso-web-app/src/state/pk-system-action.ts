@@ -9,6 +9,7 @@ import { message } from "antd";
 import { Model } from "../types/Model";
 import { createRandomUserId } from "../util/createRandomUserId";
 import { ENDPOINT } from "../types/Env";
+import { ChatHistoryItem } from "../types/ChatHistoryItem";
 var console = require("console-browserify")
 export const pkSystemAction = {
     fetchUserProfile: (gender: GenderType, userName: string) =>
@@ -134,6 +135,7 @@ export const pkSystemAction = {
             ({ getState, setState }: pkSystemApi) => {
                 const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
                 newMessageList.push(message);
+                console.log("updateMessageList, current messageList", newMessageList)
                 setState({ messageList: newMessageList });
             },
     initailMessageList:
@@ -143,6 +145,68 @@ export const pkSystemAction = {
                 newMessageList.push(message);
                 setState({ messageList: newMessageList });
             },
+    handleJoinChat:
+    (imgId: string, imgName: string, imgSrc: string) =>
+            async ({ getState, setState }: pkSystemApi) => {
+        console.log("Start chatting, user id", getState().userId, "model_id", imgId)
+        // update curImage id in state since we will use it on send message post, and convert it to string
+        setState({curImageId: +imgId});
+        // update curModel name and src
+        setState({curModelName: imgName});
+        setState({curModelSrc: imgSrc});
+        await axios
+          .post(`${ENDPOINT}/join-chat`,
+            {
+              "user_id": getState().userId,
+              "model_id": imgId
+            }
+          )
+          .then((response) => {
+            setState({ messageList: [] });
+            let chatHistory:ChatHistoryItem[] = [];
+            if(response.data.chat_history) {
+             chatHistory = response.data.chat_history;
+            }
+            console.log("chatHistory", chatHistory)
+            const message = response.data.message;
+            const uID = response.data.user_id;
+            const mID = response.data.model_id;
+
+            // Add chat history to messageList
+            chatHistory.map(chat => {
+              const isUser:boolean = chat.is_user;
+              const messageItem = {
+                "text": chat.message,
+                "id": mID,
+                "sender": {
+                  "name": isUser ? getState().curUserName : imgName,
+                  "uid": uID,
+                  "avatar": isUser ? "https://data.cometchat.com/assets/images/avatars/ironman.png" : imgSrc,
+                }
+              } as IMessage;
+              //pkSystemAction.updateMessageList(messageItem);
+              const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
+              newMessageList.push(messageItem);
+              setState({ messageList: newMessageList });
+            })
+
+            const initialMessage =
+              {
+                "text": message,
+                "id": mID,
+                "sender": {
+                  "name": imgName,
+                  "uid": uID,
+                  "avatar": imgSrc,
+                }
+              } as IMessage;
+              //pkSystemAction.updateMessageList(initialMessage);
+              const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
+              newMessageList.push(initialMessage);
+              setState({ messageList: newMessageList });
+          })
+          .catch((err) => console.log(err));
+      }
 };
 
 export type PkSystemAction = typeof pkSystemAction;

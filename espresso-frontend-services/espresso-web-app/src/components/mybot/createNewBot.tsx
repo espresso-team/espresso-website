@@ -13,6 +13,7 @@ import RegisterBlock from '../../app/RegisterBlock';
 import Loading from '../../app/Loading';
 import { useShareToWechat } from './shareToWeChat';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -216,6 +217,36 @@ const StyledRadioButton = styled.input.attrs({ type: "radio" })`
   }
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    justify-content: center;
+  }
+`;
+
+const ShareButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 576px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const CenteredContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const CreateNewBot = () => {
   const [state] = usePkSystemHook();
   const [tags, setTags] = useState(MyBotTagItems);
@@ -246,9 +277,11 @@ const CreateNewBot = () => {
     }
   };
 
-  const redirectToChat = (url: string) => {
-    // 在这里实现跳转到聊天页面
+  const redirectToNewPage = (url: string) => {
+    // 在这里实现跳转到对应的页面
     navigate(url);
+    // 将页面滚动到顶部,否则会保持在当前位置
+    window.scrollTo(0, 0);
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -267,18 +300,18 @@ const CreateNewBot = () => {
           method: 'POST',
           body: formData
         });
-  
+
         if (!response.ok) {
           message.error("图片上传失败，请刷新重试");
           throw new Error('Failed to upload the image');
         }
-  
+
         const result = await response.json();
-  
+
         // Assuming the backend returns the uploaded image URL in the response
         const image_url = result.image_url;
         setIsUploading(false);
-  
+
         // Add the uploaded image URL to the state
         setUploadedImages([...uploadedImages, image_url]);
         message.success("图片上传成功");
@@ -304,6 +337,7 @@ const CreateNewBot = () => {
   const modelId = createRandomUserId(); // Generate a random one;
   const url = `${FRONT_ENDPOINT}/chat/${modelId}`;
   const chat_url = `/chat/${modelId}`;
+  const forum_url = `/forum`;
 
   const handleSubmit = async () => {
     const modelMetadata = {
@@ -457,7 +491,6 @@ const CreateNewBot = () => {
         <StyledLabel>聊天口头禅可以是一些流行语、俚语、惯用语、感叹词或者个人特色的说法。</StyledLabel>
       </InputContainer>
 
-
       <FormContainer>
         <InputContainer>
           <SectionTitle>职业</SectionTitle>
@@ -507,20 +540,32 @@ const CreateNewBot = () => {
 
         <StyledLabel>公开后其他人可以在探索页面查看</StyledLabel>
       </SwitchContainer>
-
       <StyledButton primary onClick={handleSubmit}>创建AI</StyledButton>
-
 
       <Modal
         centered
-        title="AI角色创建成功"
+        title=""
         open={isModalOpen}
         footer={null}
         onCancel={handleModalCancel}
       >
-        <StyledButton primary onClick={() => redirectToChat(chat_url)}>开始聊天</StyledButton>
-        <StyledButton onClick={useShareToWechat(url)}>分享到朋友圈赚取点数</StyledButton>
-
+        <CenteredContainer>
+        {uploadedImages.map((imageUrl, index) => (
+        <UploadArea key={index} style={{
+          backgroundImage: `url(${imageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }} />
+      ))}
+      <SectionTitle>{aiName}角色创建成功!</SectionTitle>
+        <ButtonsContainer>
+          <StyledButton primary onClick={() => redirectToNewPage(chat_url)}>开始聊天{' >'}</StyledButton>
+          <StyledButton primary onClick={() => redirectToNewPage(forum_url)}>查看所有角色</StyledButton>
+        </ButtonsContainer>
+        <ShareButtonContainer>
+          <StyledButton onClick={useShareToWechat(url)}>分享到朋友圈赚取点数</StyledButton>
+        </ShareButtonContainer>
+        </CenteredContainer>
       </Modal>
 
     </Container>

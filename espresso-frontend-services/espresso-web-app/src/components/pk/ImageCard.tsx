@@ -256,60 +256,9 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
 
             <ButtonList>
               <Link to={"/chat"}>
-                <Btn onClick={() => {
-                  console.log("Start chatting, user id", state.userId, "model_id", imgId)
-                  // update curImage id in state since we will use it on send message post, and convert it to string
-                  state.curImageId = +imgId;
-                  // update curModel name and src
-                  state.curModelName = imgName;
-                  state.curModelSrc = imgSrc;
-                  axios
-                    .post(`${ENDPOINT}/join-chat`,
-                      {
-                        "user_id": state.userId,
-                        "model_id": imgId
-                      }
-                    )
-                    .then((response) => {
-                      action.cleanMessageList();
-                      let chatHistory:ChatHistoryItem[] = [];
-                      if(response.data.chat_history) {
-                       chatHistory = response.data.chat_history;
-                      }
-                      console.log("chatHistory", chatHistory)
-                      const message = response.data.message;
-                      const uID = response.data.user_id;
-                      const mID = response.data.model_id;
-
-                      // Add chat history to messageList
-                      chatHistory.map(chat => {
-                        const isUser:boolean = chat.is_user;
-                        const messageItem = {
-                          "text": chat.message,
-                          "id": mID,
-                          "sender": {
-                            "name": isUser ? state.curUserName : imgName,
-                            "uid": uID,
-                            "avatar": isUser ? "https://data.cometchat.com/assets/images/avatars/ironman.png" : imgSrc,
-                          }
-                        } as IMessage;
-                        action.updateMessageList(messageItem);
-                      })
-
-                      const initialMessage =
-                        {
-                          "text": message,
-                          "id": mID,
-                          "sender": {
-                            "name": imgName,
-                            "uid": uID,
-                            "avatar": imgSrc,
-                          }
-                        } as IMessage;
-                      action.updateMessageList(initialMessage);
-                    })
-                    .catch((err) => console.log(err));
-                }}>
+                <Btn onClick={
+                  async () => { action.handleJoinChat(imgId, imgName, imgSrc) }}
+                >
                   开始聊天</Btn>
               </Link>
               <Btn onClick={() => {
