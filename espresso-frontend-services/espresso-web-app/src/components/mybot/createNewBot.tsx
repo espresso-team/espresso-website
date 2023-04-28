@@ -9,11 +9,10 @@ import { createRandomUserId } from '../../util/createRandomUserId';
 import { genderChineseToRequiredType } from '../../util/genderChineseToRequiredType';
 import { HttpStatus } from '../../types/HttpStatus';
 import { message, Modal } from 'antd';
-import RegisterBlock from '../../app/RegisterBlock';
 import Loading from '../../app/Loading';
 import { useShareToWechat } from './shareToWeChat';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useRedirectToNewPage } from '../../util/redirectToNewPage';
+import GenderType from '../../types/GenderType';
 
 const Container = styled.div`
   display: flex;
@@ -247,8 +246,8 @@ const CenteredContainer = styled.div`
   align-items: center;
 `;
 
-const CreateNewBot = () => {
-  const [state] = usePkSystemHook();
+const CreateNewBot = ({modelId}: {modelId: string}) => {
+  const [state, action] = usePkSystemHook();
   const [tags, setTags] = useState(MyBotTagItems);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
@@ -266,8 +265,8 @@ const CreateNewBot = () => {
   const [isPublicAiBot, setIsPublicAiBot] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-
-  const navigate = useNavigate();
+  
+  const redirectToNewPage = useRedirectToNewPage();
 
   const handleTagClick = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -275,13 +274,6 @@ const CreateNewBot = () => {
     } else {
       setSelectedTags([...selectedTags, tag]);
     }
-  };
-
-  const redirectToNewPage = (url: string) => {
-    // 在这里实现跳转到对应的页面
-    navigate(url);
-    // 将页面滚动到顶部,否则会保持在当前位置
-    window.scrollTo(0, 0);
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -334,10 +326,9 @@ const CreateNewBot = () => {
   };
 
   const userId = state.userId === "unknown" ? createRandomUserId() : state.userId;
-  const modelId = createRandomUserId(); // Generate a random one;
-  const url = `${FRONT_ENDPOINT}/chat/${modelId}`;
-  const chat_url = `/chat/${modelId}`;
-  const forum_url = `/forum`;
+  const MODEL_URL = `${FRONT_ENDPOINT}/chat/${modelId}`;
+  const CHAT_URL = `/chat/${modelId}`;
+  const FORUM_URL = `/forum`;
 
   const handleSubmit = async () => {
     const modelMetadata = {
@@ -353,12 +344,14 @@ const CreateNewBot = () => {
       greetings: greeting,
       image_url: uploadedImages[0],
       upVote: 1,
-      downVote: 0
+      downVote: 0,
+      img_url: uploadedImages[0],
     };
 
     console.log("myBot submitting:", modelMetadata);
     console.log("userId", userId)
     console.log("modelId", modelId)
+    console.log("modelId used for creating", modelId)
     console.log("api", `${ENDPOINT}/model-profile`)
     try {
       const response = await axios.post(`${ENDPOINT}/model-profile`, {
@@ -387,6 +380,19 @@ const CreateNewBot = () => {
       console.log(err);
     }
   };
+
+  const handleStartChat = async () => {
+    console.log("modelId used for join chat", modelId);
+    await action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
+    await action.handleJoinChat(modelId, aiName, uploadedImages[0]);
+    // set a temp userName and Gender to state
+    // action.setUserName("未命名");
+    // action.setGender(GenderType.UNKNOWN);
+    // Post user profile
+    redirectToNewPage(CHAT_URL);
+  };
+
+  
   return (
     <Container>
       <Title>创建我的AI角色</Title>
@@ -561,12 +567,14 @@ const CreateNewBot = () => {
         }} />
       ))}
       <SectionTitle>{aiName}角色创建成功!</SectionTitle>
-        <ButtonsContainer>
-          <StyledButton primary onClick={() => redirectToNewPage(chat_url)}>开始聊天{' >'}</StyledButton>
-          <StyledButton primary onClick={() => redirectToNewPage(forum_url)}>查看所有角色</StyledButton>
+          <ButtonsContainer>
+            <StyledButton primary onClick={handleStartChat}>
+              开始聊天{' >'}
+            </StyledButton>
+          <StyledButton primary onClick={() => redirectToNewPage(FORUM_URL)}>查看所有角色</StyledButton>
         </ButtonsContainer>
         <ShareButtonContainer>
-          <StyledButton onClick={useShareToWechat(url)}>分享到朋友圈赚取点数</StyledButton>
+          <StyledButton onClick={useShareToWechat(MODEL_URL)}>分享到朋友圈赚取点数</StyledButton>
         </ShareButtonContainer>
         </CenteredContainer>
       </Modal>

@@ -40,7 +40,7 @@ class App extends Component<Props, State> {
               <Route path="/" element={<Home />} />
               <Route path="/index" element={<Home />} />
               <Route path="/pk" element={<Pk />} />
-              <Route path="/chat" element={<Chat />} />
+              <Route path="/chat/:modelIdLink" element={<Chat />} />
               <Route path="/forum" element={<Forum />} />
               <Route path="/mybot" element={<MyBot />} />
               <Route path="*" element={<NotFound />} /> 

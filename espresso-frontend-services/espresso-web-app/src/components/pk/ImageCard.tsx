@@ -13,6 +13,8 @@ import { IMessage } from '../../types/IMessage';
 import { ChatHistoryItem } from '../../types/ChatHistoryItem';
 import { Model } from '../../types/Model';
 import { ENDPOINT } from '../../types/Env';
+import { useParams } from 'react-router-dom';
+import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 
 interface Props {
   idCardFlipped: boolean | undefined,
@@ -226,6 +228,10 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const imgCharacter = imgItem.model_metadata.角色;
   const imgRelationship = imgItem.model_metadata.和我的关系;
   const imgOccupation = imgItem.model_metadata.职业;
+  const CHAT_URL = `/chat/${modelId}`;
+  const { modelIdLink } = useParams();
+  const redirectToNewPage = useRedirectToNewPage();
+  console.log("modelLink",modelIdLink)
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
       <Box>
@@ -255,12 +261,15 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
             }
 
             <ButtonList>
-              <Link to={"/chat"}>
                 <Btn onClick={
-                  async () => { action.handleJoinChat(imgId, imgName, imgSrc) }}
+                  async () => { 
+                    action.handleJoinChat(imgId, imgName, imgSrc);
+                    // jump to new page
+                    redirectToNewPage(CHAT_URL);
+                  }}
                 >
-                  开始聊天</Btn>
-              </Link>
+                  开始聊天
+                </Btn>
               <Btn onClick={() => {
                 action.randomPickImageId();
               }}>换人</Btn>

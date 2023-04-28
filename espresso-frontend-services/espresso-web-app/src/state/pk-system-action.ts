@@ -10,6 +10,7 @@ import { Model } from "../types/Model";
 import { createRandomUserId } from "../util/createRandomUserId";
 import { ENDPOINT } from "../types/Env";
 import { ChatHistoryItem } from "../types/ChatHistoryItem";
+import { RedirectToNewPageFn, useRedirectToNewPage } from "../util/redirectToNewPage";
 var console = require("console-browserify")
 export const pkSystemAction = {
     fetchUserProfile: (gender: GenderType, userName: string) =>

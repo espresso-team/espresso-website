@@ -3,6 +3,7 @@ import Footer from "../app/Footer";
 import CreateNewBot from "./mybot/createNewBot";
 import styled from "styled-components";
 import Navbar from "../app/Navbar";
+import { createRandomUserId } from "../util/createRandomUserId";
 type Props = {};
 
 type State = {
@@ -20,13 +21,15 @@ export default class MyBot extends Component<Props, State> {
       content: "chat page"
     };
   }
+  
 
   render() {
+    const modelId = createRandomUserId(); 
     return (
       <>
       <Navbar />
       <MyBotPageWrapper>
-        <CreateNewBot />
+        <CreateNewBot modelId={modelId}/>
         <Footer />
       </MyBotPageWrapper>
       </>
