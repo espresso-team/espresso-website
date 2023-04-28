@@ -19,7 +19,7 @@ export async function fetchWechatConfig(url: string): Promise<WechatConfig | voi
     }
 }
 
-export function useShareToWechat(url: string) {
+export function useShareToWechat(url: string, imgSrc: string) {
     const handleClick = useCallback(async () => {
         const wechatConfig = await fetchWechatConfig(url);
         const nativeShare = new NativeShare({
@@ -30,8 +30,7 @@ export function useShareToWechat(url: string) {
         });
 
         nativeShare.setShareData({
-            // TODO: update icon with model's proile picture
-            icon: 'https://pic3.zhimg.com/v2-080267af84aa0e97c66d5f12e311c3d6_xl.jpg',
+            icon: imgSrc,
             link: url,
             title: '七洽AI: 最懂你的AI伴侣',
             desc: '快来和我的AI胖友聊天吧！',
