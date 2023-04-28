@@ -1,48 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-interface GirlfriendModel {
-  id: number;
-  username: string;
-  modelName: string;
-  imageUrl: string;
-  description: string;
-}
-
-// Mock data
-const mockGirlfriendModels: GirlfriendModel[] = Array.from({ length: 30 }, (_, index) => {
-  return {
-    id: index + 1,
-    username: `User${index + 1}`,
-    modelName: `AI Model ${index + 1}`,
-    imageUrl: [
-      'https://s2.loli.net/2023/02/22/NA9cIs4veuBMPD8.png',
-      'https://s2.loli.net/2023/02/22/A86JKsqiklFQaup.png',
-      'https://s2.loli.net/2023/02/22/SHsxuN6Jy9njZce.png',
-      'https://s2.loli.net/2023/02/22/kQE1SJByfc9Mb6i.png',
-      'https://s2.loli.net/2023/03/13/69viI7Leojx2lsR.jpg',
-      'https://s2.loli.net/2023/03/13/vhUDzs1eJpZyCOi.jpg',
-      'https://s2.loli.net/2023/03/13/ezQWlJv3gZXkpDj.jpg',
-      'https://s2.loli.net/2023/03/13/WYUgblZyv5sNcHf.jpg',
-    ][index % 8],
-    description: `This AI Model ${index + 1} has a unique personality and features.`,
-  };
-});
+import { Model } from '../../types/Model';
+import axios from 'axios';
+import { ENDPOINT } from '../../types/Env';
+import { HttpStatus } from '../../types/HttpStatus';
+import { message } from "antd";
 
 const MyForum: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [modelsPerPage] = useState(14);
   const [totalPages, setTotalPages] = useState(1);
+  const [modelList, setModelList] = useState<Model[]>([]);
 
   useEffect(() => {
-    setTotalPages(Math.ceil(mockGirlfriendModels.length / modelsPerPage));
+    const fetchData = async () => {
+      // By default, we fetch all the public models.
+      await axios
+        .get(`${ENDPOINT}/model-profile`,
+          {
+            params: {
+              is_public: true
+            }
+          })
+        .then((response) => {
+          console.log("fetchModelProfile", response)
+          if (response.status === HttpStatus.OK) {
+            const curModelArray = response.data.data as Model[];
+            setModelList(curModelArray);
+            setTotalPages(Math.ceil(curModelArray.length / modelsPerPage));
+            console.log("modelArray[0]", modelList[0]);
+          }
+          else {
+            message.error("页面错误，请刷新重试")
+            console.log("fetchModelProfile response failed", response)
+          }
+
+        })
+        .catch((err) => {
+          message.error("页面错误，请刷新重试");
+          console.log(err)
+        });
+
+    };
+    fetchData();
   }, [modelsPerPage]);
+
+  const updateVotes = async (model_id: string, upVote: number, downVote: number) => {
+    await axios.patch(`${ENDPOINT}/model-profile/votes`, { model_id: model_id, upVote: upVote, downVote: downVote });
+  };
 
   const handleClick = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  const modelsToDisplay = mockGirlfriendModels.slice(
+  const handleVote = async (model_id: string, isUpvote: boolean) => {
+    const upVote = isUpvote ? 1 : 0;
+    const downVote = isUpvote ? 0 : 1;
+    await updateVotes(model_id, upVote, downVote);
+
+    setModelList((prevModels) =>
+      prevModels.map((model) => (model.model_id === model_id ? {
+        ...model,
+        model_metadata: {
+          ...model.model_metadata,
+          upVote: model.model_metadata.upVote + upVote,
+          downVote: model.model_metadata.downVote + downVote,
+        },
+      } : model))
+    );
+  };
+
+  const modelsToDisplay = modelList.slice(
     (currentPage - 1) * modelsPerPage,
     currentPage * modelsPerPage
   );
@@ -51,23 +79,23 @@ const MyForum: React.FC = () => {
     <Container>
       <ModelList>
         {modelsToDisplay.map((model) => (
-          <ModelItem key={model.id}>
+          <ModelItem key={model.model_id}>
             <ModelImageContainer>
-              <ModelImage src={model.imageUrl} alt={model.modelName} />
+              <ModelImage src={model.model_metadata.image_url} alt={model.model_name} />
             </ModelImageContainer>
             <ModelInfo>
-              <h3>{model.modelName}</h3>
-              <p>上传者：{model.username}</p>
-              <p>{model.description}</p>
+              <h3>{model.model_name}</h3>
+              <p>上传者：{model.model_metadata.user_id}</p>
+              <p>{model.model_metadata.description}</p>
             </ModelInfo>
             <VoteSection>
-              <VoteButton>
+              <VoteButton onClick={() => handleVote(model.model_id, true)}>
                 <UpvoteIcon />
-                <span>322</span>
+                <span>{model.model_metadata.upVote}</span>
               </VoteButton>
-              <VoteButton>
+              <VoteButton onClick={() => handleVote(model.model_id, false)}>
                 <DownvoteIcon />
-                <span>12</span>
+                <span>{model.model_metadata.downVote}</span>
               </VoteButton>
             </VoteSection>
           </ModelItem>
@@ -84,11 +112,11 @@ const MyForum: React.FC = () => {
   );
 };
 const UpvoteIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 8h-5.612l1.123-3.367c.202-.608.1-1.282-.275-1.802S14.253 2 13.612 2H12c-.297 0-.578.132-.769.36L6.531 8H4c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h13.307a2.01 2.01 0 0 0 1.873-1.298l2.757-7.351A1 1 0 0 0 22 12v-2c0-1.103-.897-2-2-2zM4 10h2v9H4v-9zm16 1.819L17.307 19H8V9.362L12.468 4h1.146l-1.562 4.683A.998.998 0 0 0 13 10h7v1.819z"></path></svg>
-  );
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 8h-5.612l1.123-3.367c.202-.608.1-1.282-.275-1.802S14.253 2 13.612 2H12c-.297 0-.578.132-.769.36L6.531 8H4c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h13.307a2.01 2.01 0 0 0 1.873-1.298l2.757-7.351A1 1 0 0 0 22 12v-2c0-1.103-.897-2-2-2zM4 10h2v9H4v-9zm16 1.819L17.307 19H8V9.362L12.468 4h1.146l-1.562 4.683A.998.998 0 0 0 13 10h7v1.819z"></path></svg>
+);
 
 const DownvoteIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 3H6.693A2.01 2.01 0 0 0 4.82 4.298l-2.757 7.351A1 1 0 0 0 2 12v2c0 1.103.897 2 2 2h5.612L8.49 19.367a2.004 2.004 0 0 0 .274 1.802c.376.52.982.831 1.624.831H12c.297 0 .578-.132.769-.36l4.7-5.64H20c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-8.469 17h-1.145l1.562-4.684A1 1 0 0 0 11 14H4v-1.819L6.693 5H16v9.638L11.531 20zM18 14V5h2l.001 9H18z"></path></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 3H6.693A2.01 2.01 0 0 0 4.82 4.298l-2.757 7.351A1 1 0 0 0 2 12v2c0 1.103.897 2 2 2h5.612L8.49 19.367a2.004 2.004 0 0 0 .274 1.802c.376.52.982.831 1.624.831H12c.297 0 .578-.132.769-.36l4.7-5.64H20c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-8.469 17h-1.145l1.562-4.684A1 1 0 0 0 11 14H4v-1.819L6.693 5H16v9.638L11.531 20zM18 14V5h2l.001 9H18z"></path></svg>
 );
 
 const Pagination = styled.div`
