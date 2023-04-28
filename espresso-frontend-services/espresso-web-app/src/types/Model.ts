@@ -31,6 +31,11 @@ export interface Model {
       开场问候语类型: string;
       头像地址src: string;
       Lora地址: string;
+      user_id: string;
+      image_url: string,
+      upVote: number,
+      downVote: number,
+      description: string, 
     };
     createdAt: string;
     updatedAt: string;
