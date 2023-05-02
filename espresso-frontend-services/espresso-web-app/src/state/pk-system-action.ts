@@ -180,7 +180,8 @@ export const pkSystemAction = {
         }
         console.log("Start chatting, user id", getState().userId, "model_id", modelId)
         // update curImage id in state since we will use it on send message post, and convert it to string
-        setState({curImageId: +modelId});
+        //setState({curImageId: +modelId});
+        setState({curModelIdString: modelId});
         // update curModel name and src
         setState({curModelName: modelName});
         setState({curModelSrc: modelSrc});

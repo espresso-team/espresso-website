@@ -16,13 +16,11 @@ export const pkSystemState = {
     modelArrays: [] as Model[],
     curModelName: "虚拟伴侣",
     curModelSrc: "",
+    curModelIdString: "",
     modalOpen: false,
 };
 
 export type PkSystemState = {
-    //isFlippedCardTwo: boolean | undefined;
-    //searchQuery: string;
-    //rightImageId: number;
     isFlippedCardOne: boolean | undefined;
     images: Array<ImageItem>;
     curImageId: number;
@@ -35,4 +33,5 @@ export type PkSystemState = {
     curModelName: string;
     curModelSrc: string;
     modalOpen: boolean;
+    curModelIdString: string;
 };

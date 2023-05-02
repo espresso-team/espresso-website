@@ -6,6 +6,7 @@ import { Chat } from './Chat';
 import axios from 'axios';
 import { ENDPOINT } from '../../types/Env';
 import { useParams } from 'react-router-dom';
+import GenderType from '../../types/GenderType';
 
 interface Props {
   userId: string;
@@ -32,6 +33,9 @@ const ChatBox: React.FC<Props> = () => {
   };
   const [state, action] = usePkSystemHook();
   useEffect(() => {
+    if(state.curUserName === "User"){
+      action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
+    }
     if(modelIdLink) {
       console.log("calling handleJoinChat:",modelIdLink);
       action.handleJoinChat(modelIdLink,"","")
@@ -64,11 +68,12 @@ const ChatBox: React.FC<Props> = () => {
 
           action.updateMessageList(newUserMessage);
           // send post request
+          console.log("state.curImageId.toString()",state.curImageId.toString())
           axios
             .post(`${ENDPOINT}/send-message`, 
             {
               "user_id": state.userId,
-              "model_id": state.curImageId.toString(),
+              "model_id": state.curModelIdString,
               "message": mes
               })
             .then((response) => {
