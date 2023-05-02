@@ -32,3 +32,13 @@ export function is_response_include_forbidden_words(res_message) {
             return true;
         }
 }
+
+export function join_frequnet_chat(chats) {
+    var new_chats = [];
+    for (var i = 0; i < chats.length; i++) {
+        if (chats[i]) {
+            new_chats.push(chats[i]);
+        }
+    }
+    return new_chats.join("| ");
+}

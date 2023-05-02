@@ -12,7 +12,7 @@ import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
 import cors from "cors";
-import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words } from "./util.js";
+import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words, join_frequnet_chat } from "./util.js";
 import { authRoutes } from "./routes/auth.route.js";
 import { apiRoutes } from "./routes/api.route.js";
 import dotenv from 'dotenv';
@@ -315,7 +315,7 @@ function createInitPrompt(data) {
     .replace('{$occupation}', data.occupation)
     .replace('{$personality}', data.personality.join(', '))
     .replace('{$hobbies}', data.hobbies.join(', '))
-    .replace('{$freq_chats}', data.freq_chats.join('| '))
+    .replace('{$freq_chats}', join_frequnet_chat(data.freq_chats))
     .replace('{$other_patterns}', data.other_patterns)
     .replace('{$greetings}', data.greetings);
   return replaced;
