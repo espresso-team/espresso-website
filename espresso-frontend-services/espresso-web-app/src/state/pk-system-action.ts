@@ -149,20 +149,21 @@ export const pkSystemAction = {
     handleJoinChat:
     (modelId: string, modelName: string, modelSrc: string) =>
             async ({ getState, setState }: pkSystemApi) => {
+        console.log("pkSystemAction- handleJoinCh", modelId);
         // if no modelName or modelSrc, will fetch modelName and modelSrc from backend
         if (modelName === "") {
         await axios
         .get(`${ENDPOINT}/model-profile`,
           {
             params: {
-              model_Id: modelId
+              model_id: modelId
             }
           })
         .then((response) => {
           console.log("fetchModelProfile", response)
           if (response.status === HttpStatus.OK) {
             const curModelArray = response.data.data as Model[];
-            //setModelList(curModelArray);
+            console.log("curModelArray", curModelArray);
             console.log("curModelArray[0]", curModelArray[0]);
             modelName = curModelArray[0].model_name;
             modelSrc = curModelArray[0].model_metadata.image_url;

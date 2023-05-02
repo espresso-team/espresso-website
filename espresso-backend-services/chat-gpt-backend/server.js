@@ -162,12 +162,14 @@ app.post("/join-chat", async (req, res) => {
 
 // Route when fetching all model profile
 app.get("/model-profile", async (req, res) => {
-  const { user_id, gender, is_public } = req.query;
+  const { user_id, gender, is_public, model_id } = req.query;
   try {
     const filters = {};
     if (user_id) filters.user_id = user_id;
     if (gender) filters.gender = gender;
     if (is_public !== undefined) filters.is_public = is_public === 'true';
+    console.log("model_id", model_id)
+    if (model_id) filters.model_id = model_id;
     console.log(JSON.stringify(filters));
     const models = await getModelsByFilters(filters);
     res.json({ data: models, status: "success" });

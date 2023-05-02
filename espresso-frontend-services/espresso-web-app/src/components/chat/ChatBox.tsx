@@ -33,7 +33,7 @@ const ChatBox: React.FC<Props> = () => {
   const [state, action] = usePkSystemHook();
   useEffect(() => {
     if(modelIdLink) {
-      
+      console.log("calling handleJoinChat:",modelIdLink);
       action.handleJoinChat(modelIdLink,"","")
     }
   }, []);
