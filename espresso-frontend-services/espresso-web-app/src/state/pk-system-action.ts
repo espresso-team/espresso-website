@@ -147,19 +147,47 @@ export const pkSystemAction = {
                 setState({ messageList: newMessageList });
             },
     handleJoinChat:
-    (imgId: string, imgName: string, imgSrc: string) =>
+    (modelId: string, modelName: string, modelSrc: string) =>
             async ({ getState, setState }: pkSystemApi) => {
-        console.log("Start chatting, user id", getState().userId, "model_id", imgId)
+        // if no modelName or modelSrc, will fetch modelName and modelSrc from backend
+        if (modelName === "") {
+        await axios
+        .get(`${ENDPOINT}/model-profile`,
+          {
+            params: {
+              model_Id: modelId
+            }
+          })
+        .then((response) => {
+          console.log("fetchModelProfile", response)
+          if (response.status === HttpStatus.OK) {
+            const curModelArray = response.data.data as Model[];
+            //setModelList(curModelArray);
+            console.log("curModelArray[0]", curModelArray[0]);
+            modelName = curModelArray[0].model_name;
+            modelSrc = curModelArray[0].model_metadata.image_url;
+          }
+          else {
+            message.error("页面错误，请刷新重试")
+            console.log("fetchModelProfile response failed", response)
+          }
+        })
+        .catch((err) => {
+          message.error("页面错误，请刷新重试");
+          console.log(err)
+        });
+        }
+        console.log("Start chatting, user id", getState().userId, "model_id", modelId)
         // update curImage id in state since we will use it on send message post, and convert it to string
-        setState({curImageId: +imgId});
+        setState({curImageId: +modelId});
         // update curModel name and src
-        setState({curModelName: imgName});
-        setState({curModelSrc: imgSrc});
+        setState({curModelName: modelName});
+        setState({curModelSrc: modelSrc});
         await axios
           .post(`${ENDPOINT}/join-chat`,
             {
               "user_id": getState().userId,
-              "model_id": imgId
+              "model_id": modelId
             }
           )
           .then((response) => {
@@ -180,9 +208,9 @@ export const pkSystemAction = {
                 "text": chat.message,
                 "id": mID,
                 "sender": {
-                  "name": isUser ? getState().curUserName : imgName,
+                  "name": isUser ? getState().curUserName : modelName,
                   "uid": uID,
-                  "avatar": isUser ? "https://data.cometchat.com/assets/images/avatars/ironman.png" : imgSrc,
+                  "avatar": isUser ? "https://data.cometchat.com/assets/images/avatars/ironman.png" : modelSrc,
                 }
               } as IMessage;
               //pkSystemAction.updateMessageList(messageItem);
@@ -196,9 +224,9 @@ export const pkSystemAction = {
                 "text": message,
                 "id": mID,
                 "sender": {
-                  "name": imgName,
+                  "name": modelName,
                   "uid": uID,
-                  "avatar": imgSrc,
+                  "avatar": modelSrc,
                 }
               } as IMessage;
               //pkSystemAction.updateMessageList(initialMessage);

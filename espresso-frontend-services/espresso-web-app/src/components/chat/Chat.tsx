@@ -17,8 +17,6 @@ interface Props {
 }
 var console = require("console-browserify")
 
-
-
 export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) => {
   const scrollToDiv = useRef<HTMLDivElement>(null);
   const [state,action] = usePkSystemHook();

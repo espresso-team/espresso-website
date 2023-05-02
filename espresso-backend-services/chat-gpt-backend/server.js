@@ -187,7 +187,7 @@ app.post("/model-profile", async (req, res) => {
   const init_prompt = createInitPrompt(model_metadata);
   model_metadata["user_id"] = user_id;
   model_metadata["initial_prompt"] = init_prompt;
-  model_meatdata["upVoate"] = 1;
+  model_metadata["upVote"] = 1;
   model_metadata["downVote"] = 0;
   const model = {
     model_id: model_id,

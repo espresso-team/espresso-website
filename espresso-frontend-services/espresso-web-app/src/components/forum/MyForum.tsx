@@ -34,7 +34,6 @@ const MyForum: React.FC = () => {
             message.error("页面错误，请刷新重试")
             console.log("fetchModelProfile response failed", response)
           }
-
         })
         .catch((err) => {
           message.error("页面错误，请刷新重试");

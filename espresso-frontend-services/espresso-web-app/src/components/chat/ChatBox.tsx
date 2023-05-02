@@ -5,6 +5,7 @@ import { User } from '../../types/User';
 import { Chat } from './Chat';
 import axios from 'axios';
 import { ENDPOINT } from '../../types/Env';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   userId: string;
@@ -20,6 +21,8 @@ const MockUser1 =
 var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
+  const { modelIdLink } = useParams();
+  console.log("modelIdLink",modelIdLink);
   const [isLoading, setIsLoading] = useState(true);
   const messagesEnd = useRef<HTMLDivElement>(null);
   const scrollToBottom = () => {
@@ -28,6 +31,12 @@ const ChatBox: React.FC<Props> = () => {
     }
   };
   const [state, action] = usePkSystemHook();
+  useEffect(() => {
+    if(modelIdLink) {
+      
+      action.handleJoinChat(modelIdLink,"","")
+    }
+  }, []);
 
   useEffect(() => {
     if (state.messageList.length > 0) {
