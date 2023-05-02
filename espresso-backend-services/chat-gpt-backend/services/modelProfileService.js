@@ -45,5 +45,9 @@ export async function getModelsByFilters(filters) {
     if (filters.is_public !== undefined) {
       query["model_metadata.is_public"] = filters.is_public;
     }
+
+    if (filters.model_id) {
+        query["model_id"] = filters.model_id;
+    }
     return await AImodelModel.find(query);
 }
