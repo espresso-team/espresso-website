@@ -392,7 +392,7 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
     redirectToNewPage(CHAT_URL);
   };
 
-  console.log("AI图片的地址是:" + uploadedImages[0]);
+  
   return (
     <Container>
       <Title>创建我的AI角色</Title>
@@ -574,7 +574,7 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
           <StyledButton primary onClick={() => redirectToNewPage(FORUM_URL)}>查看所有角色</StyledButton>
         </ButtonsContainer>
         <ShareButtonContainer>
-          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0], aiName)}>分享给微信朋友</StyledButton>
+          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0])}>分享到朋友圈赚取点数</StyledButton>
         </ShareButtonContainer>
         </CenteredContainer>
       </Modal>
