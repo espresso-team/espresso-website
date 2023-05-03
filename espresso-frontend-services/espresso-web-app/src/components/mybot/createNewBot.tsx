@@ -287,7 +287,7 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
         formData.append("file", file);
         formData.append("user_id", userId);
         formData.append("model_id", modelId);
-        const TIMEOUT_DURATION = 100;
+        const TIMEOUT_DURATION = 10000;
 
         console.log("[UploadImageDebug]formData", formData);
         const timeoutPromise = (ms: number) => {
