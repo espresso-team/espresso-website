@@ -287,31 +287,52 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
         formData.append("file", file);
         formData.append("user_id", userId);
         formData.append("model_id", modelId);
+        const TIMEOUT_DURATION = 100;
 
-        const response = await fetch(`${ENDPOINT}/api/upload-image`, {
-          method: 'POST',
-          body: formData
-        });
+        console.log("[UploadImageDebug]formData", formData);
+        const timeoutPromise = (ms: number) => {
+          return new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timeout')), ms)
+          );
+        };
 
+        const response = await Promise.race([
+          fetch(`${ENDPOINT}/api/upload-image`, {
+            method: 'POST',
+            body: formData
+          }),
+          timeoutPromise(TIMEOUT_DURATION)
+        ]) as Response;        
+
+        
         if (!response.ok) {
+          console.log("[UploadImageDebug]response failed", response);
           message.error("图片上传失败，请刷新重试");
           throw new Error('Failed to upload the image');
         }
 
+        console.log("[UploadImageDebug]response ok", response);
         const result = await response.json();
 
+        console.log("[UploadImageDebug]result", result);
         // Assuming the backend returns the uploaded image URL in the response
         const image_url = result.image_url;
+        console.log("[UploadImageDebug]image_url", image_url);
         setIsUploading(false);
 
         // Add the uploaded image URL to the state
         setUploadedImages([...uploadedImages, image_url]);
         message.success("图片上传成功");
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error uploading image, please retry.', error);
-        // Handle the error accordingly, e.g., show an error message to the user
-        message.error("图片上传失败，请刷新重试");
-      } finally {
+        // If error message is "Request timeout", show a specific error message
+        if ((error as Error).message === 'Request timeout') {
+          message.error("图片上传超时，请刷新重试");
+        } else {
+          message.error("图片上传失败，请刷新重试");
+        }
+      }
+       finally {
         setIsUploading(false);
       }
     }
