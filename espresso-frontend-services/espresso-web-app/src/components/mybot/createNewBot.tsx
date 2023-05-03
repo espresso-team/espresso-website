@@ -329,8 +329,6 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
   const MODEL_URL = `${FRONT_ENDPOINT}/chat/${modelId}`;
   const CHAT_URL = `/chat/${modelId}`;
   const FORUM_URL = `/forum`;
-  const IMG_URL = uploadedImages[0];
-  const AI_NAME = aiName;
 
   const handleSubmit = async () => {
     const modelMetadata = {
@@ -576,10 +574,11 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
           <StyledButton primary onClick={() => redirectToNewPage(FORUM_URL)}>查看所有角色</StyledButton>
         </ButtonsContainer>
         <ShareButtonContainer>
-          <StyledButton onClick={useShareToWechat(MODEL_URL, IMG_URL, AI_NAME)}>分享给微信朋友</StyledButton>
+          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0], aiName)}>分享给微信朋友</StyledButton>
         </ShareButtonContainer>
         </CenteredContainer>
       </Modal>
+
     </Container>
   );
 };
