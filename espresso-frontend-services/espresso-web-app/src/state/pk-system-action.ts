@@ -35,14 +35,19 @@ export const pkSystemAction = {
                         console.log("fetchModelProfile message", response.data.message)
                     }
                     else {
-                        message.error("页面错误，请刷新重试")
+                        message.error("获取用户信息错误，请刷新重试")
                         console.log("fetchUserProfile response failed", response)
                     }
 
                 })
                 .catch((err) => {
-                    message.error("页面错误，请刷新重试");
-                    console.log(err)
+                    if (err.response && err.response.status === 409) {
+                        // handle conflict error here
+                        console.log('User profile already exists for this user_id');
+                      } else {
+                        message.error("页面错误，请刷新重试");
+                        console.error(err);
+                      }
                 });
 
         },

@@ -33,7 +33,7 @@ const ChatBox: React.FC<Props> = () => {
   };
   const [state, action] = usePkSystemHook();
   useEffect(() => {
-    console.log("Chat page - state.curUserName is",state.curUserName);
+    console.log("Chat page - state.curUserName is", state.curUserName);
     if(state.curUserName === "User"){
       action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
     }

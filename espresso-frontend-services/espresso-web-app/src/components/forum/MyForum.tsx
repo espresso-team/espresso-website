@@ -4,12 +4,15 @@ import { Model } from '../../types/Model';
 import axios from 'axios';
 import { ENDPOINT } from '../../types/Env';
 import { HttpStatus } from '../../types/HttpStatus';
-import { message } from "antd";
-
+import { message, Modal } from "antd";
+import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 const MyForum: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [modelsPerPage] = useState(14);
   const [totalPages, setTotalPages] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null);
+
   const [modelList, setModelList] = useState<Model[]>([]);
 
   useEffect(() => {
@@ -74,11 +77,13 @@ const MyForum: React.FC = () => {
     currentPage * modelsPerPage
   );
 
+  const redirectToNewPage = useRedirectToNewPage();
+
   return (
     <Container>
       <ModelList>
         {modelsToDisplay.map((model) => (
-          <ModelItem key={model.model_id}>
+          <ModelItem key={model.model_id} onClick={() => { setIsModalVisible(true); setSelectedModel(model); }}>
             <ModelImageContainer>
               <ModelImage src={model.model_metadata.image_url} alt={model.model_name} />
             </ModelImageContainer>
@@ -107,6 +112,36 @@ const MyForum: React.FC = () => {
           </PageButton>
         ))}
       </Pagination>
+      <Modal
+        title="角色详情"
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        onOk={() => {
+          setIsModalVisible(false);
+          if(selectedModel)
+            redirectToNewPage(`/chat/${selectedModel.model_id}`);
+        }}
+        cancelText={"取消"}
+        okText={"开始聊天 >"}
+      >
+        {selectedModel && (
+          <ModalContent>
+            {Object.entries(selectedModel.model_metadata).map(([key, value]) => {
+              // 检查当前键是否在excludedKeys数组中，以及值是否为非空字符串
+              if (!excludedKeys.includes(key) && typeof value === 'string' && value !== '') {
+                return (
+                  <div key={key}>
+                    <strong>{key}:</strong> {value}
+                  </div>
+                );
+              }
+              return null;
+            })}
+            {/* <Button onClick={() => console.log('开始聊天')}>开始聊天</Button> */}
+          </ModalContent>
+        )}
+      </Modal>
+
     </Container>
   );
 };
@@ -117,6 +152,15 @@ const UpvoteIcon = () => (
 const DownvoteIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 3H6.693A2.01 2.01 0 0 0 4.82 4.298l-2.757 7.351A1 1 0 0 0 2 12v2c0 1.103.897 2 2 2h5.612L8.49 19.367a2.004 2.004 0 0 0 .274 1.802c.376.52.982.831 1.624.831H12c.297 0 .578-.132.769-.36l4.7-5.64H20c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-8.469 17h-1.145l1.562-4.684A1 1 0 0 0 11 14H4v-1.819L6.693 5H16v9.638L11.531 20zM18 14V5h2l.001 9H18z"></path></svg>
 );
+
+// 不想显示在Modal里的键的列表
+const excludedKeys = ['image_url', 'user_id', '头像地址src', 'initial_prompt', 'img_url'];
+
+const ModalContent = styled.div`
+  @media (max-width: 576px) {
+    font-size: 14px;
+  }
+`;
 
 const Pagination = styled.div`
   display: flex;
