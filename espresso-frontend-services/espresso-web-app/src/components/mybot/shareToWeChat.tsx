@@ -44,7 +44,7 @@ export function useShareToWechat(url: string, imgSrc: string, aiName: string) {
         } catch (err) {
             console.error('Native share is not supported:', err);
         }
-    }, [url]);
+    }, [url, imgSrc, aiName]);
 
     return handleClick;
 }

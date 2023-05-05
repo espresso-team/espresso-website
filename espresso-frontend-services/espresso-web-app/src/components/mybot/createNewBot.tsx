@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BsPlus } from 'react-icons/bs';
 import MyBotTagItems from '../../types/MyBotTagItems';
