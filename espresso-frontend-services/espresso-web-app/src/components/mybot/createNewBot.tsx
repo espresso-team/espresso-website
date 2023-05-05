@@ -363,10 +363,10 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
       other_patterns: otherFeatures,
       is_public: isPublicAiBot,
       greetings: greeting,
-      image_url: uploadedImages[0],
+      image_url: uploadedImages[0] + '.jpg',
       upVote: 1,
       downVote: 0,
-      img_url: uploadedImages[0],
+      img_url: uploadedImages[0] + '.jpg',
     };
 
     console.log("myBot submitting:", modelMetadata);
@@ -595,7 +595,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
             <StyledButton primary onClick={() => redirectToNewPage(FORUM_URL)}>查看所有角色</StyledButton>
           </ButtonsContainer>
           <ShareButtonContainer>
-          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0], aiName)}>分享到朋友圈赚取点数</StyledButton>
+          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0], aiName)}>分享到微信</StyledButton>
         </ShareButtonContainer>
         </CenteredContainer>
       </Modal>
