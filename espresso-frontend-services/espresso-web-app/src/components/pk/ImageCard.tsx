@@ -228,7 +228,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const imgCharacter = imgItem.model_metadata.角色;
   const imgRelationship = imgItem.model_metadata.和我的关系;
   const imgOccupation = imgItem.model_metadata.职业;
-  const CHAT_URL = `/chat/${modelId}`;
+  const CHAT_URL = `/chat/${imgId}`;
   const redirectToNewPage = useRedirectToNewPage();
   return (
     <ReactCardFlip isFlipped={idCardFlipped}>
@@ -261,7 +261,8 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
             <ButtonList>
                 <Btn onClick={
                   async () => {
-                    action.handleJoinChat(imgId, imgName, imgSrc);
+                    console.log("calling handleJoinChat:imgId",imgId);
+                    //action.handleJoinChat(modelId);
                     // jump to new page
                     redirectToNewPage(CHAT_URL);
                   }}

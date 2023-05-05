@@ -33,13 +33,14 @@ const ChatBox: React.FC<Props> = () => {
   };
   const [state, action] = usePkSystemHook();
   useEffect(() => {
+    console.log("Chat page - state.curUserName is",state.curUserName);
     if(state.curUserName === "User"){
       action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
     }
     // if directly access to a chat page, meanwhile the chat is not jumping from mybot
     if(modelIdLink) {
       console.log("calling handleJoinChat:",modelIdLink);
-      action.handleJoinChat(modelIdLink,"","")
+      action.handleJoinChat(modelIdLink)
     }
   }, []);
 

@@ -147,11 +147,12 @@ export const pkSystemAction = {
                 setState({ messageList: newMessageList });
             },
     handleJoinChat:
-    (modelId: string, modelName: string, modelSrc: string) =>
+    (modelId: string) =>
             async ({ getState, setState }: pkSystemApi) => {
-        console.log("pkSystemAction- handleJoinCh", modelId);
-        // if no modelName or modelSrc, will fetch modelName and modelSrc from backend
-        if (modelName === "") {
+        let modelName: string = "未命名";
+        let modelSrc: string = "";
+        console.log("pkSystemAction- handleJoinChat", modelId);
+        // Fetch modelName and modelSrc from backend
         await axios
         .get(`${ENDPOINT}/model-profile`,
           {
@@ -160,25 +161,22 @@ export const pkSystemAction = {
             }
           })
         .then((response) => {
-          console.log("fetchModelProfile", response)
+          console.log("handleJoinChat - fetchModelProfile", response)
           if (response.status === HttpStatus.OK) {
             const curModelArray = response.data.data as Model[];
-            console.log("curModelArray", curModelArray);
-            console.log("curModelArray[0]", curModelArray[0]);
+            console.log("handleJoinChat - curModelArray", curModelArray)
             modelName = curModelArray[0].model_name;
             modelSrc = curModelArray[0].model_metadata.image_url;
           }
           else {
-            message.error("页面错误，请刷新重试")
-            console.log("fetchModelProfile response failed", response)
+            message.error("获取角色信息失败，请刷新重试")
+            console.log("handleJoinChat - fetchModelProfile response failed", response)
           }
         })
         .catch((err) => {
-          message.error("页面错误，请刷新重试");
-          console.log(err)
+          message.error("获取角色信息失败，请刷新重试");
+          console.log("handleJoinChat - fetchModelProfile Error", err)
         });
-        }
-        console.log("Start chatting, user id", getState().userId, "model_id", modelId)
         // update curImage id in state since we will use it on send message post, and convert it to string
         //setState({curImageId: +modelId});
         setState({curModelIdString: modelId});
@@ -198,7 +196,7 @@ export const pkSystemAction = {
             if(response.data.chat_history) {
              chatHistory = response.data.chat_history;
             }
-            console.log("chatHistory", chatHistory)
+            console.log("handleJoinChat - chatHistory", chatHistory)
             const message = response.data.message;
             const uID = response.data.user_id;
             const mID = response.data.model_id;

@@ -401,7 +401,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const handleStartChat = async () => {
     console.log("modelId used for join chat", modelId);
     await action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
-    //await action.handleJoinChat(modelId, aiName, uploadedImages[0]);
+    //await action.handleJoinChat(modelId);
     // set a temp userName and Gender to state
     // action.setUserName("未命名");
     // action.setGender(GenderType.UNKNOWN);
