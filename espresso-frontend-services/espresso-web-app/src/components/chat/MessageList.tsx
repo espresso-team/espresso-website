@@ -42,7 +42,7 @@ export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
             <If condition={action.isModelSelected() === true && isLoading}>
                 <div className='loading-messages-container'>
                     <MDSpinner size={100} />
-                    <span className='loading-text'>您的{state.curModelName}正在赶来的路上(*^▽^*)</span>
+                    <span className='loading-text'>{state.curModelName}正在赶来的路上(*^▽^*)</span>
                 </div>
             </If>
             

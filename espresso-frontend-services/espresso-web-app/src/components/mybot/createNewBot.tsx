@@ -359,10 +359,10 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
       other_patterns: otherFeatures,
       is_public: isPublicAiBot,
       greetings: greeting,
-      image_url: uploadedImages[0] + '.jpg',
+      image_url: uploadedImages[0],
       upVote: 1,
       downVote: 0,
-      img_url: uploadedImages[0] + '.jpg',
+      img_url: uploadedImages[0],
     };
 
     console.log("myBot submitting:", modelMetadata);
@@ -401,7 +401,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const handleStartChat = async () => {
     console.log("modelId used for join chat", modelId);
     await action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
-    await action.handleJoinChat(modelId, aiName, uploadedImages[0]);
+    //await action.handleJoinChat(modelId, aiName, uploadedImages[0]);
     // set a temp userName and Gender to state
     // action.setUserName("未命名");
     // action.setGender(GenderType.UNKNOWN);
