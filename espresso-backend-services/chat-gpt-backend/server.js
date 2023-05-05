@@ -117,7 +117,9 @@ app.post("/join-chat", async (req, res) => {
       user_id: user_id,
       model_id: model_id
     }
+    console.log("[debug]return_greeting_words cond:", cond)
     var existing_conv = await getConv(cond);
+    console.log("[debug]return_greeting_words existing_conv:", existing_conv)
     if (existing_conv != null) {
       // find an existing conv
       var conv = existing_conv.conv_id;
@@ -127,6 +129,7 @@ app.post("/join-chat", async (req, res) => {
         return_chat_history = [];
       }
       // console.log(chat_history);
+      console.log("[debug]return_greeting_words, chat history:", chat_history)
       const return_mes = return_greeting_words(model_gender);
       // TODO: make insertChat and return a transaction
       await chat_client.reinit_conv(conv, existing_conv.last_msg_id, model_id, chat_history);
@@ -150,6 +153,7 @@ app.post("/join-chat", async (req, res) => {
     var msg = response.response;
     // if still contains forbidden words, return a greeting message
     if (is_response_include_forbidden_words(msg)) {
+      console.log("[debug]Forbidden return_greeting_words")
       msg = return_greeting_words(model_gender);
     }
     var conv = {

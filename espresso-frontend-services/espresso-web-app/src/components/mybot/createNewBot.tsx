@@ -302,10 +302,6 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
           }),
           timeoutPromise(TIMEOUT_DURATION)
         ]) as Response;
-<<<<<<< HEAD
-=======
-
->>>>>>> a3261a035cacebf8e6dcb1ca62f6761ae844e5f4
 
         if (!response.ok) {
           message.error("图片上传失败，请刷新重试");
