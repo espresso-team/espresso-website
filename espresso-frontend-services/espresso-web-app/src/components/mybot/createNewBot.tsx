@@ -246,7 +246,7 @@ const CenteredContainer = styled.div`
   align-items: center;
 `;
 
-const CreateNewBot = ({modelId}: {modelId: string}) => {
+const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const [state, action] = usePkSystemHook();
   const [tags, setTags] = useState(MyBotTagItems);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -265,7 +265,7 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
   const [isPublicAiBot, setIsPublicAiBot] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  
+
   const redirectToNewPage = useRedirectToNewPage();
 
   const handleTagClick = (tag: string) => {
@@ -302,9 +302,9 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
             body: formData
           }),
           timeoutPromise(TIMEOUT_DURATION)
-        ]) as Response;        
+        ]) as Response;
 
-        
+
         if (!response.ok) {
           console.log("[UploadImageDebug]response failed", response);
           message.error("图片上传失败，请刷新重试");
@@ -332,7 +332,7 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
           message.error("图片上传失败，请刷新重试");
         }
       }
-       finally {
+      finally {
         setIsUploading(false);
       }
     }
@@ -413,7 +413,7 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
     redirectToNewPage(CHAT_URL);
   };
 
-  
+
   return (
     <Container>
       <Title>创建我的AI角色</Title>
@@ -580,22 +580,22 @@ const CreateNewBot = ({modelId}: {modelId: string}) => {
         onCancel={handleModalCancel}
       >
         <CenteredContainer>
-        {uploadedImages.map((imageUrl, index) => (
-        <UploadArea key={index} style={{
-          backgroundImage: `url(${imageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }} />
-      ))}
-      <SectionTitle>{aiName}角色创建成功!</SectionTitle>
+          {uploadedImages.map((imageUrl, index) => (
+            <UploadArea key={index} style={{
+              backgroundImage: `url(${imageUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }} />
+          ))}
+          <SectionTitle>{aiName}角色创建成功!</SectionTitle>
           <ButtonsContainer>
             <StyledButton primary onClick={handleStartChat}>
               开始聊天{' >'}
             </StyledButton>
-          <StyledButton primary onClick={() => redirectToNewPage(FORUM_URL)}>查看所有角色</StyledButton>
-        </ButtonsContainer>
-        <ShareButtonContainer>
-          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0])}>分享到朋友圈赚取点数</StyledButton>
+            <StyledButton primary onClick={() => redirectToNewPage(FORUM_URL)}>查看所有角色</StyledButton>
+          </ButtonsContainer>
+          <ShareButtonContainer>
+          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0], aiName)}>分享到朋友圈赚取点数</StyledButton>
         </ShareButtonContainer>
         </CenteredContainer>
       </Modal>
