@@ -595,7 +595,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
             <StyledButton primary onClick={() => redirectToNewPage(FORUM_URL)}>查看所有角色</StyledButton>
           </ButtonsContainer>
           <ShareButtonContainer>
-          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0], aiName)}>分享到微信</StyledButton>
+          <StyledButton onClick={useShareToWechat(MODEL_URL, uploadedImages[0] + '.jpg', aiName)}>分享到微信</StyledButton>
         </ShareButtonContainer>
         </CenteredContainer>
       </Modal>
