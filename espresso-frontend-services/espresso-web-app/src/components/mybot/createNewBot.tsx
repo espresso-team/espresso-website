@@ -363,10 +363,10 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
       other_patterns: otherFeatures,
       is_public: isPublicAiBot,
       greetings: greeting,
-      image_url: uploadedImages[0] + '.jpg',
+      image_url: uploadedImages[0],
       upVote: 1,
       downVote: 0,
-      img_url: uploadedImages[0] + '.jpg',
+      img_url: uploadedImages[0],
     };
 
     console.log("myBot submitting:", modelMetadata);
