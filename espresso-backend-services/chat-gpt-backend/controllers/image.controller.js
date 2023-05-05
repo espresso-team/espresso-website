@@ -19,7 +19,7 @@ export async function upload_image(req, res) {
     const model_id = req.body.model_id;
 
     // Generate the COS key (file path) and upload the image
-    const cosKey = `images/${user_id}-${model_id}`;
+    const cosKey = `images/${user_id}-${model_id}.jpg`;
     const image_url = `https://${process.env.TENCENT_BUCKET}.cos.${process.env.TENCENT_REGION}.myqcloud.com/${cosKey}`;
     cos.putObject(
         {
