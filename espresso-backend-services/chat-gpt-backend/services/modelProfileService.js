@@ -51,3 +51,19 @@ export async function getModelsByFilters(filters) {
     }
     return await AImodelModel.find(query);
 }
+
+export async function getSelectedModels(filters) {
+    const query = {};
+    if (filters.gender) {
+        if (filters.gender === "O") {
+          // Do nothing, all models will be returned
+        } else {
+          query["model_type"] = filters.gender;
+        }
+      }
+    
+    query["model_metadata.is_public"] = true;
+    const sortOrder = { "model_metadata.upVote": -1 };
+    const limitResults = 10;
+    return await AImodelModel.find(query).sort(sortOrder).limit(limitResults);
+}

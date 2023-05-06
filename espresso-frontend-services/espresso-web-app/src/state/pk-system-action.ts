@@ -60,7 +60,8 @@ export const pkSystemAction = {
                     .get(`${ENDPOINT}/model-profile`,
                         {
                             params: {
-                                gender: genderToRequiredGender[gender]
+                                gender: genderToRequiredGender[gender],
+                                is_selected: true
                             }
                         })
                     .then((response) => {

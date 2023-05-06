@@ -6,7 +6,7 @@ import ChatClient from "./chatgpt-client.js";
 import * as fs from "fs";
 import { createConversation, getConv, updateConv, deleteConv } from "./services/conversationService.js";
 import { insertUser, getUserByUserId } from "./services/userProfileService.js";
-import { insertModel, getModelByModelId, getModelsByFilters, updateModel, updateModelVotes } from "./services/modelProfileService.js";
+import { insertModel, getModelByModelId, getModelsByFilters, updateModel, updateModelVotes, getSelectedModels } from "./services/modelProfileService.js";
 import { insertChat, getChatHistoryByConvId } from "./services/chatHistoryService.js";
 import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
@@ -172,16 +172,22 @@ app.post("/join-chat", async (req, res) => {
 
 // Route when fetching all model profile
 app.get("/model-profile", async (req, res) => {
-  const { user_id, gender, is_public, model_id } = req.query;
+  const { user_id, gender, is_public, model_id, is_selected } = req.query;
   try {
     const filters = {};
     if (user_id) filters.user_id = user_id;
     if (gender) filters.gender = gender;
+    if (is_selected !== undefined) filters.is_selected = is_selected === 'true';
     if (is_public !== undefined) filters.is_public = is_public === 'true';
     console.log("model_id", model_id)
     if (model_id) filters.model_id = model_id;
     console.log(JSON.stringify(filters));
-    const models = await getModelsByFilters(filters);
+    var models;
+    if (is_selected === 'true') {
+      models = await getSelectedModels(filters);
+    } else {
+      models = await getModelsByFilters(filters);
+    }
     res.json({ data: models, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
