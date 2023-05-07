@@ -26,11 +26,6 @@ const ChatBox: React.FC<Props> = () => {
   console.log("modelIdLink",modelIdLink);
   const [isLoading, setIsLoading] = useState(true);
   const messagesEnd = useRef<HTMLDivElement>(null);
-  const scrollToBottom = () => {
-    if (messagesEnd && messagesEnd.current) {
-      messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
   const [state, action] = usePkSystemHook();
   useEffect(() => {
     console.log("Chat page - state.curUserName is", state.curUserName);
@@ -41,6 +36,9 @@ const ChatBox: React.FC<Props> = () => {
     if(modelIdLink) {
       console.log("calling handleJoinChat:",modelIdLink);
       action.handleJoinChat(modelIdLink)
+    }
+    else {
+      console.log("no modelIdLink");
     }
   }, []);
 
