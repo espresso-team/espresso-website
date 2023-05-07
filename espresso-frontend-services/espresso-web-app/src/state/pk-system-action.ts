@@ -128,7 +128,7 @@ export const pkSystemAction = {
     isModelSelected:
             () =>
                 ({ getState }: pkSystemApi) => {
-                    if(getState().curModelName === '虚拟伴侣')
+                    if(getState().curModelName === 'AI角色')
                         return false;
                     return true;
                 },
@@ -155,7 +155,7 @@ export const pkSystemAction = {
     handleJoinChat:
     (modelId: string) =>
             async ({ getState, setState }: pkSystemApi) => {
-        let modelName: string = "未命名";
+        let modelName: string = "AI角色";
         let modelSrc: string = "";
         console.log("pkSystemAction- handleJoinChat", modelId);
         // Fetch modelName and modelSrc from backend

@@ -37,9 +37,6 @@ const ChatBox: React.FC<Props> = () => {
       console.log("calling handleJoinChat:",modelIdLink);
       action.handleJoinChat(modelIdLink)
     }
-    else {
-      console.log("no modelIdLink");
-    }
   }, []);
 
   useEffect(() => {
