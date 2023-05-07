@@ -129,15 +129,16 @@ const MyForum: React.FC = () => {
             {Object.entries(selectedModel.model_metadata).map(([key, value]) => {
               // 检查当前键是否在excludedKeys数组中，以及值是否为非空字符串
               if (!excludedKeys.includes(key) && typeof value === 'string' && value !== '') {
+                // 使用映射表将英文键替换为中文键
+                const cnKey = enToCnMap[key] || key;
                 return (
                   <div key={key}>
-                    <strong>{key}:</strong> {value}
+                    <strong>{cnKey}:</strong> {value}
                   </div>
                 );
               }
               return null;
             })}
-            {/* <Button onClick={() => console.log('开始聊天')}>开始聊天</Button> */}
           </ModalContent>
         )}
       </Modal>
@@ -155,6 +156,16 @@ const DownvoteIcon = () => (
 
 // 不想显示在Modal里的键的列表
 const excludedKeys = ['image_url', 'user_id', '头像地址src', 'initial_prompt', 'img_url'];
+
+const enToCnMap: { [key: string]: string } = {
+  name: "姓名",
+  gender: "性别",
+  age: "年龄",
+  occupation: "职业",
+  other_patterns: "其他特征",
+  greetings: "口头禅"
+};
+
 
 const ModalContent = styled.div`
   @media (max-width: 576px) {
