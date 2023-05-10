@@ -14,6 +14,8 @@ import { useShareToWechat } from './shareToWeChat';
 import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 import GenderType from '../../types/GenderType';
 
+const defaultAvatarUrl = "https://s2.loli.net/2023/05/10/axVji6dy7NwGEQv.png";
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -348,6 +350,18 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const FORUM_URL = `/forum`;
 
   const handleSubmit = async () => {
+    // Verify unknown
+    if (aiName.trim() === '' || gender.trim() === '') {
+      message.error('名称和性别为必填项，请填写完整！');
+      return;
+    }
+
+    // If no avatar uploaded
+    if (uploadedImages.length === 0) {
+      // Add the defualt avatar url to the state
+      setUploadedImages([...uploadedImages, defaultAvatarUrl]);
+    }
+
     const modelMetadata = {
       name: aiName,
       gender,
@@ -359,10 +373,10 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
       other_patterns: otherFeatures,
       is_public: isPublicAiBot,
       greetings: greeting,
-      image_url: uploadedImages[0],
+      image_url: uploadedImages.length > 0 ? uploadedImages[0] : defaultAvatarUrl,
       upVote: 1,
       downVote: 0,
-      img_url: uploadedImages[0],
+      img_url: uploadedImages.length > 0 ? uploadedImages[0] : defaultAvatarUrl,
     };
 
     console.log("myBot submitting:", modelMetadata);

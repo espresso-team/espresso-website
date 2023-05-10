@@ -46,7 +46,7 @@ export const MessageListDetail = ({ messages, user, pageRef }: Props) => {
             style={{ flexDirection: isUser(user, message) ? 'row-reverse' : 'row' }}>
             <img
               src={message.sender.avatar}
-              alt='sender avatar'
+              alt='未命名'
               className='avatar'
               style={isUser(user, message) ? { marginLeft: '15px' } : { marginRight: '15px' }}
             />
