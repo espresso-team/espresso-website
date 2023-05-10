@@ -14,7 +14,7 @@ export const pkSystemState = {
     userId: "unknown",
     userToken: "unknown",
     modelArrays: [] as Model[],
-    curModelName: "虚拟伴侣",
+    curModelName: "AI角色",
     curModelSrc: "",
     curModelIdString: "",
     modalOpen: false,
