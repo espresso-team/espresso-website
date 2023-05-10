@@ -11,7 +11,7 @@ type State = {
 }
 
 const PKPageWrapper = styled.div`
-  padding-top: 60px;
+  padding-top: 30px;
 `
 
 export default class Pk extends Component<Props, State> {

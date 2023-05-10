@@ -49,13 +49,19 @@ const ImgFrame = styled.img`
   transition: all 0.2s ease;
   &:hover {
     transform: scale(1.1);
-}
+  }
+
+  @media (max-width: 48em) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const FrameFlipped = styled.div`
   display: inline-block;
   overflow: hidden;
   background-color: #828080;
+  margin-bottom: 3rem;
   width: 600px;
   height: 600px;
   border-radius:5%;
@@ -64,51 +70,13 @@ const FrameFlipped = styled.div`
   transition: all 0.2s ease;
   &:hover {
     transform: scale(1.1);
-}
-`;
-
-
-const ExploreBtn = styled.button`
-  background-color: rgb(226, 118, 118);
-  color: ${props => props.theme.body};
-  outline: none;
-  border: none;
-  margin: 2rem;
-  margin-left: 15rem;
-  font-size: ${props => props.theme.fontmd};
-  padding: 0.9rem 2.3rem;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  &:hover{
-      transform: scale(0.9);
-  }
-
-  &::after{
-      content: ' ';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      border: 2px solid rgb(226, 118, 118);
-      width: 100%;
-      height: 100%;
-      border-radius: 50px;
-      
-      transition: all 0.2s ease;
-  }
-
-  &:hover::after{
-      transform: translate(-50%, -50%) scale(1);
-      padding: 0.3rem;
   }
 
   @media (max-width: 48em) {
-  font-size: ${props => props.theme.fontsm};
-
+    width: 100%;
+    height: 650px;
   }
-`
+`;
 
 const Btn = styled.button`
   background-color: ${props => props.theme.text};
@@ -148,16 +116,25 @@ const Btn = styled.button`
   }
 
   @media (max-width: 48em) {
-  font-size: ${props => props.theme.fontsm};
-
+    font-size: ${props => props.theme.fontsm};
+    margin: 1rem;
+    width: 9rem;
   }
 `
+const ButtonListWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 48em) {
+    flex-direction: column;
+  }
+`;
 
 const ButtonList = styled.section`
 position: relative;
 border-top: 2px solid ${props => props.theme.text};
 display: flex;
-
 
 @media (max-width: 48em) {
 height: 5rem;
@@ -176,38 +153,6 @@ const ImgInfoText = styled.p`
 const PromptText = styled.p`
   color: #FFFFFF;
   margin: 3rem;
-`;
-
-
-const XButton = styled.button`
-  border: none;
-  padding-left: 2rem;
-  background-color: transparent;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-
-  @media only screen and (max-width: 768px) {
-    width: 30px;
-    height: 30px;
-    font-size: 18px;
-  }
-
-  @media only screen and (max-width: 480px) {
-    width: 25px;
-    height: 25px;
-    font-size: 14px;
-  }
 `;
 
 var console = require("console-browserify")
@@ -259,6 +204,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
             }
 
             <ButtonList>
+            <ButtonListWrapper>
                 <Btn onClick={
                   async () => {
                     console.log("calling handleJoinChat:imgId",imgId);
@@ -272,6 +218,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
               <Btn onClick={() => {
                 action.randomPickImageId();
               }}>换人</Btn>
+              </ButtonListWrapper>
             </ButtonList>
           </FrameFlipped>
         </Suspense>

@@ -23,8 +23,11 @@ const Title = styled.h1`
   color: #151515cf; /* Change color to a modern, darker shade */
   letter-spacing: 1.5px; /* Increase letter spacing */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add subtle text shadow */
-`;
 
+  @media (max-width: 48em) {
+  font-size: 2rem;
+}
+`;
 
 const Section = styled.section`
 min-height: ${props => `calc(100vh - ${props.theme.navHeight})`};
@@ -46,7 +49,7 @@ align-items: center;
 }
 @media (max-width: 48em) {
   flex-direction: column-reverse;
-  width: 100%;
+  width: 80%;
   &>*:first-child{
     width: 100%;
     margin-top: 0rem;
