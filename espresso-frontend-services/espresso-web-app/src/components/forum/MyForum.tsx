@@ -14,15 +14,18 @@ const MyForum: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
 
   const [modelList, setModelList] = useState<Model[]>([]);
+  const [genderFilter, setGenderFilter] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       // By default, we fetch all the public models.
+      console.log("current genderFilter", genderFilter);
       await axios
         .get(`${ENDPOINT}/model-profile`,
           {
             params: {
-              is_public: true
+              is_public: true,
+              gender: genderFilter,
             }
           })
         .then((response) => {
@@ -45,7 +48,7 @@ const MyForum: React.FC = () => {
 
     };
     fetchData();
-  }, [modelsPerPage]);
+  }, [modelsPerPage, genderFilter]);
 
   const updateVotes = async (model_id: string, upVote: number, downVote: number) => {
     await axios.patch(`${ENDPOINT}/model-profile/votes`, { model_id: model_id, upVote: upVote, downVote: downVote });
@@ -81,6 +84,17 @@ const MyForum: React.FC = () => {
 
   return (
     <Container>
+      <FilterContainer>
+        <span>筛选：</span>
+        <StyledSelect
+          value={genderFilter}
+          onChange={(e) => setGenderFilter(e.target.value)}
+        >
+          <option value="O">所有性别</option>
+          <option value="M">男</option>
+          <option value="W">女</option>
+        </StyledSelect>
+      </FilterContainer>
       <ModelList>
         {modelsToDisplay.map((model) => (
           <ModelItem key={model.model_id} onClick={() => { setIsModalVisible(true); setSelectedModel(model); }}>
@@ -200,6 +214,24 @@ const PageButton = styled.button`
     color: #fff;
   }
 `;
+const FilterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+
+const StyledSelect = styled.select`
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+  padding: 4px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  color: #495057;
+  background-color: #fff;
+  appearance: none;
+`;
+
 
 const Container = styled.div`
   max-width: 1700px;
