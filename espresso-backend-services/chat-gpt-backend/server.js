@@ -62,6 +62,7 @@ app.post("/send-message", async (req, res) => {
     const user_id = req.body.user_id;
     const model_id = req.body.model_id;
     var user = await getUserByUserId(user_id);
+    console.log("current user id is: " + user_id);
     var model = await getModelByModelId(model_id);
     const model_gender = model.model_type;
     var chat_client = new ChatClient(user.user_name, model.model_name);

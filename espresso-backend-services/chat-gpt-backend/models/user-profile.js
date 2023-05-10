@@ -3,6 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const userProfileSchema = new Schema({
   user_id: String,
   user_name: String,
+  wechat_id: String,
+  current_model_id: String,
   email: String,
   phone: String,
   gender: String,
