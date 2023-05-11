@@ -31,7 +31,7 @@ export async function getModelsByFilters(filters) {
     const query = {};
 
     if (filters.user_id) {
-      query["user_id"] = filters.user_id;
+      query["model_metadata.user_id"] = filters.user_id;
     }
   
     if (filters.gender) {
