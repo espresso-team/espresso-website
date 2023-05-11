@@ -4,7 +4,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import ChatClient from "./chatgpt-client.js";
 import * as fs from "fs";
-import { createConversation, getConv, updateConv, deleteConv } from "./services/conversationService.js";
+import { createConversation, getConv, updateConv, getConvsByUser } from "./services/conversationService.js";
 import { insertUser, getUserByUserId } from "./services/userProfileService.js";
 import { insertModel, getModelByModelId, getModelsByFilters, updateModel, updateModelVotes, getSelectedModels } from "./services/modelProfileService.js";
 import { insertChat, getChatHistoryByConvId } from "./services/chatHistoryService.js";
@@ -318,6 +318,18 @@ app.post("/user-profile", async (req, res) => {
   try {
     await insertUser(user);
     res.json({ message: `user ${user_name} added!`, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Fetch models that chatted by a user
+app.get("/chat-models", async (req, res) => {
+  try {
+    const user_id = req.query.user_id;
+    const convs = await getConvsByUser(user_id);
+    const model_ids = convs.map(conv => conv.model_id);
+    res.json({ data: model_ids, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
