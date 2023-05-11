@@ -10,7 +10,7 @@ type State = {
 }
 
 const ChatPageWrapper = styled.div`
-  padding-top: 60px;
+  padding-top: 20px;
 `
 
 export default class Chat extends Component<Props, State> {

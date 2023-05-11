@@ -7,6 +7,8 @@ import axios from 'axios';
 import { ENDPOINT } from '../../types/Env';
 import { useParams } from 'react-router-dom';
 import GenderType from '../../types/GenderType';
+import { useRedirectToNewPage } from '../../util/redirectToNewPage';
+import ChatHeader from './ChatHeader';
 
 interface Props {
   userId: string;
@@ -19,6 +21,33 @@ const MockUser1 =
     uid: "01",
   } as User
 
+  const MockModel1 =
+  {
+    name: "m1",
+    avatar: "https://s2.loli.net/2023/02/22/NA9cIs4veuBMPD8.png",
+    uid: "01",
+  } as User
+
+  const MockModel2 =
+  {
+    name: "m2",
+    avatar: "https://s2.loli.net/2023/02/22/SHsxuN6Jy9njZce.png",
+    uid: "01",
+  } as User
+
+  const MockModel3 =
+  {
+    name: "m2",
+    avatar: "https://s2.loli.net/2023/02/22/gRDHVYj9oUixhcQ.png",
+    uid: "01",
+  } as User
+  
+  const PlusOne =
+  {
+    name: "m2",
+    avatar: "https://s2.loli.net/2023/05/11/upRtig3dIMb8Axw.png",
+    uid: "01",
+  } as User
 var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
@@ -27,6 +56,13 @@ const ChatBox: React.FC<Props> = () => {
   const [isLoading, setIsLoading] = useState(true);
   const messagesEnd = useRef<HTMLDivElement>(null);
   const [state, action] = usePkSystemHook();
+  const redirectToNewPage = useRedirectToNewPage();
+
+  const handleAvatarClick = (userId: string) => {
+    const CHAT_URL = `/chat/${userId}`;
+    redirectToNewPage(CHAT_URL);
+  };
+  
   useEffect(() => {
     console.log("Chat page - state.curUserName is", state.curUserName);
     if(state.curUserName === "User"){
@@ -46,6 +82,8 @@ const ChatBox: React.FC<Props> = () => {
   }, [state.messageList]);
 
   return (
+    <>
+    <ChatHeader users={[MockModel1, MockModel2, MockModel3, PlusOne]} onAvatarClick={handleAvatarClick} />
     <Chat
       messages={state.messageList}
       isLoading={isLoading}
@@ -92,6 +130,7 @@ const ChatBox: React.FC<Props> = () => {
             })
             .catch((err) => console.log(err));
         }} />
+        </>
   )
 };
 

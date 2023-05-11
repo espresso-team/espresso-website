@@ -2,18 +2,10 @@ import React, { FormEvent, Suspense, useState } from 'react'
 import styled from 'styled-components'
 import Loading from '../../app/Loading';
 import ReactCardFlip from 'react-card-flip';
+import axios from 'axios';
 import "@fontsource/akaya-telivigala"
 import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
-import { randomIntBetweenZeroAndXButNotY } from '../../util/randomIntBetweenZeroAndX';
-import { ImageItem } from '../../types/ImageItem';
-import { Link } from 'react-router-dom'
-import TinderCard from 'react-tinder-card'
-import axios from 'axios';
-import { IMessage } from '../../types/IMessage';
-import { ChatHistoryItem } from '../../types/ChatHistoryItem';
 import { Model } from '../../types/Model';
-import { ENDPOINT } from '../../types/Env';
-import { useParams } from 'react-router-dom';
 import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 
 interface Props {
@@ -21,6 +13,7 @@ interface Props {
   imgOnClick: () => void,
   imgItem: Model,
 }
+
 const onSwipe = (direction: any) => {
   console.log('You swiped: ' + direction)
 }
