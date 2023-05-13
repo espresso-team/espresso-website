@@ -31,7 +31,7 @@ export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
                     <div>
                         <h2> 你好欢迎使用七洽 </h2>
                         <h6 className='empty-chat-sub-title'>
-                            先去匹配页面选一个你喜欢的伴侣吧~
+                            先去洽洽页面选一个你喜欢的伴侣吧~
                         </h6>
                     </div>
                 </div>
