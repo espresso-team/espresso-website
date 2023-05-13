@@ -2,6 +2,7 @@ const postpone_words_list_female = ["哎呀...人家不知道嘛...洗澡去了8
 const greeting_words_list_female = ["哼，现在才想起来找人家。你今天过得怎么样呀？", "这么久没有和你聊天，有点想你呢。", "哈咯，有什么有趣的事情和我分享吗?", "你去哪儿了？怎么不接电话。", "嘿，最近怎么样呀？"];
 const postpone_words_list_male = ["容我三思..", "手机信号不好，等会儿再聊！", "emmmm", "什么？", "这个有点触及我知识的盲区了。"];
 const greeting_words_list_male = ["你今天过得怎么样？", "好久不见，上次我们聊得很开心，这次有什么新鲜事想跟我分享吗？", "哈咯，有什么有趣的事情和我分享吗?", "自从上次聊天后，我一直想问你一个问题：你对星座有什么看法？", "嘿，最近怎么样呀？","上次跟你聊天真的很愉快，这次我们可以谈谈你的兴趣爱好","你好，上次我们聊得很开心，这次我们可以聊聊下一次的旅行计划"];
+const forbidden_words_list = ["ChatGPT", "AI", "语言模型", "很抱歉", "机器人", "没有情感", "程序", "角色扮演"];
 
 export function build_chat_history_for_frontend(chat_history) {
     var chat_history_for_frontend = [];
@@ -26,11 +27,12 @@ export function return_greeting_words(gender) {
 }
 
 export function is_response_include_forbidden_words(res_message) {
-    if (res_message.includes('ChatGPT') || res_message.includes('AI') ||
-        res_message.includes('语言模型') || res_message.includes('很抱歉') || 
-        res_message.includes('机器人') || res_message.includes('没有情感')){
+    // if forbidden_words_list includes res_message, return true
+    for (var i = 0; i < forbidden_words_list.length; i++) {
+        if (res_message.includes(forbidden_words_list[i])) {
             return true;
         }
+    }
 }
 
 export function join_frequnet_chat(chats) {
