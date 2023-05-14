@@ -12,7 +12,7 @@ const MAX_PROMPT_TOKEN = 3095;
 var file_prefix = process.env.ON_SERVER == 'true' ? process.env.SERVER_FILE_PATH : "./";
 const initial_model_ids = ['0', '1', '2', '3', '4', '5', '6', '7'];
 
-const clientOptions = {
+var clientOptions = {
     // (Optional) Support for a reverse proxy for the completions endpoint (private API server).
     // Warning: This will expose your `openaiApiKey` to a third party. Consider the risks before using this.
     // reverseProxyUrl: 'https://chatgpt.hato.ai/completions',
@@ -48,12 +48,13 @@ const cacheOptions = {
 
 export default class ChatClient {
   constructor(user_name, model_name) {
-    let tmp_clientOptions = Object.assign({}, clientOptions);
+    var tmp_clientOptions = Object.assign({}, clientOptions);
     tmp_clientOptions.userLabel = user_name;
     tmp_clientOptions.chatGptLabel = model_name;
     var api_keys = process.env.OPENAI_APIKEY.split(",");
     var api_key = api_keys[Math.floor(Math.random()*api_keys.length)];
     this.client = new ChatGPTClient(api_key, tmp_clientOptions, cacheOptions);
+    this.client.clientOptions = tmp_clientOptions;
     this.user_name = user_name;
     this.model_name = model_name;
     console.log("Chat client inited!");

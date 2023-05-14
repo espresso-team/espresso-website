@@ -66,6 +66,7 @@ app.post("/send-message", async (req, res) => {
     var model = await getModelByModelId(model_id);
     const model_gender = model.model_type;
     var chat_client = new ChatClient(user.user_name, model.model_name);
+    console.warn("current chat_client options is: " + JSON.stringify(chat_client.client.options));
     const condition = { 'user_id': user_id, 'model_id': model_id };
     var conv = await getConv(condition);
     console.log(`conv is ${conv.conv_id}, msg is ${conv.last_msg_id}`);
