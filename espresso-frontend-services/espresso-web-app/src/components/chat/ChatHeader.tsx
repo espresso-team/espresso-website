@@ -1,12 +1,15 @@
 import { message } from 'antd';
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { usePkSystemHook } from '../../state/pk-system-hook';
 import { ENDPOINT } from '../../types/Env';
+import GenderType from '../../types/GenderType';
 import { HttpStatus } from '../../types/HttpStatus';
-import { Model } from '../../types/Model';
+import { ModelAvatar } from '../../types/ModelAvatar';
 import { User } from '../../types/User';
+import { fetchModelSrcsByModelIds } from '../../util/fetchModelByModelIds';
+import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 
 const ChatHeaderWrapper = styled.section`
   margin: 0rem 3rem 1rem 5rem;
@@ -31,56 +34,77 @@ const Avatar = styled.img`
   border: 2px solid #ffffff;
 `;
 
-interface Props {
-    users: User[];
-    onAvatarClick: (userId: string) => void;
-}
+const FORUM_URL = `/forum`;
 
-const ChatHeader: React.FC<Props> = ({ users, onAvatarClick }) => {
+const PlusOneIcon =
+{
+  avatarSrc: "https://s2.loli.net/2023/05/11/upRtig3dIMb8Axw.png",
+  modelId: FORUM_URL, // this is not an model id, but let's consider it as a model here
+} as ModelAvatar
+
+const ChatHeader: React.FC = () => {
     const [state, action] = usePkSystemHook();
+    const [avatarList, setAvatarList] = useState<ModelAvatar[]>([]);
+    const redirectToNewPage = useRedirectToNewPage();
+
+    const handleAvatarClick = (modelId: string) => {
+        // handle the PlusOne icon, which will jump to forum page
+        if (modelId === FORUM_URL) {
+            redirectToNewPage(FORUM_URL);
+        }
+        else {
+            const CHAT_URL = `/chat/${modelId}`;
+            redirectToNewPage(CHAT_URL);
+        }
+    };
+
     useEffect(() => {
         const fetchChatHeaderData = async () => {
             // By default, we fetch all the public models.
             console.log("ChatHeader - user name", state.curUserName);
-            state.userId = "xxx"
+            if (state.curUserName === "User") {
+                await action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
+            }
             console.log("ChatHeader - user id", state.userId);
             await axios
-              .get(`${ENDPOINT}/model-profile`,
-                {
-                  params: {
-                    user_id: state.userId,
-                    is_selected: false,
-                  }
+                .get(`${ENDPOINT}/chat-models`,
+                    {
+                        params: {
+                            user_id: state.userId,
+                        }
+                    })
+                .then(async (response) => {
+                    console.log("ChatHeader - fetchModelProfile", response)
+                    if (response.status === HttpStatus.OK) {
+                        const activeModelIdArray = response.data.data as string[];
+                        console.log("ChatHeader -  response.data.data", activeModelIdArray);
+                        const avatarList: ModelAvatar[] = await fetchModelSrcsByModelIds(activeModelIdArray);
+                        setAvatarList(avatarList);
+                    }
+                    else {
+                        message.error("页面错误，请刷新重试")
+                        console.log("fetchModelProfile response failed", response)
+                    }
                 })
-              .then((response) => {
-                console.log("ChatHeader - fetchModelProfile", response)
-                if (response.status === HttpStatus.OK) {
-                  const curModelArray = response.data.data as Model[];
-                  console.log("ChatHeader -  curModelArray", curModelArray);
-                }
-                else {
-                  message.error("页面错误，请刷新重试")
-                  console.log("fetchModelProfile response failed", response)
-                }
-              })
-              .catch((err) => {
-                message.error("页面错误，请刷新重试");
-                console.log(err)
-              });
-      
-          };
-          fetchChatHeaderData();
+                .catch((err) => {
+                    message.error("页面错误，请刷新重试");
+                    console.log(err)
+                });
+
+        };
+        fetchChatHeaderData();
     }, []);
     return (
         <ChatHeaderWrapper>
-            {users.map((user) => (
+            {[...avatarList, PlusOneIcon].map((model, index) => (
                 <Avatar
-                    key={user.uid}
-                    src={user.avatar}
-                    onClick={() => onAvatarClick(user.uid)}
-                    alt={`${user.name}'s avatar`}
+                    key={`${model.modelId}-${index}`}
+                    src={model.avatarSrc}
+                    onClick={() => handleAvatarClick(model.modelId)}
+                    alt={"avatar"}
                 />
             ))}
+
         </ChatHeaderWrapper>
     );
 };

@@ -13,8 +13,7 @@ import Loading from '../../app/Loading';
 import { useShareToWechat } from './shareToWeChat';
 import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 import GenderType from '../../types/GenderType';
-
-const defaultAvatarUrl = "https://s2.loli.net/2023/05/10/axVji6dy7NwGEQv.png";
+import { defaultAvatarUrl } from '../../types/DefaultAvatarUrl';
 
 const Container = styled.div`
   display: flex;

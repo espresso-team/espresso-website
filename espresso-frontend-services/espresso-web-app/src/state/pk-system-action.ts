@@ -18,6 +18,7 @@ export const pkSystemAction = {
             // if user id still unknow, will assgin a random id to this user
             let curUserId = getState().userId;
             if (curUserId === "unknown") {
+                console.log("fetchUserProfile - cur user id is unknown")
                 curUserId = createRandomUserId();
                 setState({ userId: curUserId });
             }

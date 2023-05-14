@@ -32,7 +32,6 @@ export const MessageListDetail = ({ messages, user, pageRef }: Props) => {
     }
   };
   useEffect(() => {
-    console.log("scrollToBottom()");
     scrollToBottom();
   }, [state.messageList]);
   return (

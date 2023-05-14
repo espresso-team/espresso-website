@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { pkSystemApi, usePkSystemHook } from '../../state/pk-system-hook';
+import { usePkSystemHook } from '../../state/pk-system-hook';
 import { IMessage } from '../../types/IMessage';
 import { User } from '../../types/User';
 import { Chat } from './Chat';
@@ -7,7 +7,6 @@ import axios from 'axios';
 import { ENDPOINT } from '../../types/Env';
 import { useParams } from 'react-router-dom';
 import GenderType from '../../types/GenderType';
-import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 import ChatHeader from './ChatHeader';
 
 interface Props {
@@ -41,27 +40,13 @@ const MockUser1 =
     avatar: "https://s2.loli.net/2023/02/22/gRDHVYj9oUixhcQ.png",
     uid: "01",
   } as User
-  
-  const PlusOne =
-  {
-    name: "m2",
-    avatar: "https://s2.loli.net/2023/05/11/upRtig3dIMb8Axw.png",
-    uid: "01",
-  } as User
 var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
   const { modelIdLink } = useParams();
-  console.log("modelIdLink",modelIdLink);
   const [isLoading, setIsLoading] = useState(true);
   const messagesEnd = useRef<HTMLDivElement>(null);
   const [state, action] = usePkSystemHook();
-  const redirectToNewPage = useRedirectToNewPage();
-
-  const handleAvatarClick = (userId: string) => {
-    const CHAT_URL = `/chat/${userId}`;
-    redirectToNewPage(CHAT_URL);
-  };
   
   useEffect(() => {
     console.log("Chat page - state.curUserName is", state.curUserName);
@@ -73,7 +58,7 @@ const ChatBox: React.FC<Props> = () => {
       console.log("calling handleJoinChat:",modelIdLink);
       action.handleJoinChat(modelIdLink)
     }
-  }, []);
+  }, [modelIdLink]);
 
   useEffect(() => {
     if (state.messageList.length > 0) {
@@ -83,7 +68,7 @@ const ChatBox: React.FC<Props> = () => {
 
   return (
     <>
-    <ChatHeader users={[MockModel1, MockModel2, MockModel3, PlusOne]} onAvatarClick={handleAvatarClick} />
+    <ChatHeader />
     <Chat
       messages={state.messageList}
       isLoading={isLoading}

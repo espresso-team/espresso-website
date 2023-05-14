@@ -1,0 +1,1 @@
+export const defaultAvatarUrl = "https://s2.loli.net/2023/05/10/axVji6dy7NwGEQv.png";

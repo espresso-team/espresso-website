@@ -36,6 +36,7 @@ export interface Model {
       upVote: number,
       downVote: number,
       description: string, 
+      is_public: boolean;
     };
     createdAt: string;
     updatedAt: string;
