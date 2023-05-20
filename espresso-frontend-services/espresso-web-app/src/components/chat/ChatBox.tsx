@@ -20,26 +20,6 @@ const MockUser1 =
     uid: "01",
   } as User
 
-  const MockModel1 =
-  {
-    name: "m1",
-    avatar: "https://s2.loli.net/2023/02/22/NA9cIs4veuBMPD8.png",
-    uid: "01",
-  } as User
-
-  const MockModel2 =
-  {
-    name: "m2",
-    avatar: "https://s2.loli.net/2023/02/22/SHsxuN6Jy9njZce.png",
-    uid: "01",
-  } as User
-
-  const MockModel3 =
-  {
-    name: "m2",
-    avatar: "https://s2.loli.net/2023/02/22/gRDHVYj9oUixhcQ.png",
-    uid: "01",
-  } as User
 var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
@@ -82,7 +62,8 @@ const ChatBox: React.FC<Props> = () => {
             "sender": {
               "name": state.curUserName,
               "uid": state.userId,
-              "avatar": "https://s2.loli.net/2023/03/25/JjnqHlgpFrEaN97.png",
+              //"avatar": "https://s2.loli.net/2023/03/25/JjnqHlgpFrEaN97.png",
+              "avatar": state.userGender === GenderType.FAMALE ? "https://s2.loli.net/2023/05/20/Q3KUmsAc4pHvGzj.png": "https://s2.loli.net/2023/05/20/y3t5xrdBj6UaEOQ.png",
             }
           } as IMessage;
 

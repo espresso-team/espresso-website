@@ -67,7 +67,6 @@ const FrameFlipped = styled.div`
 
   @media (max-width: 48em) {
     width: 100%;
-    height: 650px;
   }
 `;
 
@@ -77,7 +76,6 @@ const Btn = styled.button`
   outline: none;
   border: none;
   margin: 3rem;
-  margin-left: 3rem;
   width: 13rem;
   font-size: ${props => props.theme.fontmd};
   padding: 0.9rem 2.3rem;
@@ -110,19 +108,11 @@ const Btn = styled.button`
 
   @media (max-width: 48em) {
     font-size: ${props => props.theme.fontsm};
-    margin: 1rem;
-    width: 9rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 50%;
   }
 `
-const ButtonListWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 48em) {
-    flex-direction: column;
-  }
-`;
 
 const ButtonList = styled.section`
 position: relative;
@@ -130,8 +120,7 @@ border-top: 2px solid ${props => props.theme.text};
 display: flex;
 
 @media (max-width: 48em) {
-height: 5rem;
-flex-direction: column;
+//height: 5rem;
 }
 `
 const ImgInfoSection = styled.div`
@@ -197,21 +186,20 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
             }
 
             <ButtonList>
-            <ButtonListWrapper>
-                <Btn onClick={
-                  async () => {
-                    console.log("calling handleJoinChat:imgId",imgId);
-                    //action.handleJoinChat(modelId);
-                    // jump to new page
-                    redirectToNewPage(CHAT_URL);
-                  }}
-                >
-                  开始聊天
+                  <Btn onClick={
+                    async () => {
+                      console.log("calling handleJoinChat:imgId",imgId);
+                      //action.handleJoinChat(modelId);
+                      // jump to new page
+                      redirectToNewPage(CHAT_URL);
+                    }}
+                  >
+                    聊天
+                  </Btn>
+                <Btn onClick={() => {
+                  action.randomPickImageId();
+                }}>换人
                 </Btn>
-              <Btn onClick={() => {
-                action.randomPickImageId();
-              }}>换人</Btn>
-              </ButtonListWrapper>
             </ButtonList>
           </FrameFlipped>
         </Suspense>
