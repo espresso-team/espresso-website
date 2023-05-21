@@ -38,9 +38,10 @@ export function is_response_include_forbidden_words(res_message) {
 export function join_frequnet_chat(chats) {
     var new_chats = [];
     for (var i = 0; i < chats.length; i++) {
+        var num = i + 1;
         if (chats[i]) {
-            new_chats.push(chats[i]);
+            new_chats.push(`${num}：` + chats[i]);
         }
     }
-    return new_chats.join("| ");
+    return new_chats.join("，");
 }
