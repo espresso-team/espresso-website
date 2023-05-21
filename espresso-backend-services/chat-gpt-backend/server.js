@@ -12,7 +12,7 @@ import { connect } from "./mongo.js";
 import { model, mongoose } from "mongoose";
 import { ObjectId } from 'mongodb';
 import cors from "cors";
-import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words, join_frequnet_chat } from "./util.js";
+import { is_response_include_forbidden_words, return_postpone_words, return_greeting_words, join_frequnet_chat, return_greeting_words_by_model_id } from "./util.js";
 import { authRoutes } from "./routes/auth.route.js";
 import { apiRoutes } from "./routes/api.route.js";
 import dotenv from 'dotenv';
@@ -129,7 +129,7 @@ app.post("/join-chat", async (req, res) => {
         return_chat_history = [];
       }
       // console.log(chat_history);
-      const return_mes = return_greeting_words(model_gender);
+      const return_mes = await return_greeting_words_by_model_id(model_id);
       // TODO: make insertChat and return a transaction
       await chat_client.reinit_conv(conv, existing_conv.last_msg_id, model_id, chat_history);
       await insertChat({ conv_id: conv, message: return_mes, is_user: false });
