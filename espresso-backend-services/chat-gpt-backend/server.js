@@ -341,7 +341,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api", apiRoutes);
 
 function createInitPrompt(data) {
-  var init_prompt = fs.readFileSync(`${file_prefix}self-prompt.txt`, 'utf8');
+  var init_prompt = fs.readFileSync(`${file_prefix}self-prompt2.txt`, 'utf8');
   const replaced = init_prompt
     .replace('{$gender}', data.gender)
     .replace('{$age}', data.age)
@@ -351,8 +351,7 @@ function createInitPrompt(data) {
     .replace('{$hobbies}', data.hobbies.join(', '))
     .replace('{$freq_chats}', join_frequnet_chat(data.freq_chats))
     .replace('{$other_patterns}', data.other_patterns)
-    .replace('{$greetings}', data.greetings)
-    .replace('{$greetings2}', data.greetings);
+    .replace('{$greetings}', data.greetings);
   return replaced;
 }
 // Start the server
