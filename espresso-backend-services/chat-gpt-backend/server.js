@@ -351,7 +351,8 @@ function createInitPrompt(data) {
     .replace('{$hobbies}', data.hobbies.join(', '))
     .replace('{$freq_chats}', join_frequnet_chat(data.freq_chats))
     .replace('{$other_patterns}', data.other_patterns)
-    .replace('{$greetings}', data.greetings);
+    .replace('{$greetings}', data.greetings)
+    .replace('{$greetings2}', data.greetings);
   return replaced;
 }
 // Start the server
