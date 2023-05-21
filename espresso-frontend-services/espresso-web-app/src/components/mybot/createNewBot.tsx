@@ -254,6 +254,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const [aiName, setAiName] = useState('');
+  const [relationship, setRelationship] = useState('');
   const [greeting, setGreeting] = useState('');
   const [freqChats1, setFreqChats1] = useState('');
   const [freqChats2, setfreqChats2] = useState('');
@@ -350,8 +351,8 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
 
   const handleSubmit = async () => {
     // Verify unknown
-    if (aiName.trim() === '' || gender.trim() === '') {
-      message.error('名称和性别为必填项，请填写完整！');
+    if (aiName.trim() === '' || gender.trim() === '' || relationship.trim() === '') {
+      message.error('名称、性别以及和我的关系为必填项，请填写完整！');
       return;
     }
 
@@ -372,6 +373,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
       other_patterns: otherFeatures,
       is_public: isPublicAiBot,
       greetings: greeting,
+      relationship: relationship,
       image_url: uploadedImages.length > 0 ? uploadedImages[0] : defaultAvatarUrl,
       upVote: 1,
       downVote: 0,
@@ -458,6 +460,15 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
           onChange={(e) => setAiName(e.target.value)}
         />
         <StyledLabel>姓名不能重复且在10个字符以内。创建后无法修改。</StyledLabel>
+      </InputContainer>
+      <InputContainer>
+        <SectionTitle>和我的关系</SectionTitle>
+        <StyledInput
+          type="text"
+          placeholder="朋友/同学/恋人"
+          value={relationship}
+          onChange={(e) => setRelationship(e.target.value)}
+        />
       </InputContainer>
 
       <InputContainer>

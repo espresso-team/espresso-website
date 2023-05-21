@@ -346,6 +346,7 @@ function createInitPrompt(data) {
     .replace('{$gender}', data.gender)
     .replace('{$age}', data.age)
     .replace('{$name}', data.name)
+    .replace('{$relationship}', data.relationship)
     .replace('{$occupation}', data.occupation)
     .replace('{$personality}', data.personality.join(', '))
     .replace('{$hobbies}', data.hobbies.join(', '))
