@@ -64,6 +64,6 @@ export async function getSelectedModels(filters) {
     
     query["model_metadata.is_public"] = true;
     const sortOrder = { "model_metadata.upVote": -1 };
-    const limitResults = 10;
+    const limitResults = 8;
     return await AImodelModel.find(query).sort(sortOrder).limit(limitResults);
 }
