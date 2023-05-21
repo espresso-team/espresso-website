@@ -63,15 +63,16 @@ export default class ChatClient {
   async read_init_prompt(model_id) {
     if (initial_model_ids.includes(model_id)) {
       const text = fs.readFileSync(`${file_prefix}initial-prompt-${model_id}.txt`, 'utf8'); 
+      console.log("Inital prompt is: " + text);
       return text;
     }
     var model = await getModelByModelId(model_id);
     const init_prompt = model.model_metadata.initial_prompt;
-    console.log(init_prompt);
     if (!init_prompt) {
       throw new Error("Init prompt not found for model " + model_id);
     }
-    return model.model_metadata.init_prompt;
+    console.log("Inital prompt is: " + init_prompt);
+    return init_prompt;
   }
 
   // Initialize first conv for a new user
