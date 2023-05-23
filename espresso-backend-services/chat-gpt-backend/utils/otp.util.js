@@ -42,7 +42,7 @@ export async function fast2sms(code, contactNumber, next) {
     var data = qs.stringify({
       content: `code:${code}`,
       phone_number: contactNumber,
-      template_id: 'CST_ptdie100'
+      template_id: 'CST_lduha10224'
     });
     config.data = data;
 
