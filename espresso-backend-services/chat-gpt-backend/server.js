@@ -22,6 +22,7 @@ dotenv.config();
 const app = express();
 const allowedOrigins = [
   'https://www.chitchat-ai.com/',
+  'https://chitchat-ai.com/',
   'https://chitchat-ai-mm27.onrender.com',
   'https://chitchat-ai-dev.onrender.com',
   'http://localhost:3001',
