@@ -8,5 +8,5 @@ if (!onServer) {
   console.log('Server is running');
 }
 
-export const ENDPOINT = onServer ? "https://chitchat-ai-backend.onrender.com" : "http://localhost:3000";
-export const FRONT_ENDPOINT = onServer ? "https://chitchat-ai-mm27.onrender.com" : "http://localhost:3001";
+export const ENDPOINT = onServer ? "https://chitchat-ai-backend-dev.onrender.com" : "http://localhost:3000";
+export const FRONT_ENDPOINT = onServer ? "https://chitchat-ai-dev.onrender.com" : "http://localhost:3001";
