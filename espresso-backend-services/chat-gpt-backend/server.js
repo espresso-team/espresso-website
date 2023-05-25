@@ -354,7 +354,13 @@ function createInitPrompt(data) {
     .replace('{$hobbies}', data.hobbies.join(', '))
     .replace('{$freq_chats}', join_frequnet_chat(data.freq_chats))
     .replace('{$other_patterns}', data.other_patterns)
-    .replace('{$greetings}', data.greetings);
+    .replace('{$greetings}', data.greetings)
+    .replace('{$goodwill}',data.greetings)
+    .replace('{$moralSense}',data.moralSense)
+    .replace('{$humor}',data.humor)
+    .replace('{$city}',data.city)
+    .replace('{$hometown}',data.hometown)
+    .replace('{$dislike}',data.dislike)
   return replaced;
 }
 // Start the server

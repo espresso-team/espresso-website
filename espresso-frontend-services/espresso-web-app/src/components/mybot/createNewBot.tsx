@@ -247,6 +247,13 @@ const CenteredContainer = styled.div`
   align-items: center;
 `;
 
+const StyledSelect = styled.select`
+  padding: 0.5em;
+  font-size: 1em;
+  border: 1px solid #000;
+  border-radius: 4px;
+`;
+
 const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const [state, action] = usePkSystemHook();
   const [tags, setTags] = useState(MyBotTagItems);
@@ -263,10 +270,16 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const [occupation, setOccupation] = useState('');
   const [hobby, setHobby] = useState('');
   const [age, setAge] = useState('');
+  const [city, setCity] = useState('');
+  const [hometown, setHometown] = useState('');
+  const [dislike, setDislike] = useState('');
   const [otherFeatures, setOtherFeatures] = useState('');
   const [isPublicAiBot, setIsPublicAiBot] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [goodwill, setGoodwill] = useState("100");
+  const [moralSense, setMoralSense] = useState("100");
+  const [humor, setHumor] = useState("100");
 
   const redirectToNewPage = useRedirectToNewPage();
 
@@ -348,6 +361,8 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
   const MODEL_URL = `${FRONT_ENDPOINT}/chat/${modelId}`;
   const CHAT_URL = `/chat/${modelId}`;
   const FORUM_URL = `/forum`;
+  const options = Array.from({length: 101}, (_, i) => i); // an array of options from 0 to 100 used for goodwill etc
+
 
   const handleSubmit = async () => {
     // Verify unknown
@@ -378,6 +393,12 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
       upVote: 1,
       downVote: 0,
       img_url: uploadedImages.length > 0 ? uploadedImages[0] : defaultAvatarUrl,
+      city: city,
+      hometown: hometown,
+      dislike: dislike,
+      goodwill: goodwill,
+      moralSense: moralSense,
+      humor: humor,
     };
 
     console.log("myBot submitting:", modelMetadata);
@@ -465,7 +486,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
         <SectionTitle>和我的关系</SectionTitle>
         <StyledInput
           type="text"
-          placeholder="朋友/同学/恋人"
+          placeholder="朋友/同学/恋人/偶像"
           value={relationship}
           onChange={(e) => setRelationship(e.target.value)}
         />
@@ -570,6 +591,73 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
             value={age}
             onChange={(e) => setAge(e.target.value)}
           />
+        </InputContainer>
+      </FormContainer>
+
+      <FormContainer>
+        <InputContainer>
+          <SectionTitle>所在地</SectionTitle>
+          <StyledInput
+            type="text"
+            placeholder="当前所在地名称"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          />
+        </InputContainer>
+
+        <InputContainer>
+          <SectionTitle>家乡</SectionTitle>
+          <StyledInput
+            type="text"
+            placeholder="家乡名称名称"
+            value={hometown}
+            onChange={(e) => setHometown(e.target.value)}
+          />
+        </InputContainer>
+
+        <InputContainer>
+          <SectionTitle>讨厌</SectionTitle>
+          <StyledInput
+            type="text"
+            placeholder="讨厌的事情"
+            value={dislike}
+            onChange={(e) => setDislike(e.target.value)}
+          />
+        </InputContainer>
+      </FormContainer>
+
+      <FormContainer>
+        <InputContainer>
+          <SectionTitle>好感度</SectionTitle>
+          <StyledSelect value={goodwill} onChange={(e) => setGoodwill(e.target.value)}>
+          {options.map((value, index) => (
+            <option key={index} value={value}>
+              {value}
+            </option>
+          ))}
+        </StyledSelect>
+        </InputContainer>
+
+        <InputContainer>
+          <SectionTitle>道德感</SectionTitle>
+          <StyledSelect value={moralSense} onChange={(e) => setMoralSense(e.target.value)}>
+          {options.map((value, index) => (
+            <option key={index} value={value}>
+              {value}
+            </option>
+          ))}
+          </StyledSelect>
+        </InputContainer>
+
+        <InputContainer>
+          <SectionTitle>幽默感</SectionTitle>
+          <StyledSelect value={humor} onChange={(e) => setHumor(e.target.value)}>
+          {options.map((value, index) => (
+            <option key={index} value={value}>
+              {value}
+            </option>
+          ))}
+          </StyledSelect>
         </InputContainer>
       </FormContainer>
 

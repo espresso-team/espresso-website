@@ -46,6 +46,15 @@ const ChatBox: React.FC<Props> = () => {
     }
   }, [state.messageList]);
 
+  // useEffect(() => {
+  //   console.log("[debug] current modelIdLink", modelIdLink)
+  //   console.log("[debug] state.curModelIdString", state.curModelIdString)
+  //   // when the page is not ready, show loading page
+  //   if(modelIdLink !== state.curModelIdString)
+  //     console.log("loading is true");
+  //     setIsLoading(true);
+  // }, []);
+
   return (
     <>
     <ChatHeader />
@@ -62,14 +71,12 @@ const ChatBox: React.FC<Props> = () => {
             "sender": {
               "name": state.curUserName,
               "uid": state.userId,
-              //"avatar": "https://s2.loli.net/2023/03/25/JjnqHlgpFrEaN97.png",
               "avatar": state.userGender === GenderType.FAMALE ? "https://s2.loli.net/2023/05/20/Q3KUmsAc4pHvGzj.png": "https://s2.loli.net/2023/05/20/y3t5xrdBj6UaEOQ.png",
             }
           } as IMessage;
 
           action.updateMessageList(newUserMessage);
           // send post request
-          console.log("state.curImageId.toString()",state.curImageId.toString())
           axios
             .post(`${ENDPOINT}/send-message`, 
             {

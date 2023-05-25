@@ -23,14 +23,12 @@ const items: MenuProps['items'] = [
     key: '1',
     icon: <UserOutlined />,
   },
-  {
-    label: '美国 +1',
-    key: '2',
-    icon: <UserOutlined />,
-  }
+  // {
+  //   label: '美国 +1',
+  //   key: '2',
+  //   icon: <UserOutlined />,
+  // }
 ];
-
-
 
 const RegisterBlock = () => {
   const [state, action] = usePkSystemHook();
