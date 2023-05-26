@@ -331,7 +331,8 @@ app.get("/chat-models", async (req, res) => {
   try {
     var model_ids = [];
     const user_id = req.query.user_id;
-    if (user_id) {
+    console.log("user_id is " + user_id);
+    if (user_id != undefined && user_id != 'unknown') {
       const convs = await getConvsByUser(user_id);
       model_ids = convs.map(conv => conv.model_id);
     }
