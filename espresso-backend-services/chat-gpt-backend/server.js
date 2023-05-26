@@ -329,9 +329,12 @@ app.post("/user-profile", async (req, res) => {
 // Fetch models that chatted by a user
 app.get("/chat-models", async (req, res) => {
   try {
+    var model_ids = [];
     const user_id = req.query.user_id;
-    const convs = await getConvsByUser(user_id);
-    const model_ids = convs.map(conv => conv.model_id);
+    if (user_id) {
+      const convs = await getConvsByUser(user_id);
+      model_ids = convs.map(conv => conv.model_id);
+    }
     res.json({ data: model_ids, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
