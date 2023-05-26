@@ -69,7 +69,6 @@ async function createNewUser(phone, next) {
     });
 
     // save user
-
     const user = await createUser.save();
 
     // generate otp
