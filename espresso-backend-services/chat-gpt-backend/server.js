@@ -21,6 +21,8 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
 const allowedOrigins = [
+  'https://chitchat.fans',
+  'https://www.chitchat.fans',
   'https://www.chitchat-ai.com',
   'https://chitchat-ai.com',
   'https://chitchat-ai-mm27.onrender.com',
