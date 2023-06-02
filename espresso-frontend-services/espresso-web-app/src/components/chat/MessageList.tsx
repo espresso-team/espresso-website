@@ -11,6 +11,7 @@ import { usePkSystemHook } from '../../state/pk-system-hook';
 import { useParams } from 'react-router-dom';
 
 interface Props {
+    isBotTyping: boolean;
     isLoading: boolean;
     messages: IMessage[];
     user: User;
@@ -18,11 +19,11 @@ interface Props {
     //renderMessage?: RenderMessageFunction;
 }
 
-export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
+export const MessageList = ({ isBotTyping, isLoading, messages, user, pageRef }: Props) => {
     const [state, action] = usePkSystemHook();
     const { modelIdLink } = useParams();
     const [swichingRole, setSwichingRole] = useState(false);
-    var console = require("console-browserify")
+    var console = require("console-browserify") 
     // if(state.messageList[0] !== undefined){
     //     console.log("MessageList modelIdLink messageList",modelIdLink !==state.messageList[0].id)
     //     if(modelIdLink !==state.messageList[0].id) {
@@ -51,7 +52,7 @@ export const MessageList = ({ isLoading, messages, user, pageRef }: Props) => {
                 </div>
             </If>
             <If condition={state.messageList[0] !== undefined && modelIdLink === state.messageList[0].id && !isLoading && messages.length > 0}>
-                <MessageListDetail user={user} messages={messages} pageRef={pageRef}/>
+                <MessageListDetail user={user} isBotTyping={isBotTyping} messages={messages} pageRef={pageRef}/>
             </If>
             <If condition={(action.isModelSelected() === true && isLoading) || (state.messageList[0] !== undefined && modelIdLink !== state.messageList[0].id)}>
                 <div className='loading-messages-container'>
