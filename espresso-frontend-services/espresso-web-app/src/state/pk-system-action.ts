@@ -11,6 +11,8 @@ import { createRandomUserId } from "../util/createRandomUserId";
 import { ENDPOINT } from "../types/Env";
 import { ChatHistoryItem } from "../types/ChatHistoryItem";
 import { RedirectToNewPageFn, useRedirectToNewPage } from "../util/redirectToNewPage";
+import { initialize, setUserId } from "../app/GaEvent";
+
 var console = require("console-browserify")
 export const pkSystemAction = {
     fetchUserProfile: (gender: GenderType, userName: string) =>
@@ -22,6 +24,9 @@ export const pkSystemAction = {
                 curUserId = createRandomUserId();
                 setState({ userId: curUserId });
             }
+            console.log("Set GA user id", curUserId);
+            initialize();
+            setUserId(curUserId);
             console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
             await axios
                 .post(`${ENDPOINT}/user-profile`,

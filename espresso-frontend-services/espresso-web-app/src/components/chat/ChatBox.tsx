@@ -8,6 +8,7 @@ import { ENDPOINT } from '../../types/Env';
 import { useParams } from 'react-router-dom';
 import GenderType from '../../types/GenderType';
 import ChatHeader from './ChatHeader';
+import { logSendMessageEvent } from '../../app/GaEvent';
 
 interface Props {
   userId: string;
@@ -77,6 +78,8 @@ const ChatBox: React.FC<Props> = () => {
 
           action.updateMessageList(newUserMessage);
           // send post request
+          console.log("state.curImageId.toString()",state.curImageId.toString())
+          logSendMessageEvent(state.curModelIdString);
           axios
             .post(`${ENDPOINT}/send-message`, 
             {

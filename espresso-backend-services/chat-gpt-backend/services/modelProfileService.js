@@ -49,7 +49,8 @@ export async function getModelsByFilters(filters) {
     if (filters.model_id) {
         query["model_id"] = filters.model_id;
     }
-    return await AImodelModel.find(query);
+    const sortOrder = { "model_metadata.upVote": -1 };
+    return await AImodelModel.find(query).sort(sortOrder);
 }
 
 export async function getSelectedModels(filters) {
