@@ -7,6 +7,7 @@ import "./style.css"
 interface Props {
   messages: { text: string; id: string; sender: User }[];
   user: User;
+  isBotTyping: boolean;
   pageRef: React.Ref<HTMLDivElement>
 }
 const isUser = (user: User, message: IMessage) => {
@@ -23,7 +24,7 @@ const getRenderName = (isUser: boolean, message: IMessage) => {
   return renderName
 }
 var console = require("console-browserify")
-export const MessageListDetail = ({ messages, user, pageRef }: Props) => {
+export const MessageListDetail = ({ messages, user, isBotTyping, pageRef }: Props) => {
   const messagesEnd = useRef<HTMLDivElement>(null);
   const [state] = usePkSystemHook();
   const scrollToBottom = () => {
@@ -60,6 +61,15 @@ export const MessageListDetail = ({ messages, user, pageRef }: Props) => {
           </div>
         )
       })}
+      {isBotTyping &&
+        <div className="chat-bubble-row" style={{ flexDirection: 'row' }}>
+          <div className="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      }
     </div>
   )
 }

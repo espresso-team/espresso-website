@@ -12,13 +12,14 @@ import sendIcon from '../../assets/send-icon.svg';
 interface Props {
   messages: IMessage[];
   isLoading: boolean;
+  isBotTyping: boolean;
   user: User;
   onSubmit: (mes: string) => void;
   pageRef: React.Ref<HTMLDivElement>
 }
 var console = require("console-browserify")
 
-export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) => {
+export const Chat = ({ messages, isLoading, isBotTyping, user, onSubmit, pageRef }: Props) => {
   const scrollToDiv = useRef<HTMLDivElement>(null);
   const [state, action] = usePkSystemHook();
   const [message, setMessage] = useState("")
@@ -39,6 +40,7 @@ export const Chat = ({ messages, isLoading, user, onSubmit, pageRef }: Props) =>
         <MessageList
           isLoading={isLoading}
           messages={messages}
+          isBotTyping={isBotTyping}
           user={user}
           pageRef={pageRef}
         />
