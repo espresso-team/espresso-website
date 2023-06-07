@@ -48,15 +48,6 @@ const ChatBox: React.FC<Props> = () => {
     }
   }, [state.messageList]);
 
-  // useEffect(() => {
-  //   console.log("[debug] current modelIdLink", modelIdLink)
-  //   console.log("[debug] state.curModelIdString", state.curModelIdString)
-  //   // when the page is not ready, show loading page
-  //   if(modelIdLink !== state.curModelIdString)
-  //     console.log("loading is true");
-  //     setIsLoading(true);
-  // }, []);
-
   return (
     <>
       <ChatHeader />

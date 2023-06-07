@@ -10,6 +10,7 @@ import { ModelAvatar } from '../../types/ModelAvatar';
 import { User } from '../../types/User';
 import { fetchModelSrcsByModelIds } from '../../util/fetchModelByModelIds';
 import { useRedirectToNewPage } from '../../util/redirectToNewPage';
+import { useParams } from 'react-router-dom';
 
 const ChatHeaderWrapper = styled.section`
   margin: 0rem 3rem 1rem 5rem;
@@ -37,15 +38,16 @@ const Avatar = styled.img`
 const FORUM_URL = `/forum`;
 
 const PlusOneIcon =
-{
-  avatarSrc: "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4579.jpg",
-  modelId: FORUM_URL, // this is not an model id, but let's consider it as a model here
-} as ModelAvatar
+    {
+        avatarSrc: "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4579.jpg",
+        modelId: FORUM_URL, // this is not an model id, but let's consider it as a model here
+    } as ModelAvatar
 
 const ChatHeader: React.FC = () => {
     const [state, action] = usePkSystemHook();
     const [avatarList, setAvatarList] = useState<ModelAvatar[]>([]);
     const redirectToNewPage = useRedirectToNewPage();
+    const { modelIdLink } = useParams();
 
     const handleAvatarClick = (modelId: string) => {
         // handle the PlusOne icon, which will jump to forum page
@@ -76,8 +78,17 @@ const ChatHeader: React.FC = () => {
                 .then(async (response) => {
                     console.log("ChatHeader - fetchModelProfile", response)
                     if (response.status === HttpStatus.OK) {
-                        const activeModelIdArray = response.data.data as string[];
-                        console.log("ChatHeader -  response.data.data", activeModelIdArray);
+                        let activeModelIdArray = response.data.data as string[];
+                        console.log("[debug] ChatHeader -  response.data.data", activeModelIdArray);
+                        console.log("[debug] current model", modelIdLink);
+
+                        // Check if activeModelIdArray exists and if modelIdLink is not the first element.
+                        if (modelIdLink && (!activeModelIdArray || activeModelIdArray[0] !== modelIdLink)) {
+                            // Add modelIdLink to activeModelIdArray and set it as the first element.
+                            activeModelIdArray = [modelIdLink].concat(activeModelIdArray.filter(id => id !== modelIdLink));
+                            console.log("[debug] updated activeModelIdArray", activeModelIdArray);
+                        }
+
                         const avatarList: ModelAvatar[] = await fetchModelSrcsByModelIds(activeModelIdArray);
                         setAvatarList(avatarList);
                     }
