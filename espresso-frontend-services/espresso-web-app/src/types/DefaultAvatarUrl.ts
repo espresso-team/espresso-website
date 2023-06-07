@@ -1,1 +1,1 @@
-export const defaultAvatarUrl = "https://s2.loli.net/2023/05/10/axVji6dy7NwGEQv.png";
+export const defaultAvatarUrl = "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4580.jpg";

@@ -38,7 +38,7 @@ const FORUM_URL = `/forum`;
 
 const PlusOneIcon =
 {
-  avatarSrc: "https://s2.loli.net/2023/05/11/upRtig3dIMb8Axw.png",
+  avatarSrc: "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4579.jpg",
   modelId: FORUM_URL, // this is not an model id, but let's consider it as a model here
 } as ModelAvatar
 
