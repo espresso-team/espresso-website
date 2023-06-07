@@ -171,15 +171,22 @@ const DownvoteIcon = () => (
 );
 
 // 不想显示在Modal里的键的列表
-const excludedKeys = ['image_url', 'user_id', '头像地址src', 'initial_prompt', 'img_url'];
+const excludedKeys = ['image_url', 'user_id', '头像地址src', 'initial_prompt', 'img_url', 'other_patterns'];
 
 const enToCnMap: { [key: string]: string } = {
-  name: "姓名",
-  gender: "性别",
-  age: "年龄",
-  occupation: "职业",
-  other_patterns: "其他特征",
-  greetings: "口头禅"
+  "name": "姓名",
+  "gender": "性别",
+  "age": "年龄",
+  "occupation": "职业",
+  "other_patterns": "其他特征",
+  "greetings": "口头禅",
+  "hometown": "家乡",
+  "relationship": "和我的关系",
+  "city": "所在城市",
+  "dislike": "讨厌的事物",
+  "goodwill": "好感度",
+  "moralSense": "道德感",
+  "humor": "幽默感"
 };
 
 
