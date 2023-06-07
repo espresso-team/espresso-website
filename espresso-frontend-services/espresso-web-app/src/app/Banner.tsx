@@ -132,7 +132,7 @@ const Banner = () => {
     <Section>
         <Title>使用过程中遇到问题?  <br /> 点击这里反馈  </Title>
         <BtnContainer>
-        <a href="https://www.discord.com" aria-label={"Join Now"} target="_blank" rel="noreferrer" >
+        <a href="https://m.hlcode.cn/?id=NKGMT0y" aria-label={"Join Now"} target="_blank" rel="noreferrer" >
         <JoiNow>
             加入微信群
         </JoiNow>

@@ -145,7 +145,7 @@ export const ImageCard = ({ idCardFlipped, imgOnClick, imgItem }: Props) => {
   const imgPrompt = "TBD";
   const modelId = imgItem._id;
   const imgId = imgItem.model_id;
-  const imgSrc = imgItem.model_metadata.头像地址src;
+  const imgSrc = imgItem.model_metadata.image_url;
   const imgName = imgItem.model_name;
   const imgAge = imgItem.model_metadata.年龄;
   const imgEducaton = imgItem.model_metadata.职业;
