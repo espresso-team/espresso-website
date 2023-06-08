@@ -122,18 +122,21 @@ const RegisterBlock = () => {
         if (response.status === HttpStatus.OK || response.status === HttpStatus.CREATED) {
           message.success('验证码发送成功，请注意查收');
         }
+        else if (response.status === HttpStatus.FORBIDDEN) {
+          message.error("验证码发送过于频繁，请稍后再试")
+        }
         else {
           message.error('验证码发送失败，请重试')
         }
       })
       .catch((err) => {
-        message.error('验证码发送失败，请重试')
+        if(err.response.status === HttpStatus.FORBIDDEN ) {
+          message.error("验证码发送过于频繁，请稍后再试")
+        }
+        else {
+          message.error('验证码发送失败，请重试')
+        }
       });
-    // openApi.sendMessage(data).then((res) => {
-    //   if (res) {
-    //     message.success('验证码发送成功，请注意查收')
-    //   }
-    // })
     timer = setInterval(() => {
       time--;
       setCodeText(time);

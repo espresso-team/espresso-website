@@ -39,14 +39,6 @@ export async function loginOrRegisterUser(req, res, next) {
             
             return;
         }
-
-        res.status(201).json({
-            type: "success",
-            message: "验证码已发送，请查收。",
-            data: {
-            userId: user._id,
-            },
-        });
         // generate otp
         const otp = generateOTP(6);
         // save otp to user collection
@@ -54,9 +46,27 @@ export async function loginOrRegisterUser(req, res, next) {
         user.isAccountVerified = true;
         await user.save();
         // send otp to phone number
-        await fast2sms(otp, user.phone, next);
+        await fast2sms(otp, user.phone);
+
+        res.status(201).json({
+          type: "success",
+          message: "验证码已发送，请查收。",
+          data: {
+          userId: user._id,
+          },
+      });
    } catch (error) {
-     next(error);
+    console.log("[Debug] error.status",error.response.status)
+      if (error.response.status === 403) {
+        res.status(403).json({
+          type: "error",
+          message: "验证码操作频繁，请稍后重试。",
+          data: {
+          },
+        });
+      }
+   } finally {
+    console.log("[Debug] finally")
    }
 }
 

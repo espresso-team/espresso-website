@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ENDPOINT } from '../types/Env';
 import axios, { AxiosError } from "axios";
+import { usePkSystemHook } from '../state/pk-system-hook';
 
 interface AuthState {
     isLoggedIn: boolean;
@@ -15,7 +16,7 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthState>({
     isLoggedIn: false,
-    setIsLoggedIn: () => { }, // Provide a default empty function
+    setIsLoggedIn: () => { },
     userId: null,
     setUserId: () => { },
 });
@@ -25,6 +26,7 @@ const useAuth = () => {
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const [state] = usePkSystemHook();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState<string | null>(null);
     useEffect(() => {
@@ -54,7 +56,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         };
 
         checkAuthentication();
-    }, []);
+    }, [state.userId]);
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userId, setUserId }}>

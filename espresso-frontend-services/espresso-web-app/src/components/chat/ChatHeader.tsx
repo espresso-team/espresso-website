@@ -79,14 +79,11 @@ const ChatHeader: React.FC = () => {
                     console.log("ChatHeader - fetchModelProfile", response)
                     if (response.status === HttpStatus.OK) {
                         let activeModelIdArray = response.data.data as string[];
-                        console.log("[debug] ChatHeader -  response.data.data", activeModelIdArray);
-                        console.log("[debug] current model", modelIdLink);
 
                         // Check if activeModelIdArray exists and if modelIdLink is not the first element.
                         if (modelIdLink && (!activeModelIdArray || activeModelIdArray[0] !== modelIdLink)) {
                             // Add modelIdLink to activeModelIdArray and set it as the first element.
                             activeModelIdArray = [modelIdLink].concat(activeModelIdArray.filter(id => id !== modelIdLink));
-                            console.log("[debug] updated activeModelIdArray", activeModelIdArray);
                         }
 
                         const avatarList: ModelAvatar[] = await fetchModelSrcsByModelIds(activeModelIdArray);
