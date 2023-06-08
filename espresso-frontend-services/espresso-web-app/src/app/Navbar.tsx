@@ -96,7 +96,6 @@ const MenuItem = styled.li`
       display: none;
     }
     }
-
 `
 const HamburgerWrapper = styled.div`
     display: none;
@@ -238,11 +237,6 @@ const Navbar = () => {
                     open={state.modalOpen}
                     footer={null}
                     onCancel={handleCancel}
-                /* 
-                okText={"登录"}
-                cancelText={"取消"}
-                onOk={handleOk}
-                okButtonProps={{style: {backgroundColor: "black"}}} */
                 >
                     <RegisterBlock />
                 </Modal>

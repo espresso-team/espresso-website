@@ -156,7 +156,6 @@ app.post("/join-chat", async (req, res) => {
     var msg = response.response;
     // if still contains forbidden words, return a greeting message
     if (is_response_include_forbidden_words(msg)) {
-      console.log("[debug]Forbidden return_greeting_words")
       msg = return_greeting_words(model_gender);
     }
     var conv = {

@@ -54,7 +54,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "REACT_APP_DEV_SERVER=true react-scripts start",
+    "start": "react-scripts start",
     "dev": "REACT_APP_DEV_SERVER=true react-scripts build",
     "build": "NODE_ENV=production react-scripts build",
     "test": "NODE_ENV=development react-scripts start",

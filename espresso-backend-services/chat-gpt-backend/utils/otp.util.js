@@ -37,7 +37,7 @@ export function generateOTP(otp_length) {
   return OTP;
 }
 
-export async function fast2sms(code, contactNumber, next) {
+export async function fast2sms(code, contactNumber) {
   try {
     var data = qs.stringify({
       content: `code:${code}`,
@@ -46,11 +46,11 @@ export async function fast2sms(code, contactNumber, next) {
     });
     config.data = data;
 
-    axios(config)
+    await axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 }
