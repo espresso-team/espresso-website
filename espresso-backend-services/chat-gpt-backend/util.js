@@ -50,7 +50,7 @@ export function join_frequnet_chat(chats) {
     for (var i = 0; i < chats.length; i++) {
         var num = i + 1;
         if (chats[i]) {
-            new_chats.push(`${num}：` + chats[i]);
+            new_chats.push(`${num}: "${chats[i]}"`);
         }
     }
     return new_chats.join("，");
