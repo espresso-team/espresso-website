@@ -128,7 +128,7 @@ app.post("/join-chat", async (req, res) => {
       // find an existing conv
       var conv = existing_conv.conv_id;
       var chat_history = await getChatHistoryByConvId(conv);
-      var return_chat_history = chat_history.slice(-10);
+      var return_chat_history = chat_history //.slice(-10);
       if (!return_chat_history) {
         return_chat_history = [];
       }
