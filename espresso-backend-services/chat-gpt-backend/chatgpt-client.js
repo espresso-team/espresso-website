@@ -132,7 +132,7 @@ export default class ChatClient {
   }
 
   dfs_split_prompt(prompt, prompt_array) {
-    var token_count = chatGptClient.getTokenCountForMessage(prompt);
+    var token_count = this.client.getTokenCountForMessage(prompt);
     if (token_count <= MAX_PROMPT_TOKEN - 100) {
       prompt_array.push(prompt);
     } else {
