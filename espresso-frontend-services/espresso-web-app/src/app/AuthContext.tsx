@@ -16,7 +16,7 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthState>({
     isLoggedIn: false,
-    setIsLoggedIn: () => { },
+    setIsLoggedIn: () => { }, // Provide a default empty function
     userId: null,
     setUserId: () => { },
 });
@@ -26,9 +26,9 @@ const useAuth = () => {
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [state] = usePkSystemHook();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState<string | null>(null);
+    const [state, action] = usePkSystemHook();
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
@@ -45,6 +45,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                   });
                 setIsLoggedIn(true);
                 setUserId(response.data.data.userId);
+                action.setUserId(response.data.data.userId);
             } catch (error) {
                 if (error instanceof AxiosError && error.response && error.response.status === 401) {
                     // Handle the 401 error
@@ -52,6 +53,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 }
                 setIsLoggedIn(false);
                 setUserId(null);
+                // generate a random user id
+                var randomId = Math.random().toString(36).substring(7);
+                action.setUserId(randomId);
             }
         };
 
