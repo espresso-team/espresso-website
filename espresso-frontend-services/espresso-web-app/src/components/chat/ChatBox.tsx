@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom';
 import GenderType from '../../types/GenderType';
 import ChatHeader from './ChatHeader';
 import { logSendMessageEvent } from '../../app/GaEvent';
+import { useNavigate } from "react-router-dom";
+
 
 interface Props {
   userId: string;
@@ -24,11 +26,34 @@ const MockUser1 =
 var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
+  const navigate = useNavigate();
   const { modelIdLink } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const messagesEnd = useRef<HTMLDivElement>(null);
   const [state, action] = usePkSystemHook();
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const fetchChatHeaderModels = async (userId: string): Promise<string[]> => {
+    let models: string[] = [];
+
+    try {
+      const response = await axios.get(`${ENDPOINT}/chat-models`, {
+        params: {
+          user_id: userId,
+        }
+      });
+
+      let activeModelIdArray = response.data.data as string[];
+
+      if (activeModelIdArray.length > 0) {
+        models = activeModelIdArray;
+      }
+    } catch (err) {
+      // message.error("页面错误，请刷新重试");
+      console.log(err);
+    }
+
+    return models;
+  };
 
   useEffect(() => {
     console.log("Chat page - state.curUserName is", state.curUserName);
@@ -36,17 +61,21 @@ const ChatBox: React.FC<Props> = () => {
       action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
     }
     // if directly access to a chat page, meanwhile the chat is not jumping from mybot
-    if (modelIdLink) {
+    if (!modelIdLink) {
+      console.log("chenyifan_debug stats user id is " + state.userId);
+      fetchChatHeaderModels(state.userId).then(models => {
+        console.log("chenyifan_debug stats models is " + models);
+        if (models.length > 0) {
+          // action.handleJoinChat(models[0]);
+          navigate('/chat/' + models[0]);
+        }
+      })
+    } else {
       console.log("calling handleJoinChat:", modelIdLink);
-      action.handleJoinChat(modelIdLink)
-    }
-  }, [modelIdLink]);
-
-  useEffect(() => {
-    if (state.messageList.length > 0) {
+      action.handleJoinChat(modelIdLink);
       setIsLoading(false);
     }
-  }, [state.messageList]);
+  }, [modelIdLink, state.userId]);
 
   return (
     <>
@@ -82,22 +111,22 @@ const ChatBox: React.FC<Props> = () => {
                   "message": mes
                 })
               .then((response) => {
-                  const message = response.data.message;
-                  const uID: string = response.data.user_id;
-                  const mID: string = response.data.model_id;
-                  const receivedMessage =
-                    {
-                      "text": message,
-                      "id": mID,
-                      "sender": {
-                        "name": state.curModelName,
-                        "uid": uID,
-                        "avatar": state.curModelSrc,
-                      }
-                    } as IMessage;
+                const message = response.data.message;
+                const uID: string = response.data.user_id;
+                const mID: string = response.data.model_id;
+                const receivedMessage =
+                  {
+                    "text": message,
+                    "id": mID,
+                    "sender": {
+                      "name": state.curModelName,
+                      "uid": uID,
+                      "avatar": state.curModelSrc,
+                    }
+                  } as IMessage;
 
-                  action.updateMessageList(receivedMessage);
-                  setIsBotTyping(false);
+                action.updateMessageList(receivedMessage);
+                setIsBotTyping(false);
               })
               .catch((err) => {
                 console.log(err);
