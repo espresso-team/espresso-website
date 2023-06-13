@@ -237,8 +237,19 @@ const Navbar = () => {
                         <If condition={isLoggedIn}>
                             <div className="mobile">
                                 <Button text={`用户${state.userId?.substring(0, 7)}`} disabled={true} />
+                                <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
                             </div>
                         </If>
+
+                        <Modal
+                            centered
+                            title="退出确认"
+                            visible={logoutModalVisible}
+                            onCancel={() => setLogoutModalVisible(false)}
+                            onOk={handleLogout}
+                        >
+                            <p>你确定要退出登录吗?</p>
+                        </Modal>
                     </MenuItem>
                 </Menu>
 
