@@ -62,9 +62,7 @@ const ChatBox: React.FC<Props> = () => {
     }
     // if directly access to a chat page, meanwhile the chat is not jumping from mybot
     if (!modelIdLink) {
-      console.log("chenyifan_debug stats user id is " + state.userId);
       fetchChatHeaderModels(state.userId).then(models => {
-        console.log("chenyifan_debug stats models is " + models);
         if (models.length > 0) {
           // action.handleJoinChat(models[0]);
           navigate('/chat/' + models[0]);

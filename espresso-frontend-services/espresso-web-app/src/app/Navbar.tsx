@@ -170,14 +170,37 @@ const HamburgerMenu = styled.span<HamburgerMenuProps>`
   }
 `
 
+const LogoutButton = styled(Button)`
+    background-color: #f44336; // This is an example color, choose your own
+    color: white; // Text color
+    font-size: 0.8em; // This makes the button smaller
+    padding: 10px; // Adjust as needed
+    margin-left: 20px; // Space it out from other elements
+    &:hover {
+        background-color: #d32f2f; // Change color when mouse over
+    }
+`;
+
 var console = require("console-browserify")
 
 const Navbar = () => {
     const [state, action] = usePkSystemHook();
     const [menuOpen, setMenuOpen] = useState(false);
     const [click, setClick] = useState(false);
-    const { isLoggedIn, userId } = useAuth();
+    const { isLoggedIn, setIsLoggedIn } = useAuth();
+    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
 
+    const handleLogout = () => {
+        // This is where you will perform the actual logout operation.
+        // This could involve deleting a token from local storage and updating
+        // your user state. After that, you should hide the modal.
+        localStorage.removeItem("userToken"); // remove token or other sign-in details
+        // generate a random id
+        const randomId = Math.random().toString(36).substring(2, 15);
+        setLogoutModalVisible(false); // hide the logout confirmation modal
+        setIsLoggedIn(false); // set the user as logged out
+        action.setUserId(randomId); // reset the user id or other related user information
+    };
     useEffect(() => {
     }, [state.modalOpen]);
 
@@ -213,7 +236,7 @@ const Navbar = () => {
                         </If>
                         <If condition={isLoggedIn}>
                             <div className="mobile">
-                                <Button text={`用户${userId?.substring(0, 7)}`} disabled={true} />
+                                <Button text={`用户${state.userId?.substring(0, 7)}`} disabled={true} />
                             </div>
                         </If>
                     </MenuItem>
@@ -226,9 +249,20 @@ const Navbar = () => {
                 </If>
                 <If condition={isLoggedIn}>
                     <div className="desktop">
-                        <Button text={`用户${userId?.substring(0, 7)}`} disabled={true} />
+                        <Button text={`用户${state.userId?.substring(0, 7)}`} disabled={true} />
+                        <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
                     </div>
                 </If>
+
+                <Modal
+                    centered
+                    title="退出确认"
+                    visible={logoutModalVisible}
+                    onCancel={() => setLogoutModalVisible(false)}
+                    onOk={handleLogout}
+                >
+                    <p>你确定要退出登录吗?</p>
+                </Modal>
 
 
                 <Modal
