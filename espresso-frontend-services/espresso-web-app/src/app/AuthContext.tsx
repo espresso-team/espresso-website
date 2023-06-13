@@ -6,8 +6,6 @@ import { usePkSystemHook } from '../state/pk-system-hook';
 interface AuthState {
     isLoggedIn: boolean;
     setIsLoggedIn: (loggedIn: boolean) => void;
-    userId: string | null;
-    setUserId: (userId: string | null) => void;
 }
 
 interface AuthProviderProps {
@@ -16,9 +14,7 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthState>({
     isLoggedIn: false,
-    setIsLoggedIn: () => { },
-    userId: null,
-    setUserId: () => { },
+    setIsLoggedIn: () => { }, // Provide a default empty function
 });
 
 const useAuth = () => {
@@ -26,9 +22,8 @@ const useAuth = () => {
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [state] = usePkSystemHook();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userId, setUserId] = useState<string | null>(null);
+    const [state, action] = usePkSystemHook();
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
@@ -43,23 +38,26 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                       Authorization: `Bearer ${userToken}`, // Add the Authorization header here
                     },
                   });
+                console.log("AuthProvider - response.data.data.userId", response.data.data.userId);
+                action.setUserId(response.data.data.userId);
                 setIsLoggedIn(true);
-                setUserId(response.data.data.userId);
             } catch (error) {
                 if (error instanceof AxiosError && error.response && error.response.status === 401) {
                     // Handle the 401 error
                     localStorage.removeItem("userToken"); // Clear the userToken from localStorage
                 }
                 setIsLoggedIn(false);
-                setUserId(null);
+                // generate a random user id
+                var randomId = Math.random().toString(36).substring(7);
+                action.setUserId(randomId);
             }
         };
 
         checkAuthentication();
-    }, [state.userId]);
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userId, setUserId }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn}}>
             {children}
         </AuthContext.Provider>
     );

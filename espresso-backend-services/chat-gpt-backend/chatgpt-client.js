@@ -5,12 +5,14 @@ import dotenv from 'dotenv';
 import { getChatHistoryByConvId } from "./services/chatHistoryService.js";
 import { getModelByModelId } from "./services/modelProfileService.js";
 import { model } from 'mongoose';
+import axios from 'axios';
 dotenv.config();
 // require('dotenv').config();
 
 const MAX_PROMPT_TOKEN = 3095;
 var file_prefix = process.env.ON_SERVER == 'true' ? process.env.SERVER_FILE_PATH : "./";
 const initial_model_ids = ['0', '1', '2', '3', '4', '5', '6', '7'];
+const external_model_ids = ['1001'];
 
 var clientOptions = {
     // (Optional) Support for a reverse proxy for the completions endpoint (private API server).
@@ -78,7 +80,10 @@ export default class ChatClient {
   // Initialize first conv for a new user
   async init_conv(model_id) {
     try {
-      const text = await this.read_init_prompt(model_id); 
+      var text = await this.read_init_prompt(model_id);
+      if (external_model_ids.includes(model_id)) {
+        text = 'Hi';  
+      }
       return await this.client.sendMessage(text);
     } catch (err) {
       console.error("Error initiating conversation:", err);
@@ -86,12 +91,29 @@ export default class ChatClient {
     }
   }
 
-  async send_message(msg, conv_id, last_msg_id) {
+  async send_message(msg, conv_id, last_msg_id, model_id) {
+    if (external_model_ids.includes(model_id)) {
+      return await this.sendExternalMessage(msg);
+    }
     var count = this.client.getTokenCountForMessage(msg);
     if (count > MAX_PROMPT_TOKEN - 100) {
       return this.sendSplitMessage(msg, conv_id, last_msg_id);
     }
     return await this.client.sendMessage(msg, { conversationId: conv_id, parentMessageId: last_msg_id });
+  }
+
+  async sendExternalMessage(msg) {
+    try {
+      await axios.post('https://callannie.azurewebsites.net/api/callannie', {
+        query: msg,
+      })
+        .then(function (response) {
+          console.log(JSON.stringify(response));
+          return response.message;
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Resend the initial prompt to an exitsing conv
@@ -103,11 +125,14 @@ export default class ChatClient {
     }
     // TODO: add summary of the chat history if token is above the limit
     var reinit_prompt = text + "之前的聊天记录如下：\n" + this.build_prompt_by_history(chat_history);
-    return await this.send_message(reinit_prompt, conv_id, last_msg_id);
+    if (external_model_ids.includes(model_id)) {
+      reinit_prompt = 'Hi';
+    }
+    return await this.send_message(reinit_prompt, conv_id, last_msg_id, model_id);
   }
 
   dfs_split_prompt(prompt, prompt_array) {
-    var token_count = chatGptClient.getTokenCountForMessage(prompt);
+    var token_count = this.client.getTokenCountForMessage(prompt);
     if (token_count <= MAX_PROMPT_TOKEN - 100) {
       prompt_array.push(prompt);
     } else {

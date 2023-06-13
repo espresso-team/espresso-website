@@ -101,7 +101,7 @@ const ChatHeader: React.FC = () => {
 
         };
         fetchChatHeaderData();
-    }, []);
+    }, [state.userId]);
     return (
         <ChatHeaderWrapper>
             {[...avatarList, PlusOneIcon].map((model, index) => (

@@ -108,6 +108,7 @@ export async function verifyOTP(req, res, next) {
       next({ status: 400, message: INCORRECT_OTP_ERR });
       return;
     }
+    console.log("[Debug] user",JSON.stringify(user));
     const token = createJwtToken({ userId: user._id });
 
     // user.phoneOtp = "";
