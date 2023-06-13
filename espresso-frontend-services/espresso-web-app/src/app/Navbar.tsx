@@ -202,7 +202,7 @@ const Navbar = () => {
         action.setUserId(randomId); // reset the user id or other related user information
     };
     useEffect(() => {
-    }, [state.modalOpen]);
+    }, [state.modalOpen, state.userId]);
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
