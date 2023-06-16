@@ -30,6 +30,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 const userToken = localStorage.getItem('userToken'); // Get the userToken from localStorage
                 if (!userToken) {
                     setIsLoggedIn(false);
+                    action.setModelOpen(true);
                     return;
                 }
                 const response = await axios.get(`${ENDPOINT}/api/auth/me`, {
@@ -41,6 +42,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 console.log("AuthProvider - response.data.data.userId", response.data.data.userId);
                 action.setUserId(response.data.data.userId);
                 setIsLoggedIn(true);
+                action.setModelOpen(false);
             } catch (error) {
                 if (error instanceof AxiosError && error.response && error.response.status === 401) {
                     // Handle the 401 error

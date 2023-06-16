@@ -10,16 +10,25 @@ import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
 import Forum from "./components/forum.component";
 import MyBot from "./components/myBot.component";
-import { AuthProvider } from './app/AuthContext';
+import { AuthProvider } from "./app/AuthContext";
 import NotFound from "./components/notFound";
 import { logPageView, initialize } from "./app/GaEvent";
+import { useAuth } from "./app/AuthContext";
+import { usePkSystemHook } from "./state/pk-system-hook";
 
 const App: React.FC = () => {
   const location = useLocation();
-
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [state, action] = usePkSystemHook();
   useEffect(() => {
     initialize();
     logPageView(location.pathname);
+
+    if (!isLoggedIn) {
+      action.setModelOpen(true);
+    } else {
+      action.setModelOpen(false);
+    }
   }, [location]);
 
   return (
