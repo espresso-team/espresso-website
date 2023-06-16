@@ -69,7 +69,7 @@ const ChatHeader: React.FC = () => {
             }
             console.log("ChatHeader - user id", state.userId);
             await axios
-                .get(`${ENDPOINT}/chat-models`,
+                .get(`${ENDPOINT}/api/chat-models`,
                     {
                         params: {
                             user_id: state.userId,

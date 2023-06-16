@@ -29,7 +29,7 @@ export const pkSystemAction = {
             setUserId(curUserId);
             console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
             await axios
-                .post(`${ENDPOINT}/user-profile`,
+                .post(`${ENDPOINT}/api/user-profile`,
                     {
                         "user_id": curUserId,
                         "user_name": userName,
@@ -63,7 +63,7 @@ export const pkSystemAction = {
                 // send reqire models
                 console.log("gender", gender, "genderToRequiredGender", genderToRequiredGender[gender])
                 await axios
-                    .get(`${ENDPOINT}/model-profile`,
+                    .get(`${ENDPOINT}/api/model-profile`,
                         {
                             params: {
                                 gender: genderToRequiredGender[gender],
@@ -166,7 +166,7 @@ export const pkSystemAction = {
                 console.log("pkSystemAction- handleJoinChat", modelId);
                 // Fetch modelName and modelSrc from backend
                 await axios
-                    .get(`${ENDPOINT}/model-profile`,
+                    .get(`${ENDPOINT}/api/model-profile`,
                         {
                             params: {
                                 model_id: modelId
@@ -196,7 +196,7 @@ export const pkSystemAction = {
                 setState({ curModelName: modelName });
                 setState({ curModelSrc: modelSrc });
                 await axios
-                    .post(`${ENDPOINT}/join-chat`,
+                    .post(`${ENDPOINT}/api/join-chat`,
                         {
                             "user_id": getState().userId,
                             "model_id": modelId

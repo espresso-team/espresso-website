@@ -36,7 +36,7 @@ const ChatBox: React.FC<Props> = () => {
     let models: string[] = [];
 
     try {
-      const response = await axios.get(`${ENDPOINT}/chat-models`, {
+      const response = await axios.get(`${ENDPOINT}/api/chat-models`, {
         params: {
           user_id: userId,
         }
@@ -102,7 +102,7 @@ const ChatBox: React.FC<Props> = () => {
             logSendMessageEvent(state.curModelIdString);
             setIsBotTyping(true);
             axios
-              .post(`${ENDPOINT}/send-message`,
+              .post(`${ENDPOINT}/api/send-message`,
                 {
                   "user_id": state.userId,
                   "model_id": state.curModelIdString,

@@ -407,7 +407,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
     console.log("modelId used for creating", modelId)
     console.log("api", `${ENDPOINT}/model-profile`)
     try {
-      const response = await axios.post(`${ENDPOINT}/model-profile`, {
+      const response = await axios.post(`${ENDPOINT}/api/model-profile`, {
         user_id: userId,
         model_id: modelId,
         model_name: aiName,

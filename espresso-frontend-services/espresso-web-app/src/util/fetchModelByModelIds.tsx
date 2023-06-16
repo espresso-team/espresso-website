@@ -8,7 +8,7 @@ import { ModelAvatar } from "../types/ModelAvatar";
 export const fetchModelSrcByModelId = async (modelId: string) => {
   // Fetch modelName and modelSrc from backend
   return await axios
-  .get(`${ENDPOINT}/model-profile`,
+  .get(`${ENDPOINT}/api/model-profile`,
     {
       params: {
         model_id: modelId

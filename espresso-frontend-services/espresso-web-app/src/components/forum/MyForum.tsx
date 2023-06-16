@@ -21,7 +21,7 @@ const MyForum: React.FC = () => {
       // By default, we fetch all the public models.
       console.log("current genderFilter", genderFilter);
       await axios
-        .get(`${ENDPOINT}/model-profile`,
+        .get(`${ENDPOINT}/api/model-profile`,
           {
             params: {
               is_public: true,
@@ -51,7 +51,7 @@ const MyForum: React.FC = () => {
   }, [modelsPerPage, genderFilter]);
 
   const updateVotes = async (model_id: string, upVote: number, downVote: number) => {
-    await axios.patch(`${ENDPOINT}/model-profile/votes`, { model_id: model_id, upVote: upVote, downVote: downVote });
+    await axios.patch(`${ENDPOINT}/api/model-profile/votes`, { model_id: model_id, upVote: upVote, downVote: downVote });
   };
 
   const handleClick = (pageNumber: number) => {
