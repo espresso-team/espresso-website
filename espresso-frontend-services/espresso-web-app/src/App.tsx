@@ -18,13 +18,11 @@ import { usePkSystemHook } from "./state/pk-system-hook";
 
 const App: React.FC = () => {
   const location = useLocation();
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [state, action] = usePkSystemHook();
   useEffect(() => {
     initialize();
     logPageView(location.pathname);
-
-    if (!isLoggedIn) {
+    if (!localStorage.getItem("userToken")) {
       action.setModelOpen(true);
     } else {
       action.setModelOpen(false);

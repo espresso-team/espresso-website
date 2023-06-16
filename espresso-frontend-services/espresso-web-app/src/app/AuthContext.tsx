@@ -42,6 +42,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 console.log("AuthProvider - response.data.data.userId", response.data.data.userId);
                 action.setUserId(response.data.data.userId);
                 setIsLoggedIn(true);
+                console.log("AuthProvider - isLoggedIn", isLoggedIn);
                 action.setModelOpen(false);
             } catch (error) {
                 if (error instanceof AxiosError && error.response && error.response.status === 401) {
@@ -67,3 +68,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 export { AuthProvider, useAuth };
 export { };
+    function setIsLoggedIn(arg0: boolean) {
+        throw new Error('Function not implemented.');
+    }
+
