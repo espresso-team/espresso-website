@@ -132,14 +132,14 @@ export async function verifyOTP(req, res, next) {
 
 export async function fetchCurrentUser(req, res, next) {
   try {
-    const userId = res.locals.userId;
-
 
     return res.status(200).json({
       type: "success",
       message: "fetch current user",
       data: {
-        userId:userId,
+        userId: res.locals.userId,
+        userName: res.locals.userName,
+        gender: res.locals.gender
       },
     });
   } catch (error) {

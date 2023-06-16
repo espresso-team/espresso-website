@@ -1,5 +1,5 @@
 import { findById } from "../services/userServices.js";
-
+import { getUserByUserId} from "../services/userProfileService.js";
 import { AUTH_TOKEN_MISSING_ERR, AUTH_HEADER_MISSING_ERR, JWT_DECODE_ERR, USER_NOT_FOUND_ERR } from "../errors.js"
 import { verifyJwtToken } from "../utils/token.util.js";
 import jwt from 'jsonwebtoken';
@@ -39,6 +39,7 @@ export async function checkAuth(req, res, next) {
       }
   
       const user = await findById(userId);
+      const user_profile = await getUserByUserId(userId);
   
       if (!user) {
         next({ status: 404, message: USER_NOT_FOUND_ERR });
@@ -46,6 +47,8 @@ export async function checkAuth(req, res, next) {
       }
   
       res.locals.userId = user._id;
+      res.locals.userName = user_profile.user_name;
+      res.locals.gender = user_profile.gender;
   
       next();
     } catch (err) {
