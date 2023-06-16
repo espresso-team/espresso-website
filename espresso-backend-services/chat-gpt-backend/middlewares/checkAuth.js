@@ -40,17 +40,19 @@ export async function checkAuth(req, res, next) {
       }
     }
 
-    const user = await findById(userId);
     const user_profile = await getUserByUserId(userId);
 
-    if (!user) {
+    if (!user_profile) {
       next({ status: 404, message: USER_NOT_FOUND_ERR });
       return;
     }
 
-    res.locals.userId = user._id;
+    res.locals.userId = user_profile.user_id;
     res.locals.userName = user_profile.user_name;
     res.locals.gender = user_profile.gender;
+    res.locals.birthday = user_profile.dob;
+    res.locals.city = user_profile.city;
+    res.locals.phone = user_profile.phone;
 
     next();
   } catch (err) {

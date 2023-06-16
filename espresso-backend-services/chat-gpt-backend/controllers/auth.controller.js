@@ -2,72 +2,86 @@ import { User } from "../models/user.model.js";
 
 import { findByPhone, findById } from "../services/userServices.js";
 
-import { PHONE_NOT_FOUND_ERR, PHONE_ALREADY_EXISTS_ERR, USER_NOT_FOUND_ERR, INCORRECT_OTP_ERR, ACCESS_DENIED_ERR } from "../errors.js";
+import { getUser } from "../services/userProfileService.js";
+
+import {
+  PHONE_NOT_FOUND_ERR,
+  PHONE_ALREADY_EXISTS_ERR,
+  USER_NOT_FOUND_ERR,
+  INCORRECT_OTP_ERR,
+  ACCESS_DENIED_ERR,
+} from "../errors.js";
 
 import { createJwtToken } from "../utils/token.util.js";
 
 import { generateOTP, fast2sms } from "../utils/otp.util.js";
 
-const COOKIE_NAME = 'auth_token';
+const COOKIE_NAME = "auth_token";
 
 // --------------------- create new user ---------------------------------
 export async function loginOrRegisterUser(req, res, next) {
-    try {
-        const { phone } = req.body;
-        var user = await findByPhone(phone);
-        // register if a new user
-        if (!user) {
-            await createNewUser(phone, next);
-            user = await findByPhone(phone);
-            if (user) {
-                res.status(200).json({
-                    type: "success",
-                    message: "Account created OTP sended to mobile number",
-                    data: {
-                      userId: user._id,
-                    },
-                  });
-            } else {
-                res.status(500).json({
-                    type: "error",
-                    message: "用户创建失败，请稍后重试。",
-                    data: {
-                      
-                    },
-                  });
-            }
-            
-            return;
-        }
-        // generate otp
-        const otp = generateOTP(6);
-        // save otp to user collection
-        user.phoneOtp = otp;
-        user.isAccountVerified = true;
-        await user.save();
-        // send otp to phone number
-        await fast2sms(otp, user.phone);
-
-        res.status(201).json({
-          type: "success",
-          message: "验证码已发送，请查收。",
-          data: {
-          userId: user._id,
-          },
+  try {
+    const { phone } = req.body;
+    var user = await getUser({ phone: phone });
+    if (!user) {
+      res.status(500).json({
+        type: "error",
+        message: "未注册手机。请先注册！",
+        data: {},
       });
-   } catch (error) {
-    console.log("[Debug] error.status",error.response.status)
-      if (error.response.status === 403) {
-        res.status(403).json({
-          type: "error",
-          message: "验证码操作频繁，请稍后重试。",
+      return;
+    }
+    var regitser_user = await findByPhone(phone);
+    // register if a new user
+    if (!regitser_user) {
+      await createNewUser(phone, next);
+      user = await findByPhone(phone);
+      if (user) {
+        res.status(200).json({
+          type: "success",
+          message: "Account created OTP sended to mobile number",
           data: {
+            userId: user._id,
           },
         });
+      } else {
+        res.status(500).json({
+          type: "error",
+          message: "页面错误，请稍后重试。",
+          data: {},
+        });
       }
-   } finally {
-    console.log("[Debug] finally")
-   }
+
+      return;
+    }
+    // generate otp
+    const otp = generateOTP(6);
+    // save otp to user collection
+    regitser_user.phoneOtp = otp;
+    regitser_user.isAccountVerified = true;
+    await regitser_user.save();
+    // send otp to phone number
+    await fast2sms(otp, regitser_user.phone);
+
+    res.status(201).json({
+      type: "success",
+      message: "验证码已发送，请查收。",
+      data: {
+        userId: user.user_id,
+      },
+    });
+  } catch (error) {
+    console.log("[Debug] error.status", error.response.status);
+    if (error.response.status === 403) {
+      res.status(403).json({
+        type: "error",
+        message: "验证码操作频繁，请稍后重试。",
+        data: {},
+      });
+    }
+  } finally {
+    console.log("[Debug] finally");
+  }
 }
 
 async function createNewUser(phone, next) {
@@ -75,7 +89,7 @@ async function createNewUser(phone, next) {
     // create new user
     const createUser = new User({
       phone,
-      role : phone === process.env.ADMIN_PHONE ? "ADMIN" :"USER"
+      role: phone === process.env.ADMIN_PHONE ? "ADMIN" : "USER",
     });
 
     // save user
@@ -108,12 +122,16 @@ export async function verifyOTP(req, res, next) {
       next({ status: 400, message: INCORRECT_OTP_ERR });
       return;
     }
-    console.log("[Debug] user",JSON.stringify(user));
+    console.log("[Debug] user", JSON.stringify(user));
     const token = createJwtToken({ userId: user._id });
 
     // user.phoneOtp = "";
     // await user.save();
-    res.cookie(COOKIE_NAME, token, { httpOnly: true, secure: true, sameSite: 'strict' });
+    res.cookie(COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
     res.status(201).json({
       type: "success",
       message: "登录成功",
@@ -127,19 +145,20 @@ export async function verifyOTP(req, res, next) {
   }
 }
 
-
 // --------------- fetch current user -------------------------
 
 export async function fetchCurrentUser(req, res, next) {
   try {
-
     return res.status(200).json({
       type: "success",
       message: "fetch current user",
       data: {
         userId: res.locals.userId,
         userName: res.locals.userName,
-        gender: res.locals.gender
+        gender: res.locals.gender,
+        birthday: res.locals.birthday,
+        city: res.locals.city,
+        phone: res.locals.phone
       },
     });
   } catch (error) {
@@ -157,7 +176,7 @@ export async function handleAdmin(req, res, next) {
       type: "success",
       message: "Okay you are admin!!",
       data: {
-        user:currentUser,
+        user: currentUser,
       },
     });
   } catch (error) {

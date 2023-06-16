@@ -44,6 +44,7 @@ const rules = {
 
 const RegisterBlock = () => {
   const [state, action] = usePkSystemHook();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   // State for the register modal
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
@@ -105,8 +106,6 @@ const RegisterBlock = () => {
   const [codetext, setCodeText] = useState<any>("获取验证码");
 
   const [country, setCountry] = useState<string>("+86");
-
-  const { setIsLoggedIn } = useAuth();
 
   const goToRegister = async (phone: string, code: string) => {
     console.log("go to register");
