@@ -8,6 +8,8 @@ const userProfileSchema = new Schema({
   email: String,
   phone: String,
   gender: String,
+  city: String,
+  birthday: Date,
   createdAt: {
     type: Date,
     default: Date.now,

@@ -7,6 +7,8 @@ export const AUTH_HEADER_MISSING_ERR = "auth header is missing";
 
 export const AUTH_TOKEN_MISSING_ERR = "auth token is missing";
 
+export const AUTH_USER_MISSING_ERR = "user_id is missing";
+
 export const JWT_DECODE_ERR = "incorrect token";
 
 export const USER_NOT_FOUND_ERR = "User not found";
