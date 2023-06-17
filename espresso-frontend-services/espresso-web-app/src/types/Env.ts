@@ -8,15 +8,12 @@ if (is_dev === 'true') {
   // dev server
   endpoint = "https://chitchat-ai-backend-dev.onrender.com";
   front_endpoint = "https://chitchat-ai-dev.onrender.com";
-  console.log('Dev server is running');
 } else if (env === 'production') {
   endpoint = "https://chitchat-ai-backend.onrender.com";
   front_endpoint = "https://chitchat-ai-mm27.onrender.com";
-  console.log('Prod server is running');
 } else {
   console.log('Localhost is running');
 }
 
-console.log("endpoint is " + endpoint);
 export const ENDPOINT = endpoint;
 export const FRONT_ENDPOINT = front_endpoint;

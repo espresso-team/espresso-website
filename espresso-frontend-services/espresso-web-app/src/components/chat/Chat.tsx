@@ -33,7 +33,7 @@ export const Chat = ({ messages, isLoading, isBotTyping, user, onSubmit, pageRef
 
   useEffect(() => {
     scrollToBottom()
-  }, [state.messageList]);
+  }, [state.messageList, state.userId]);
   return (
     <div className='chat-box'>
       <div className='msg-page'>

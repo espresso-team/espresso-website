@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import MDSpinner from 'react-md-spinner';
 import './style.css';
 import emptyChatImage from '../../assets/empty-state.svg';
 import { User } from '../../types/User';
-import { RenderMessageFunction } from '../../types/RenderMessageFunction';
 import { If } from '../../app/If';
 import { IMessage } from '../../types/IMessage';
 import { MessageListDetail } from './MessageListDetail';

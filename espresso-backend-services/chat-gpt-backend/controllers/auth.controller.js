@@ -71,7 +71,6 @@ export async function loginOrRegisterUser(req, res, next) {
       },
     });
   } catch (error) {
-    console.log("[Debug] error.status", error.response.status);
     if (error.response.status === 403) {
       res.status(403).json({
         type: "error",
@@ -80,7 +79,6 @@ export async function loginOrRegisterUser(req, res, next) {
       });
     }
   } finally {
-    console.log("[Debug] finally");
   }
 }
 

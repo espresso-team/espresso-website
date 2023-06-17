@@ -19,7 +19,6 @@ const MyForum: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       // By default, we fetch all the public models.
-      console.log("current genderFilter", genderFilter);
       await axios
         .get(`${ENDPOINT}/api/model-profile`,
           {
@@ -29,12 +28,10 @@ const MyForum: React.FC = () => {
             }
           })
         .then((response) => {
-          console.log("fetchModelProfile", response)
           if (response.status === HttpStatus.OK) {
             const curModelArray = response.data.data as Model[];
             setModelList(curModelArray);
             setTotalPages(Math.ceil(curModelArray.length / modelsPerPage));
-            console.log("modelArray[0]", modelList[0]);
           }
           else {
             message.error("页面错误，请刷新重试")
@@ -42,7 +39,7 @@ const MyForum: React.FC = () => {
           }
         })
         .catch((err) => {
-          message.error("页面错误，请刷新重试");
+          message.error("页面错误，请稍后重试或添加下方微信群联系管理员。");
           console.log(err)
         });
 

@@ -34,7 +34,7 @@ export const initialize = () => {
     ReactGA.initialize('G-6JVQ9GKBY2');
 };
 
-export const setUserId = (userId: string) => {
+export const setGAUserId = (userId: string) => {
     if (process.env.NODE_ENV !== 'production') {
         return;
     }

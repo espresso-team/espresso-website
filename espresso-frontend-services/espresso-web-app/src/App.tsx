@@ -13,12 +13,12 @@ import MyBot from "./components/myBot.component";
 import { AuthProvider } from "./app/AuthContext";
 import NotFound from "./components/notFound";
 import { logPageView, initialize } from "./app/GaEvent";
-import { useAuth } from "./app/AuthContext";
 import { usePkSystemHook } from "./state/pk-system-hook";
 
 const App: React.FC = () => {
   const location = useLocation();
   const [state, action] = usePkSystemHook();
+  
   useEffect(() => {
     initialize();
     logPageView(location.pathname);
@@ -27,10 +27,9 @@ const App: React.FC = () => {
     } else {
       action.setModelOpen(false);
     }
-  }, [location]);
+  }, [location, state.userId]);
 
   return (
-    <AuthProvider>
       <div>
         <GlobalStyles />
         <ThemeProvider theme={light}>
@@ -45,8 +44,16 @@ const App: React.FC = () => {
           </Routes>
         </ThemeProvider>
       </div>
+  );
+};
+
+// Wrap App component with AuthProvider
+const WrappedApp: React.FC = () => {
+  return (
+    <AuthProvider>
+      <App />
     </AuthProvider>
   );
 };
 
-export default App;
+export default WrappedApp;

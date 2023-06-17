@@ -48,7 +48,6 @@ const ChatBox: React.FC<Props> = () => {
         models = activeModelIdArray;
       }
     } catch (err) {
-      // message.error("页面错误，请刷新重试");
       console.log(err);
     }
 
@@ -56,10 +55,9 @@ const ChatBox: React.FC<Props> = () => {
   };
 
   useEffect(() => {
-    console.log("Chat page - state.curUserName is", state.curUserName);
-    if (state.curUserName === "User") {
-      action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
-    }
+    // if (state.curUserName === "User") {
+    //   action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
+    // }
     // if directly access to a chat page, meanwhile the chat is not jumping from mybot
     if (!modelIdLink) {
       fetchChatHeaderModels(state.userId).then(models => {
@@ -69,7 +67,6 @@ const ChatBox: React.FC<Props> = () => {
         }
       })
     } else {
-      console.log("calling handleJoinChat:", modelIdLink);
       action.handleJoinChat(modelIdLink);
       setIsLoading(false);
     }
@@ -90,7 +87,7 @@ const ChatBox: React.FC<Props> = () => {
               "text": mes,
               "id": state.curImageId.toString(),
               "sender": {
-                "name": state.curUserName,
+                "name": state.userName,
                 "uid": state.userId,
                 "avatar": state.userGender === GenderType.FAMALE ? "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4576.jpg" : "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4577.jpg",
               }
@@ -98,7 +95,6 @@ const ChatBox: React.FC<Props> = () => {
 
             action.updateMessageList(newUserMessage);
             // send post request
-            console.log("state.curImageId.toString()", state.curImageId.toString())
             logSendMessageEvent(state.curModelIdString);
             setIsBotTyping(true);
             axios

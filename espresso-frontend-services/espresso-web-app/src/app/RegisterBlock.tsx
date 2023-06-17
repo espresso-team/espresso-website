@@ -38,7 +38,6 @@ const rules = {
   userName: [{ required: true, message: "请输入昵称" }],
   dob: [{ required: true, message: "请输入生日" }],
   gender: [{ required: true, message: "请输入性别" }],
-  city: [{ required: true, message: "请输入城市" }],
   phoneNumber: [{ required: true, message: "请输入电话号码" }],
 };
 
@@ -81,14 +80,13 @@ const RegisterBlock = () => {
           // Close the modal
           setIsRegisterModalVisible(false);
         } else {
-          message.error("页面错误，请稍后重试。");
+          message.error("页面错误，请稍后重试或添加下方微信群联系管理员。");
         }
       })
       .catch((err) => {
         if (err.response && err.response.status === 409) {
           // handle conflict error here
-          console.log("User profile already exists for this user_id");
-          message.error("用户已存在。");
+          message.error("用户已存在,请稍后重试或添加下方微信群联系管理员。");
         } else {
           console.error(err);
         }
@@ -107,7 +105,7 @@ const RegisterBlock = () => {
 
   const [country, setCountry] = useState<string>("+86");
 
-  const goToRegister = async (phone: string, code: string) => {
+  const onLogin = async (phone: string, code: string) => {
     console.log("go to register");
     await axios
       .post(`${ENDPOINT}/api/auth/verify`, {
@@ -120,7 +118,6 @@ const RegisterBlock = () => {
           response.status === HttpStatus.CREATED
         ) {
           const userToken = response.data.data.token;
-          action.setUserToken(userToken);
           localStorage.setItem("userToken", userToken);
           const uID = response.data.data.userId;
           action.setUserId(uID);
@@ -136,7 +133,7 @@ const RegisterBlock = () => {
       })
       .catch((err) => {
         setLoading(false);
-        message.error("手机号或验证码有误，请重试");
+        message.error("手机号或验证码有误，请稍后重试或添加下方微信群联系管理员。");
         console.log(err);
       });
   };
@@ -164,7 +161,7 @@ const RegisterBlock = () => {
       verifyCode: values.verifyCode,
     };
     setLoading(true);
-    goToRegister(data.phoneNumber, data.verifyCode);
+    onLogin(data.phoneNumber, data.verifyCode);
   };
 
   const getCapcha = async () => {
@@ -179,7 +176,6 @@ const RegisterBlock = () => {
         phone: data.phoneNumber,
       })
       .then((response) => {
-        console.log("regiester response ", response, "status", response.status);
         if (
           response.status === HttpStatus.OK ||
           response.status === HttpStatus.CREATED
@@ -188,14 +184,19 @@ const RegisterBlock = () => {
         } else if (response.status === HttpStatus.FORBIDDEN) {
           message.error("验证码发送过于频繁，请稍后再试");
         } else {
-          message.error("验证码发送失败，请重试");
+          message.error("验证码发送失败，请稍后重试或添加下方微信群联系管理员。");
         }
       })
       .catch((err) => {
+        console.log("[debug]err",err)
+        
         if (err.response.status === HttpStatus.FORBIDDEN) {
           message.error("验证码发送过于频繁，请稍后再试");
-        } else {
-          message.error("验证码发送失败，请重试");
+        } else if (err.response.data.message) {
+          message.error(err.response.data.message);
+        }
+        else{
+          message.error("验证码发送失败，请稍后重试或添加下方微信群联系管理员。");
         }
       });
     timer = setInterval(() => {
@@ -222,7 +223,7 @@ const RegisterBlock = () => {
   return (
     <Style>
       <p style={{ color: "grey" }}>
-        登录账号以保存聊天记录并解锁更多功能。未注册请先注册哦~
+        登录账号以保存聊天记录并解锁所有功能。未注册请先注册哦~
       </p>
       <section className="login-section">
         {!loading ? (
@@ -316,9 +317,6 @@ const RegisterBlock = () => {
                     ]}
                   />
                 </Form.Item>
-                <Form.Item name="city" label="城市" rules={rules.city}>
-                  <Input />
-                </Form.Item>
                 <Form.Item
                   name="phoneNumber"
                   label="手机(用于接收验证码登录）"
@@ -327,9 +325,11 @@ const RegisterBlock = () => {
                   <Input />
                 </Form.Item>
                 <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    提交
-                  </Button>
+                  <div style={{ textAlign: 'right' }}>
+                    <Button type="primary" htmlType="submit">
+                      提交
+                    </Button>
+                  </div>
                 </Form.Item>
               </Form>
             </Modal>

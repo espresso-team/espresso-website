@@ -247,6 +247,8 @@ const Navbar = () => {
                             visible={logoutModalVisible}
                             onCancel={() => setLogoutModalVisible(false)}
                             onOk={handleLogout}
+                            okText="确认"
+                            cancelText="取消"
                         >
                             <p>你确定要退出登录吗?</p>
                         </Modal>
@@ -271,6 +273,8 @@ const Navbar = () => {
                     visible={logoutModalVisible}
                     onCancel={() => setLogoutModalVisible(false)}
                     onOk={handleLogout}
+                    okText="确认"
+                    cancelText="取消"
                 >
                     <p>你确定要退出登录吗?</p>
                 </Modal>
@@ -278,10 +282,11 @@ const Navbar = () => {
 
                 <Modal
                     centered
-                    title="注册或登录"
+                    title="登录"
                     open={state.modalOpen}
                     footer={null}
                     onCancel={handleCancel}
+                    closable={false}
                 >
                     <RegisterBlock />
                 </Modal>

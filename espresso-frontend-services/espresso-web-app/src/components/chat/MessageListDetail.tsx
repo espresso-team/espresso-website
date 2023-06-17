@@ -34,7 +34,7 @@ export const MessageListDetail = ({ messages, user, isBotTyping, pageRef }: Prop
   };
   useEffect(() => {
     scrollToBottom();
-  }, [state.messageList]);
+  }, [state.messageList, state.userId]);
   return (
     <div className='chatSection'>
       {messages.map((message, index) => {
