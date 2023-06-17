@@ -117,13 +117,14 @@ export async function verifyOTP(req, res, next) {
       next({ status: 400, message: USER_NOT_FOUND_ERR });
       return;
     }
-
     if (user.phoneOtp !== otp) {
       next({ status: 400, message: INCORRECT_OTP_ERR });
       return;
     }
     console.log("[Debug] user", JSON.stringify(user));
-    const token = createJwtToken({ userId: user._id });
+
+    const user_profile = await getUser({ phone: phone });
+    const token = createJwtToken({ userId: user_profile.user_id });
 
     // user.phoneOtp = "";
     // await user.save();
@@ -137,7 +138,7 @@ export async function verifyOTP(req, res, next) {
       message: "登录成功",
       data: {
         token,
-        userId: user._id,
+        userId: user_profile.user_id,
       },
     });
   } catch (error) {
