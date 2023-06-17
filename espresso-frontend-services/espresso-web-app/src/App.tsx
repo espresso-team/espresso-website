@@ -10,20 +10,26 @@ import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
 import Forum from "./components/forum.component";
 import MyBot from "./components/myBot.component";
-import { AuthProvider } from './app/AuthContext';
+import { AuthProvider } from "./app/AuthContext";
 import NotFound from "./components/notFound";
 import { logPageView, initialize } from "./app/GaEvent";
+import { usePkSystemHook } from "./state/pk-system-hook";
 
 const App: React.FC = () => {
   const location = useLocation();
-
+  const [state, action] = usePkSystemHook();
+  
   useEffect(() => {
     initialize();
     logPageView(location.pathname);
-  }, [location]);
+    if (!localStorage.getItem("userToken")) {
+      action.setModelOpen(true);
+    } else {
+      action.setModelOpen(false);
+    }
+  }, [location, state.userId]);
 
   return (
-    <AuthProvider>
       <div>
         <GlobalStyles />
         <ThemeProvider theme={light}>
@@ -38,8 +44,16 @@ const App: React.FC = () => {
           </Routes>
         </ThemeProvider>
       </div>
+  );
+};
+
+// Wrap App component with AuthProvider
+const WrappedApp: React.FC = () => {
+  return (
+    <AuthProvider>
+      <App />
     </AuthProvider>
   );
 };
 
-export default App;
+export default WrappedApp;

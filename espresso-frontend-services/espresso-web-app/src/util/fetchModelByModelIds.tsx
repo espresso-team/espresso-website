@@ -17,16 +17,14 @@ export const fetchModelSrcByModelId = async (modelId: string) => {
   .then((response) => {
     if (response.status === HttpStatus.OK) {
       const curModelArray = response.data.data as Model[];
-      console.log("fetchModelSrcByModelId - curModel SRC",curModelArray[0].model_metadata.image_url)
       return curModelArray[0].model_metadata.image_url;
     }
     else {
-      console.log("fetchModelSrcByModelId response failed", response)
       return defaultAvatarUrl;
     }
   })
   .catch((err) => {
-    console.log("fetchModelSrcByModelId Error", err)
+    //console.log("fetchModelSrcByModelId Error", err)
     return defaultAvatarUrl;
   });
 }
@@ -40,7 +38,7 @@ export const fetchModelSrcsByModelIds = async (modelIds: string[]): Promise<Mode
     });
 
     const modelAvatars = await Promise.all(promises);
-    console.log("fetchModelSrcsByModelIds - modelAvatars", modelAvatars);
+    //console.log("fetchModelSrcsByModelIds - modelAvatars", modelAvatars);
 
     return modelAvatars;
   } catch (err) {

@@ -7,27 +7,19 @@ import { genderToRequiredGender } from "../util/genderToRequiredGender";
 import { HttpStatus } from "../types/HttpStatus";
 import { message } from "antd";
 import { Model } from "../types/Model";
-import { createRandomUserId } from "../util/createRandomUserId";
 import { ENDPOINT } from "../types/Env";
 import { ChatHistoryItem } from "../types/ChatHistoryItem";
-import { RedirectToNewPageFn, useRedirectToNewPage } from "../util/redirectToNewPage";
-import { initialize, setUserId } from "../app/GaEvent";
+import { initialize, setGAUserId } from "../app/GaEvent";
 
 var console = require("console-browserify")
 export const pkSystemAction = {
-    fetchUserProfile: (gender: GenderType, userName: string) =>
+    registerNewUserProfile: (gender: GenderType, userName: string) =>
         async ({ setState, getState }: pkSystemApi) => {
-            // if user id still unknow, will assgin a random id to this user
             let curUserId = getState().userId;
-            if (curUserId === "unknown") {
-                console.log("fetchUserProfile - cur user id is unknown")
-                curUserId = createRandomUserId();
-                setState({ userId: curUserId });
-            }
             console.log("Set GA user id", curUserId);
             initialize();
-            setUserId(curUserId);
-            console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
+            setGAUserId(curUserId);
+            //console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
             await axios
                 .post(`${ENDPOINT}/api/user-profile`,
                     {
@@ -36,26 +28,22 @@ export const pkSystemAction = {
                         "gender": gender
                     })
                 .then((response) => {
-                    console.log("fetchModelProfile", response)
                     if (response.status === HttpStatus.OK) {
                         console.log("fetchModelProfile message", response.data.message)
                     }
                     else {
-                        message.error("获取用户信息错误，请刷新重试")
+                        message.error("获取用户信息错误，请稍后重试或添加下方微信群联系管理员。")
                         console.log("fetchUserProfile response failed", response)
                     }
-
                 })
                 .catch((err) => {
                     if (err.response && err.response.status === 409) {
-                        // handle conflict error here
-                        console.log('User profile already exists for this user_id');
+                        message.error("此用户已存在，请稍后重试或添加下方微信群联系管理员。")
                     } else {
-                        message.error("页面错误，请刷新重试");
+                        message.error("页面错误，请稍后重试或添加下方微信群联系管理员。");
                         console.error(err);
                     }
                 });
-
         },
     fetchModelProfile:
         (gender: GenderType) =>
@@ -71,11 +59,9 @@ export const pkSystemAction = {
                             }
                         })
                     .then((response) => {
-                        console.log("fetchModelProfile", response)
                         if (response.status === HttpStatus.OK) {
                             const curModelArray = response.data.data as Model[];
                             setState({ modelArrays: curModelArray });
-                            console.log("modelArray[0]", getState().modelArrays[0]);
                         }
                         else {
                             message.error("页面错误，请刷新重试")
@@ -87,36 +73,29 @@ export const pkSystemAction = {
                         message.error("页面错误，请刷新重试");
                         console.log(err)
                     });
-
             },
     setUserName:
         (uName: string) =>
             ({ setState }: pkSystemApi) => {
-                console.log("set user name: ", uName)
-                setState({ curUserName: uName });
-            },
-    setUserToken:
-        (uToken: string) =>
-            ({ setState }: pkSystemApi) => {
-                console.log("set user Token: ", uToken)
-                setState({ userToken: uToken });
+                //console.log("set user name: ", uName)
+                setState({ userName: uName });
             },
     setUserId:
         (uId: string) =>
             ({ setState }: pkSystemApi) => {
-                console.log("set userId: ", uId)
+                //console.log("set userId: ", uId)
                 setState({ userId: uId });
             },
     setGender:
         (gender: GenderType) =>
             ({ setState }: pkSystemApi) => {
-                console.log("set gender: ", gender)
+                //console.log("set gender: ", gender)
                 setState({ userGender: gender });
             },
     setModelOpen:
         (isOpen: boolean) =>
             ({ setState }: pkSystemApi) => {
-                console.log("set model open: ", isOpen)
+                //console.log("set model open: ", isOpen)
                 setState({ modalOpen: isOpen });
             },
     handleFlipCardOne:
@@ -163,7 +142,7 @@ export const pkSystemAction = {
             async ({ getState, setState }: pkSystemApi) => {
                 let modelName: string = "AI角色";
                 let modelSrc: string = "";
-                console.log("pkSystemAction- handleJoinChat", modelId);
+                //console.log("pkSystemAction- handleJoinChat", modelId);
                 // Fetch modelName and modelSrc from backend
                 await axios
                     .get(`${ENDPOINT}/api/model-profile`,
@@ -173,21 +152,21 @@ export const pkSystemAction = {
                             }
                         })
                     .then((response) => {
-                        console.log("handleJoinChat - fetchModelProfile", response)
+                        //console.log("handleJoinChat - fetchModelProfile", response)
                         if (response.status === HttpStatus.OK) {
                             const curModelArray = response.data.data as Model[];
-                            console.log("handleJoinChat - curModelArray", curModelArray)
+                            //console.log("handleJoinChat - curModelArray", curModelArray)
                             modelName = curModelArray[0].model_name;
                             modelSrc = curModelArray[0].model_metadata.image_url;
                         }
                         else {
-                            message.error("获取角色信息失败，请刷新重试")
-                            console.log("handleJoinChat - fetchModelProfile response failed", response)
+                            message.error("获取角色信息失败，请稍后重试或添加下方微信群联系管理员。")
+                            //console.log("handleJoinChat - fetchModelProfile response failed", response)
                         }
                     })
                     .catch((err) => {
-                        message.error("获取角色信息失败，请刷新重试");
-                        console.log("handleJoinChat - fetchModelProfile Error", err)
+                        message.error("获取角色信息失败，请稍后重试或添加下方微信群联系管理员。");
+                        //console.log("handleJoinChat - fetchModelProfile Error", err)
                     });
                 // update curImage id in state since we will use it on send message post, and convert it to string
                 //setState({curImageId: +modelId});
@@ -208,7 +187,7 @@ export const pkSystemAction = {
                         if (response.data.chat_history) {
                             chatHistory = response.data.chat_history;
                         }
-                        console.log("handleJoinChat - chatHistory", chatHistory)
+                        //console.log("handleJoinChat - chatHistory", chatHistory)
                         const message = response.data.message;
                         const uID = response.data.user_id;
                         const mID = response.data.model_id;
@@ -220,7 +199,7 @@ export const pkSystemAction = {
                                 "text": chat.message,
                                 "id": mID,
                                 "sender": {
-                                    "name": isUser ? getState().curUserName : modelName,
+                                    "name": isUser ? getState().userName : modelName,
                                     "uid": uID,
                                     "avatar": isUser ? (getState().userGender === GenderType.FAMALE ? "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4576.jpg" : "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4577.jpg") : modelSrc,
                                 }

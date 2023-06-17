@@ -57,32 +57,6 @@ align-items: center;
 }
 `
 
-// const getImages = () => {
-//   return async ({ dispatch, setState, getState }: pkSystemApi) => {
-//     console.log("set Image start")
-//     const res = await axios
-//       .get(`https://lexica.art/api/v1/search?q=${getState().searchQuery}`)
-//     // .then((response) => {
-//     //   setState({images: response.data.images});
-//     // })
-//     // .catch((err) => console.log(err));
-//     if (res.status === HttpStatus.OK) {
-//       const imageData = res.data.images as ImageItems || [];
-//       if (imageData[0] && imageData[1]) {
-//         setState({ images: imageData });
-//       } else {
-//         console.log("Couldnt find Image 0 and 1")
-//       }
-//       console.log("set Image done")
-//       return true;
-//     }
-//     console.log("set Image failed with res.status:", res.status)
-//     return false;
-//   };
-// }
-
-
-
 const HeartButton = styled.div`
   margin-top:0;
   margin-left: 250px;

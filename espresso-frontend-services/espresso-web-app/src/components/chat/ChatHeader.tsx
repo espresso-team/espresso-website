@@ -63,10 +63,10 @@ const ChatHeader: React.FC = () => {
     useEffect(() => {
         const fetchChatHeaderData = async () => {
             // By default, we fetch all the public models.
-            console.log("ChatHeader - user name", state.curUserName);
-            if (state.curUserName === "User") {
-                await action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
-            }
+            console.log("ChatHeader - user name", state.userName);
+            // if (state.curUserName === "User") {
+            //     await action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
+            // }
             console.log("ChatHeader - user id", state.userId);
             await axios
                 .get(`${ENDPOINT}/api/chat-models`,
@@ -101,7 +101,7 @@ const ChatHeader: React.FC = () => {
 
         };
         fetchChatHeaderData();
-    }, [state.userId]);
+    }, [modelIdLink, state.userId, state.userName]);
     return (
         <ChatHeaderWrapper>
             {[...avatarList, PlusOneIcon].map((model, index) => (

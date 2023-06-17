@@ -340,7 +340,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
           message.error("图片上传超时，请刷新重试");
           console.error('图片上传超过10秒', error);
         } else {
-          message.error("图片上传失败，请刷新重试");
+          message.error("图片上传失败，请稍后重试或添加下方微信群联系管理员。");
         }
       }
       finally {
@@ -400,12 +400,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
       moralSense: moralSense,
       humor: humor,
     };
-
-    console.log("myBot submitting:", modelMetadata);
-    console.log("userId", userId)
-    console.log("modelId", modelId)
-    console.log("modelId used for creating", modelId)
-    console.log("api", `${ENDPOINT}/model-profile`)
+    
     try {
       const response = await axios.post(`${ENDPOINT}/api/model-profile`, {
         user_id: userId,
@@ -425,11 +420,11 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
         handleModalOpen();
 
       } else {
-        message.error("页面错误，请刷新重试");
-        console.log("set modelMetadata failed", response);
+        message.error("页面错误，请稍后重试或添加下方微信群联系管理员。");
+        //console.log("set modelMetadata failed", response);
       }
     } catch (err) {
-      message.error("页面错误，请刷新重试");
+      message.error("页面错误，请稍后重试或添加下方微信群联系管理员。");
       console.log(err);
     }
   };
