@@ -62,3 +62,4 @@ To get the project running, follow these steps:
 	npm run start
     ```
 5. Navigate to `localhost:3001`
+6. Navigate to `localhost:3000/api-docs` for the api spec
