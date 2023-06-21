@@ -44,6 +44,7 @@ const rules = {
 const RegisterBlock = () => {
   const [state, action] = usePkSystemHook();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [isGettingCapcha, setIsGettingCapcha] = useState(false);
 
   // State for the register modal
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
@@ -102,8 +103,7 @@ const RegisterBlock = () => {
   //const history = useHistory();
   const [loading, setLoading] = useState(false);
 
-  let time = 60,timer: any;
-  const [countdown, setCountdown] = useState(60);
+  let time = 60, timer: any;
   const [codetext, setCodeText] = useState<any>("获取验证码");
 
   const [country, setCountry] = useState<string>("+86");
@@ -168,6 +168,12 @@ const RegisterBlock = () => {
   };
 
   const getCapcha = async () => {
+    console.log("[debug]getCapcha is being called");
+    if (isGettingCapcha) {
+      return;
+    }
+
+    setIsGettingCapcha(true);
     await form.validateFields(["phone"]);
     const data = {
       operationType: "login",
@@ -191,8 +197,6 @@ const RegisterBlock = () => {
         }
       })
       .catch((err) => {
-        console.log("[debug]err",err)
-        
         if (err.response.status === HttpStatus.FORBIDDEN) {
           message.error("验证码发送过于频繁，请稍后再试");
         } else if (err.response.data.message) {
@@ -202,18 +206,15 @@ const RegisterBlock = () => {
           message.error("验证码发送失败，请稍后重试或添加下方微信群联系管理员。");
         }
       });
-    if (timer) clearInterval(timer); // Ensure no running timers exist
-    setCountdown(60);
     timer = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown <= 1) {
-          clearInterval(timer);
-          setCodeText("获取验证码");
-          return 60;
-        } else {
-          return prevCountdown - 1;
-        }
-      });
+      time--;
+      setCodeText(time);
+      if (time === 0 && timer) {
+        clearInterval(timer);
+        setCodeText("获取验证码");
+        timer = 60;
+        setIsGettingCapcha(false);
+      }
     }, 1000);
   };
 
