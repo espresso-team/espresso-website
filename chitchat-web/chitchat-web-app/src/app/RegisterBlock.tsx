@@ -102,8 +102,8 @@ const RegisterBlock = () => {
   //const history = useHistory();
   const [loading, setLoading] = useState(false);
 
-  let time = 60,
-    timer: any;
+  let time = 60,timer: any;
+  const [countdown, setCountdown] = useState(60);
   const [codetext, setCodeText] = useState<any>("获取验证码");
 
   const [country, setCountry] = useState<string>("+86");
@@ -202,14 +202,18 @@ const RegisterBlock = () => {
           message.error("验证码发送失败，请稍后重试或添加下方微信群联系管理员。");
         }
       });
+    if (timer) clearInterval(timer); // Ensure no running timers exist
+    setCountdown(60);
     timer = setInterval(() => {
-      time--;
-      setCodeText(time);
-      if (time === 0 && timer) {
-        clearInterval(timer);
-        setCodeText("获取验证码");
-        timer = 60;
-      }
+      setCountdown((prevCountdown) => {
+        if (prevCountdown <= 1) {
+          clearInterval(timer);
+          setCodeText("获取验证码");
+          return 60;
+        } else {
+          return prevCountdown - 1;
+        }
+      });
     }, 1000);
   };
 
