@@ -302,7 +302,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
         formData.append("file", file);
         formData.append("user_id", userId);
         formData.append("model_id", modelId);
-        const TIMEOUT_DURATION = 10000;
+        const TIMEOUT_DURATION = 30000;
 
         const timeoutPromise = (ms: number) => {
           return new Promise((_, reject) =>
