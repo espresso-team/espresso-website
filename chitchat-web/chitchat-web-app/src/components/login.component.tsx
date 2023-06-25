@@ -5,11 +5,11 @@ import Cover from "./home/Cover";
 type Props = {};
 
 type State = {
-  redirect: string | null,
-  username: string,
-  password: string,
-  loading: boolean,
-  message: string
+  redirect: string | null;
+  username: string;
+  password: string;
+  loading: boolean;
+  message: string;
 };
 
 export default class Login extends Component<Props, State> {
@@ -22,7 +22,7 @@ export default class Login extends Component<Props, State> {
       username: "",
       password: "",
       loading: false,
-      message: ""
+      message: "",
     };
   }
 
@@ -60,7 +60,7 @@ export default class Login extends Component<Props, State> {
     // };
     return (
       <>
-        <Footer/>
+        <Footer />
       </>
     );
   }

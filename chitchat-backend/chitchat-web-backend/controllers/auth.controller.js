@@ -157,7 +157,7 @@ export async function fetchCurrentUser(req, res, next) {
         gender: res.locals.gender,
         birthday: res.locals.birthday,
         city: res.locals.city,
-        phone: res.locals.phone
+        phone: res.locals.phone,
       },
     });
   } catch (error) {

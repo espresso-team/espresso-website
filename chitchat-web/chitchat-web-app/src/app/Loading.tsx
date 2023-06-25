@@ -1,6 +1,6 @@
 // Loading Component
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
 const Loader = styled.div`
   position: fixed;
@@ -15,7 +15,6 @@ const Loader = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 
 const spin = keyframes`
   0% {
@@ -45,9 +44,7 @@ const Loading = () => {
         <div />
       </Spinner>
     </Loader>
-
   );
-
 };
 
 export default Loading;

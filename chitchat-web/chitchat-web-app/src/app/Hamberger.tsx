@@ -1,6 +1,6 @@
 // Hamburger.tsx
-import React, { FC } from 'react';
-import styled from 'styled-components';
+import React, { FC } from "react";
+import styled from "styled-components";
 
 interface HamburgerButtonProps {
   isOpen: boolean;
@@ -30,16 +30,17 @@ const HamburgerButton = styled.button<HamburgerButtonProps>`
     transition: all 0.3s linear;
 
     &:nth-child(1) {
-      transform: ${(props) => (props.isOpen ? 'rotate(45deg)' : 'rotate(0)')};
+      transform: ${(props) => (props.isOpen ? "rotate(45deg)" : "rotate(0)")};
     }
 
     &:nth-child(2) {
-      opacity: ${(props) => (props.isOpen ? '0' : '1')};
-      transform: ${(props) => (props.isOpen ? 'translateX(20px)' : 'translateX(0)')};
+      opacity: ${(props) => (props.isOpen ? "0" : "1")};
+      transform: ${(props) =>
+        props.isOpen ? "translateX(20px)" : "translateX(0)"};
     }
 
     &:nth-child(3) {
-      transform: ${(props) => (props.isOpen ? 'rotate(-45deg)' : 'rotate(0)')};
+      transform: ${(props) => (props.isOpen ? "rotate(-45deg)" : "rotate(0)")};
     }
   }
 `;

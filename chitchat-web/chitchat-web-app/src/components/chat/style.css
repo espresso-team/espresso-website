@@ -1,7 +1,7 @@
-@import 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
-@import 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
-@import url('https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
+@import "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
 .empty-chat-holder {
   width: 100%;
@@ -21,7 +21,7 @@
 
 .empty-chat h2 {
   color: #1546dc;
-  font-family: 'Abril Fatface';
+  font-family: "Abril Fatface";
   padding: 0;
   font-size: 2rem;
   margin: 25px auto 15px;
@@ -67,8 +67,8 @@
 }
 
 .input-group {
-  display: flex;  /* 添加这行 */
-  align-items: center;  /* 添加这行 */
+  display: flex; /* 添加这行 */
+  align-items: center; /* 添加这行 */
   margin-right: 20px;
   border-top: 1px solid #fff;
   width: 100% !important;
@@ -142,7 +142,7 @@
 }
 
 .chat-box {
-  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;;
+  font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
   position: relative;
   height: 600px;
   letter-spacing: 0.5px;
@@ -180,7 +180,8 @@
 
 .loading-text {
   color: #0e0e0e;
-  font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+  font-family: Helvetica, "Hiragino Sans GB", "Microsoft Yahei", "微软雅黑",
+    Arial, sans-serif;
   font-size: 25px;
   margin-top: 20px;
 }
@@ -205,13 +206,13 @@
 }
 
 .is-user {
-  background-color: #1546DC;
+  background-color: #1546dc;
 }
 
 .is-other {
-  background-color: #FFF;
+  background-color: #fff;
   -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1)
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .chat-box-bottom {
@@ -223,7 +224,7 @@
 }
 
 .send-button {
-  flex-shrink: 0;  /* 添加这行 */
+  flex-shrink: 0; /* 添加这行 */
   background-color: transparent; /* 使按钮背景透明 */
   border: none; /* 移除边框 */
   outline: none; /* 移除轮廓 */
@@ -256,8 +257,13 @@
 }
 
 @keyframes typing-indicator-animation {
-  0% { opacity: 0; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-

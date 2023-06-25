@@ -103,7 +103,8 @@ const RegisterBlock = () => {
   //const history = useHistory();
   const [loading, setLoading] = useState(false);
 
-  let time = 60, timer: any;
+  let time = 60,
+    timer: any;
   const [codetext, setCodeText] = useState<any>("获取验证码");
 
   const [country, setCountry] = useState<string>("+86");
@@ -136,7 +137,9 @@ const RegisterBlock = () => {
       })
       .catch((err) => {
         setLoading(false);
-        message.error("手机号或验证码有误，请稍后重试或添加下方微信群联系管理员。");
+        message.error(
+          "手机号或验证码有误，请稍后重试或添加下方微信群联系管理员。"
+        );
         console.log(err);
       });
   };
@@ -193,7 +196,9 @@ const RegisterBlock = () => {
         } else if (response.status === HttpStatus.FORBIDDEN) {
           message.error("验证码发送过于频繁，请稍后再试");
         } else {
-          message.error("验证码发送失败，请稍后重试或添加下方微信群联系管理员。");
+          message.error(
+            "验证码发送失败，请稍后重试或添加下方微信群联系管理员。"
+          );
         }
       })
       .catch((err) => {
@@ -201,9 +206,10 @@ const RegisterBlock = () => {
           message.error("验证码发送过于频繁，请稍后再试");
         } else if (err.response.data.message) {
           message.error(err.response.data.message);
-        }
-        else{
-          message.error("验证码发送失败，请稍后重试或添加下方微信群联系管理员。");
+        } else {
+          message.error(
+            "验证码发送失败，请稍后重试或添加下方微信群联系管理员。"
+          );
         }
       });
     timer = setInterval(() => {
@@ -333,7 +339,7 @@ const RegisterBlock = () => {
                   <Input />
                 </Form.Item>
                 <Form.Item>
-                  <div style={{ textAlign: 'right' }}>
+                  <div style={{ textAlign: "right" }}>
                     <Button type="primary" htmlType="submit">
                       提交
                     </Button>

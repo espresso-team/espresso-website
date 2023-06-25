@@ -1,5 +1,5 @@
-import React, { FormEvent, useState } from 'react';
-import styled from 'styled-components';
+import React, { FormEvent, useState } from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -50,22 +50,22 @@ const Container = styled.div`
 // `;
 
 const Login = () => {
-//   const [phoneNumber, setPhoneNumber] = useState('');
-//   const [verificationCode, setVerificationCode] = useState('');
+  //   const [phoneNumber, setPhoneNumber] = useState('');
+  //   const [verificationCode, setVerificationCode] = useState('');
 
-//   const handleSubmit = (e: FormEvent) => {
-//     e.preventDefault();
-//     console.log('Phone number:', phoneNumber);
-//     console.log('Verification code:', verificationCode);
-//   };
+  //   const handleSubmit = (e: FormEvent) => {
+  //     e.preventDefault();
+  //     console.log('Phone number:', phoneNumber);
+  //     console.log('Verification code:', verificationCode);
+  //   };
 
-//   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setPhoneNumber(e.target.value);
-//   };
+  //   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     setPhoneNumber(e.target.value);
+  //   };
 
-//   const handleVerificationCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setVerificationCode(e.target.value);
-//   };
+  //   const handleVerificationCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     setVerificationCode(e.target.value);
+  //   };
 
   return (
     <></>
@@ -98,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;

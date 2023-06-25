@@ -38,7 +38,7 @@
 // dotenv.config();
 // const chatGptClient = new ChatGPTClient(process.env.OPENAI_APIKEY, clientOptions, cacheOptions);
 
-// const text = fs.readFileSync('./initial-prompt.txt', 'utf8');  
+// const text = fs.readFileSync('./initial-prompt.txt', 'utf8');
 
 // const response = await chatGptClient.sendMessage(text);
 // console.log(response); // { response: 'Hi! How can I help you today?', conversationId: '...', messageId: '...' }

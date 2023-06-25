@@ -1,4 +1,8 @@
-import { getUser, getUserByUserId, insertUser } from "../services/userProfileService.js";
+import {
+  getUser,
+  getUserByUserId,
+  insertUser,
+} from "../services/userProfileService.js";
 
 export const getUserProfile = async (req, res) => {
   const user_id = req.params.user_id;
@@ -27,11 +31,11 @@ export const postUserProfile = async (req, res) => {
     gender: gender,
     birthday: birthday,
     city: city,
-    phone: phone
+    phone: phone,
   };
   // TODO: from pk no phone number, get user will always return a user who has no phone number
   // We should either ask for phone number on pk or use other fields as DB key
-  const key = phone ? {phone:phone} : {user_id:user_id};
+  const key = phone ? { phone: phone } : { user_id: user_id };
   var existing_user = await getUser(key);
   if (existing_user) {
     res.status(409).json({ error: "User already existed!" });

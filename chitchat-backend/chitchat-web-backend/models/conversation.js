@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
- 
+
 const conversationSchema = new Schema({
   user_id: String,
   model_id: String,
@@ -12,7 +12,10 @@ const conversationSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
- 
-export const ConversationModel = mongoose.model("Conversation", conversationSchema);
+
+export const ConversationModel = mongoose.model(
+  "Conversation",
+  conversationSchema
+);

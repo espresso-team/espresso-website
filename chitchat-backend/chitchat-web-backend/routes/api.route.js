@@ -2,7 +2,10 @@ import { Router } from "express";
 import { upload_image } from "../controllers/image.controller.js";
 import { get_wechat_config } from "../controllers/wechat.controller.js";
 import { sendMessage, joinChat } from "../controllers/chat.controller.js";
-import { getUserProfile, postUserProfile } from "../controllers/user.controller.js";
+import {
+  getUserProfile,
+  postUserProfile,
+} from "../controllers/user.controller.js";
 import {
   getModelProfile,
   postModelProfile,
@@ -196,7 +199,6 @@ router.post("/send-message", sendMessage);
  */
 router.post("/join-chat", joinChat);
 
-
 /**
  * @swagger
  * /model-profile:
@@ -297,7 +299,6 @@ router.get("/model-profile", getModelProfile);
  *                   type: string
  */
 router.post("/model-profile", postModelProfile);
-
 
 /**
  * @swagger

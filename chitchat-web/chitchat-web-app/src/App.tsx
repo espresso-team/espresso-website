@@ -18,27 +18,27 @@ import { usePkSystemHook } from "./state/pk-system-hook";
 const App: React.FC = () => {
   const location = useLocation();
   const [state, action] = usePkSystemHook();
-  
+
   useEffect(() => {
     initialize();
     logPageView(location.pathname);
   }, [location, state.modalOpen]);
 
   return (
-      <div>
-        <GlobalStyles />
-        <ThemeProvider theme={light}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/index" element={<Home />} />
-            <Route path="/pk" element={<Pk />} />
-            <Route path="/chat/:modelIdLink?" element={<Chat />} />
-            <Route path="/forum" element={<Forum />} />
-            <Route path="/mybot" element={<MyBot />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ThemeProvider>
-      </div>
+    <div>
+      <GlobalStyles />
+      <ThemeProvider theme={light}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/index" element={<Home />} />
+          <Route path="/pk" element={<Pk />} />
+          <Route path="/chat/:modelIdLink?" element={<Chat />} />
+          <Route path="/forum" element={<Forum />} />
+          <Route path="/mybot" element={<MyBot />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ThemeProvider>
+    </div>
   );
 };
 

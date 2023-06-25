@@ -1,6 +1,6 @@
-import pkg from 'jsonwebtoken';
+import pkg from "jsonwebtoken";
 const { sign, verify } = pkg;
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -14,6 +14,6 @@ export function verifyJwtToken(token, next) {
     const { userId } = verify(token, JWT_SECRET);
     return userId;
   } catch (err) {
-    throw (err);
+    throw err;
   }
 }

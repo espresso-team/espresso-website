@@ -7,27 +7,27 @@ type Props = {};
 
 type State = {
   content: string;
-}
+};
 
 const ChatPageWrapper = styled.div`
   padding-top: 20px;
-`
+`;
 
 export default class Chat extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      content: "chat page"
+      content: "chat page",
     };
   }
 
   render() {
     return (
       <>
-      <Navbar />
+        <Navbar />
         <ChatPageWrapper>
-          <ChatBox userId={"test1"}/>
+          <ChatBox userId={"test1"} />
           <Footer />
         </ChatPageWrapper>
       </>

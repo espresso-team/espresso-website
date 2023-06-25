@@ -40,20 +40,24 @@ app.use(
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'ChitChat API',
-      version: '1.0.0',
+      title: "ChitChat API",
+      version: "1.0.0",
     },
   },
   // Path to the API docs
-  apis: ['./routes/*.js'],
+  apis: ["./routes/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
 
-if (process.env.NODE_ENV !== 'production') {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs, { explorer: true })
+  );
 }
 
 const port = 3000;

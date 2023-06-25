@@ -1,4 +1,3 @@
-
 export const API_ENDPOINT_NOT_FOUND_ERR = "Api endpoint does not found";
 
 export const SERVER_ERR = "Something went wrong";
@@ -12,7 +11,6 @@ export const AUTH_USER_MISSING_ERR = "user_id is missing";
 export const JWT_DECODE_ERR = "incorrect token";
 
 export const USER_NOT_FOUND_ERR = "User not found";
-
 
 export const INCORRECT_OTP_ERR = "验证码错误！";
 

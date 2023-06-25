@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from "react";
 
-const Arrow = (props:any) => (
+const Arrow = (props: any) => (
   <svg
     width={props.width || 50}
     height={props.height || 50}
@@ -11,7 +11,7 @@ const Arrow = (props:any) => (
     <g filter="url(#a)">
       <path
         d="M8 24a1 1 0 1 0 0 2v-2Zm34.707 1.707a1 1 0 0 0 0-1.414l-6.364-6.364a1 1 0 0 0-1.414 1.414L40.586 25l-5.657 5.657a1 1 0 0 0 1.414 1.414l6.364-6.364ZM8 26h34v-2H8v2Z"
-        fill={props.fill || '#000'}
+        fill={props.fill || "#000"}
       />
     </g>
     <defs>
@@ -43,6 +43,6 @@ const Arrow = (props:any) => (
       </filter>
     </defs>
   </svg>
-)
+);
 
-export default Arrow
+export default Arrow;

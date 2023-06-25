@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
- 
+
 const modelProfileSchema = new Schema({
   model_id: String,
   model_name: String,
@@ -12,7 +12,7 @@ const modelProfileSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
- 
+
 export const AImodelModel = mongoose.model("ModelProfile", modelProfileSchema);

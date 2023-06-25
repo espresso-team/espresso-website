@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 // 定义 redirectToNewPage 函数的类型
 export type RedirectToNewPageFn = (url: string) => void;
 

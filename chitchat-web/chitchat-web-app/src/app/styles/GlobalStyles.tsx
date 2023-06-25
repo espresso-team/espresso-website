@@ -2,10 +2,12 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
 
-${'' /* 
+${
+  "" /* 
 *{
     outline: 1px solid red !important;
-} */}
+} */
+}
 
 *,*::before,*::after{
     margin: 0;
@@ -26,6 +28,6 @@ a{
     color: inherit;
     text-decoration:none;
 }
-`
+`;
 
 export default GlobalStyles;

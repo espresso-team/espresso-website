@@ -1,4 +1,3 @@
-
 import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
@@ -10,16 +9,13 @@ const userSchema = new Schema(
       unique: true,
     },
 
-    role :{
-     type : String,
-     enum:["ADMIN","USER"],
-     default:"USER",
+    role: {
+      type: String,
+      enum: ["ADMIN", "USER"],
+      default: "USER",
     },
 
-
-   phoneOtp:String
-
-
+    phoneOtp: String,
   },
   { timestamps: true }
 );

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { message } from 'antd';
-import GenderType from '../../types/GenderType';
-import { usePkSystemHook } from '../../state/pk-system-hook';
-var console = require("console-browserify")
+import React, { useState } from "react";
+import styled from "styled-components";
+import { message } from "antd";
+import GenderType from "../../types/GenderType";
+import { usePkSystemHook } from "../../state/pk-system-hook";
+var console = require("console-browserify");
 
 const Container = styled.div`
   display: flex;
@@ -28,17 +28,17 @@ const FlexContainer = styled.div`
 `;
 
 const GenderButton = styled.button<{ selected: boolean }>`
-  background-color: ${({ selected }) => (selected ? '#1890ff' : '#f7f7f7')};
+  background-color: ${({ selected }) => (selected ? "#1890ff" : "#f7f7f7")};
   border: 1px solid #d9d9d9;
   border-radius: 5px;
   margin: 10px;
   padding: 15px;
   cursor: pointer;
-  color: ${({ selected }) => (selected ? 'white' : 'black')};
-  font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
+  color: ${({ selected }) => (selected ? "white" : "black")};
+  font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
 
   &:hover {
-    background-color: ${({ selected }) => (selected ? '#096dd9' : '#e6f7ff')};
+    background-color: ${({ selected }) => (selected ? "#096dd9" : "#e6f7ff")};
   }
 `;
 
@@ -74,7 +74,7 @@ const SubmitButton = styled.button`
 
 const GenderSelector: React.FC = () => {
   const [selectedGender, setSelectedGender] = useState<GenderType | null>(null);
-  const [nickname, setNickname] = useState<string>('');
+  const [nickname, setNickname] = useState<string>("");
   const [state, action] = usePkSystemHook();
 
   const handleGenderClick = (gender: GenderType) => {
@@ -83,7 +83,7 @@ const GenderSelector: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!selectedGender || !nickname) {
-      message.error('请选择性别并输入昵称');
+      message.error("请选择性别并输入昵称");
     } else {
       // set userName and Gender to state
       action.setUserName(nickname);
