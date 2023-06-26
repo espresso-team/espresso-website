@@ -14,6 +14,7 @@ import { AuthProvider } from "./app/AuthContext";
 import NotFound from "./components/notFound";
 import { logPageView, initialize } from "./app/GaEvent";
 import { usePkSystemHook } from "./state/pk-system-hook";
+import Register from "./components/register.component";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -35,6 +36,7 @@ const App: React.FC = () => {
             <Route path="/chat/:modelIdLink?" element={<Chat />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/mybot" element={<MyBot />} />
+            <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ThemeProvider>

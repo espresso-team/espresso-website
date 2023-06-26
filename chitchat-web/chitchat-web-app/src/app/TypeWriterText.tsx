@@ -97,7 +97,7 @@ const TypeWriterText = () => {
         />
 
       </Title>
-      <SubTitle>AI爱情新纪元？体验独一无二的陪伴</SubTitle>
+      {/* <SubTitle>AI爱情新纪元？体验独一无二的陪伴</SubTitle> */}
       <ButtonContainer>
         <Link to={"/pk"}><Button text="开始洽洽"/></Link>
       </ButtonContainer>
