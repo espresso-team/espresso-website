@@ -15,7 +15,6 @@ import NotFound from "./components/notFound";
 import { logPageView, initialize } from "./app/GaEvent";
 import { usePkSystemHook } from "./state/pk-system-hook";
 import Register from "./components/register.component";
-import MBTISurveyComponent from "./components/register/mbti/mbtiSurvery.component";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -36,7 +35,6 @@ const App: React.FC = () => {
             <Route path="/pk" element={<Pk />} />
             <Route path="/chat/:modelIdLink?" element={<Chat />} />
             <Route path="/forum" element={<Forum />} />
-            <Route path="/mbti" element={<MBTISurveyComponent />} />
             <Route path="/mybot" element={<MyBot />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
