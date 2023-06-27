@@ -54,7 +54,7 @@ const RegisterWizard: React.FC = () => {
         if (mbtiType === "IDK") {
           nextStep();
         } else {
-          nextXSteps(4);
+          nextXSteps(5);
         }
       }} onSubmit={mockSubmit} onPrevious={prevStep}><MBTISurveyComponent onMBTITypeChange={setMBTIType} ></MBTISurveyComponent></ProfileCard>}
       {currentStep === 4 && <ProfileCard headline="MBTI 小调查" progressBarPercent={40} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><MBTIComponent question={mbtiQuestions[0]} option1={mbtiOptions[0][0]} option2={mbtiOptions[0][1]} onOptionSelect={handleOptionClick.bind(null, 0)}></MBTIComponent></ProfileCard>}
@@ -65,7 +65,7 @@ const RegisterWizard: React.FC = () => {
         if (mbtiType === "IDK") {
           prevStep();
         } else {
-          prevXStep(4);
+          prevXStep(5);
         }
       }}>ChildNode will be added here: step9</ProfileCard>}
       {currentStep === 9 && <ProfileCard headline="Step 10" progressBarPercent={90} onNext={() => { }} onSubmit={mockSubmit} onPrevious={prevStep} >ChildNode will be added here: step10</ProfileCard>}
