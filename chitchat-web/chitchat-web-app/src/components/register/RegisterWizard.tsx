@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ProfileCard from './ProfileCard';
 import MBTISurveyComponent from './mbti/MBTISurveyComponent';
 import MBTIComponent from './mbti/MBTIComponent';
+import UserTagSelection from './userTag/UserTagSelection';
 
 interface MBTISurveyComponentProps {
   onMBTITypeChange: (value: string) => void;
@@ -40,6 +41,8 @@ const RegisterWizard: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [mbtiType, setMBTIType] = useState("");
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  // TODO: post the selectedTags to backend
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const questionsScores = [1, 2, 4, 8];
   const mbtiQuestions = ["和一群人party一天后", "晚上看完抽象艺术展回家", "刷到乞讨老人的视频", "当接到一项工作/任务时"];
   const mbtiOptions = [
@@ -49,9 +52,14 @@ const RegisterWizard: React.FC = () => {
     ["马上开始行动计划", "卧敲！明天要交？"]
   ];
   // TODO: store the mbtiScore in state and post to backend
+  // TODO: if user select MBTI type, transform into a score
   const mbtiScore = selectedOptions.reduce((accumulator, current, index) => {
     return accumulator + (current * questionsScores[index]);
   }, 0);
+
+  const handleTagsChange = (tags: string[]) => {
+    setSelectedTags(tags);
+  };
   
   const handleOptionClick = (questionIndex: number, option: number) => {
     const newSelectedOptions = [...selectedOptions];
@@ -106,13 +114,13 @@ const RegisterWizard: React.FC = () => {
           />
         </ProfileCard>
       )}
-      {currentStep === 8 && <ProfileCard headline="Step 9" progressBarPercent={80} onNext={nextStep} onSubmit={mockSubmit} onPrevious={() => {
+      {currentStep === 8 && <ProfileCard headline="请选择最符合你的几项" progressBarPercent={80} onNext={nextStep} onSubmit={mockSubmit} onPrevious={() => {
         if (mbtiType === "IDK") {
           prevStep();
         } else {
           prevXStep(5);
         }
-      }}>ChildNode will be added here: step9</ProfileCard>}
+      }}><UserTagSelection onTagsChange={handleTagsChange} /></ProfileCard>}
       {currentStep === 9 && <ProfileCard headline="Step 10" progressBarPercent={90} onNext={() => { }} onSubmit={mockSubmit} onPrevious={prevStep} >ChildNode will be added here: step10</ProfileCard>}
     </div>
   );
