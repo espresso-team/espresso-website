@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography, Button, Row, Col, Card } from 'antd';
 
 const { Title } = Typography;
@@ -8,15 +8,13 @@ interface MBTIComponentProps {
   question: string;
   option1: string;
   option2: string;
+  selectedOption: number;
   onOptionSelect: (option: number) => void;
 }
 
-const MBTIComponent: React.FC<MBTIComponentProps> = ({ question, option1, option2, onOptionSelect }) => {
-  const [selectedOption, setSelectedOption] = useState('');
-
-  const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
-    onOptionSelect(option === option1 ? 0 : 1);
+const MBTIComponent: React.FC<MBTIComponentProps> = ({ question, option1, option2, selectedOption, onOptionSelect }) => {
+  const handleOptionClick = (option: number) => {
+    onOptionSelect(option);
   };
 
   return (
@@ -26,8 +24,8 @@ const MBTIComponent: React.FC<MBTIComponentProps> = ({ question, option1, option
         <Col xs={24} sm={12} md={10} lg={8}>
           <Card 
             hoverable
-            style={{ width: '100%', height: '150px', backgroundColor: selectedOption === option1 ? '#c0c0c0' : '#e0e0e0' }} 
-            onClick={() => handleOptionClick(option1)}
+            style={{ width: '100%', height: '150px', backgroundColor: selectedOption === 0 ? '#c0c0c0' : '#e0e0e0' }} 
+            onClick={() => handleOptionClick(0)}
           >
             <Meta description={option1} />
           </Card>
@@ -35,8 +33,8 @@ const MBTIComponent: React.FC<MBTIComponentProps> = ({ question, option1, option
         <Col xs={24} sm={12} md={10} lg={8}>
           <Card 
             hoverable
-            style={{ width: '100%', height: '150px', backgroundColor: selectedOption === option2 ? '#c0c0c0' : '#e0e0e0' }} 
-            onClick={() => handleOptionClick(option2)}
+            style={{ width: '100%', height: '150px', backgroundColor: selectedOption === 1 ? '#c0c0c0' : '#e0e0e0' }} 
+            onClick={() => handleOptionClick(1)}
           >
             <Meta description={option2} />
           </Card>

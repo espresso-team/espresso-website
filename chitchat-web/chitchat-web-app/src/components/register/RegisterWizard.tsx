@@ -7,22 +7,56 @@ interface MBTISurveyComponentProps {
   onMBTITypeChange: (value: string) => void;
 }
 
-const mbtiQuestions = ["和一群人party一天后", "晚上看完抽象艺术展回家", "刷到乞讨老人的视频", "当接到一项工作/任务时"];
-const mbtiOptions = [["救命！急需独处回血！", "明天咱还能聚一回吗"], ["满脑子想法乱窜到后半夜", "呀！困了...睡"], ["从 他怎么了 联想到 天下苍生", "世界就是这样 默默滑过"], ["马上开始行动计划", "卧敲！明天要交？"]];
+interface MBTIComponentWrapperProps {
+  question: string;
+  options: string[];
+  onOptionSelect: (option: number) => void;
+}
 
+const MBTIComponentWrapper: React.FC<MBTIComponentWrapperProps> = ({
+  question,
+  options,
+  onOptionSelect
+}) => {
+  const [selectedOption, setSelectedOption] = useState(0);
+
+  const handleOptionSelect = (option: number) => {
+    setSelectedOption(option);
+    onOptionSelect(option);
+  };
+
+  return (
+    <MBTIComponent
+      question={question}
+      option1={options[0]}
+      option2={options[1]}
+      selectedOption={selectedOption}
+      onOptionSelect={handleOptionSelect}
+    />
+  );
+};
 
 const RegisterWizard: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [mbtiType, setMBTIType] = useState("");
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   const questionsScores = [1, 2, 4, 8];
-  // TODO: post the mbti score to backend in step 9
-  const mbtiScore = selectedOptions.reduce((a, b) => a + b, 0);
+  const mbtiQuestions = ["和一群人party一天后", "晚上看完抽象艺术展回家", "刷到乞讨老人的视频", "当接到一项工作/任务时"];
+  const mbtiOptions = [
+    ["救命！急需独处回血！", "明天咱还能聚一回吗"],
+    ["满脑子想法乱窜到后半夜", "呀！困了...睡"],
+    ["从他怎么了联想到天下苍生", "世界就是这样默默滑过"],
+    ["马上开始行动计划", "卧敲！明天要交？"]
+  ];
+  // TODO: store the mbtiScore in state and post to backend
+  const mbtiScore = selectedOptions.reduce((accumulator, current, index) => {
+    return accumulator + (current * questionsScores[index]);
+  }, 0);
   
   const handleOptionClick = (questionIndex: number, option: number) => {
-    const newOptions = [...selectedOptions];
-    newOptions[questionIndex] = questionsScores[questionIndex] * option;
-    setSelectedOptions(newOptions);
+    const newSelectedOptions = [...selectedOptions];
+    newSelectedOptions[questionIndex] = option;
+    setSelectedOptions(newSelectedOptions);
   };
 
   const nextXSteps = (x: number) => {
@@ -57,10 +91,21 @@ const RegisterWizard: React.FC = () => {
           nextXSteps(5);
         }
       }} onSubmit={mockSubmit} onPrevious={prevStep}><MBTISurveyComponent onMBTITypeChange={setMBTIType} ></MBTISurveyComponent></ProfileCard>}
-      {currentStep === 4 && <ProfileCard headline="MBTI 小调查" progressBarPercent={40} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><MBTIComponent question={mbtiQuestions[0]} option1={mbtiOptions[0][0]} option2={mbtiOptions[0][1]} onOptionSelect={handleOptionClick.bind(null, 0)}></MBTIComponent></ProfileCard>}
-      {currentStep === 5 && <ProfileCard headline="MBTI 小调查" progressBarPercent={50} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><MBTIComponent question={mbtiQuestions[1]} option1={mbtiOptions[1][0]} option2={mbtiOptions[1][1]} onOptionSelect={handleOptionClick.bind(null, 1)}></MBTIComponent></ProfileCard>}
-      {currentStep === 6 && <ProfileCard headline="MBTI 小调查" progressBarPercent={60} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><MBTIComponent question={mbtiQuestions[2]} option1={mbtiOptions[2][0]} option2={mbtiOptions[2][1]} onOptionSelect={handleOptionClick.bind(null, 2)}></MBTIComponent></ProfileCard>}
-      {currentStep === 7 && <ProfileCard headline="MBTI 小调查" progressBarPercent={70} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><MBTIComponent question={mbtiQuestions[3]} option1={mbtiOptions[3][0]} option2={mbtiOptions[3][1]} onOptionSelect={handleOptionClick.bind(null, 3)}></MBTIComponent></ProfileCard>}
+      {currentStep >= 4 && currentStep <= 7 && (
+        <ProfileCard
+          headline="MBTI 小调查"
+          progressBarPercent={30 + (currentStep - 3) * 10}
+          onNext={nextStep}
+          onSubmit={mockSubmit}
+          onPrevious={prevStep}
+        >
+          <MBTIComponentWrapper
+            question={mbtiQuestions[currentStep - 4]}
+            options={mbtiOptions[currentStep - 4]}
+            onOptionSelect={handleOptionClick.bind(null, currentStep - 4)}
+          />
+        </ProfileCard>
+      )}
       {currentStep === 8 && <ProfileCard headline="Step 9" progressBarPercent={80} onNext={nextStep} onSubmit={mockSubmit} onPrevious={() => {
         if (mbtiType === "IDK") {
           prevStep();
