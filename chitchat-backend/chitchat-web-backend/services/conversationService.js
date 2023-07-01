@@ -20,6 +20,10 @@ export async function getConvsByUser(user_id) {
     return await ConversationModel.find({user_id: user_id}).sort(sortOrder);
 }
 
+export async function getConvByConvId(conv_id) {
+    return await ConversationModel.findOne({conv_id: conv_id});
+}
+
 // Update the conversation update time
 export async function updateConvTime(conv_id) {
     var conv = await ConversationModel.findOne({conv_id: conv_id});
