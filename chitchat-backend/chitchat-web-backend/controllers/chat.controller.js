@@ -15,7 +15,7 @@ import {
   return_greeting_words,
   return_greeting_words_by_model_id,
 } from "../util.js";
-import ChatClient from "../chatgpt-client.js";
+import ChatClient from "../chat-client/chatgpt-client.js";
 
 export const sendMessage = async (req, res) => {
   try {
