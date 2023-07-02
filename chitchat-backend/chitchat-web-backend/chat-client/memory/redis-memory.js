@@ -9,6 +9,7 @@ class RedisMemory {
   constructor(conv_id) {
     this.memory = new BufferMemory({
       inputKey : "question",
+      memoryKey: "conversationHistory",
       chatHistory: new RedisChatMessageHistory({
         sessionId: conv_id,
         // sessionTTL: 300,  // uncomment to enable session expiry

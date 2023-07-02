@@ -7,6 +7,14 @@ export async function getConv(condition) {
     return await ConversationModel.findOne(condition);
 }
 
+export async function getConvOrCreateOne(condtion) {
+    var conv = await ConversationModel.findOne(condtion);
+    if (conv == null) {
+        conv = await createConversation(condtion);
+    }
+    return conv;
+}
+
 export async function updateConv(condition, conv) {
     return await ConversationModel.findOneAndUpdate(condition, conv);
 }
