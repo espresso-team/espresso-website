@@ -17,6 +17,7 @@ const LogoText = styled.h1`
 font-family: "ZCOOL KuaiLe", sans-serif; 
 font-size: 2.5em;
 color: ${props => props.theme.text};
+//color: white;
 transition: all 0.2s ease;
 &:hover {
     transform: scale(1.1);

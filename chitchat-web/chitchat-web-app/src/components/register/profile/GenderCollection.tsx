@@ -1,9 +1,10 @@
 import React from 'react';
 import { Radio } from 'antd';
+import GenderType from '../../../types/GenderType';
 
 interface GenderCollectionProps {
-  selectedOption?: string | undefined;
-  onSelectOption: (option: string) => void;
+  selectedOption?: GenderType | undefined;
+  onSelectOption: (option: GenderType) => void;
 }
 
 const GenderCollection: React.FC<GenderCollectionProps> = ({
@@ -16,9 +17,9 @@ const GenderCollection: React.FC<GenderCollectionProps> = ({
         value={selectedOption}
         onChange={(e) => onSelectOption(e.target.value)}
       >
-        <Radio value="Male">Male</Radio>
-        <Radio value="Female">Female</Radio>
-        <Radio value="Unknown">Unknown</Radio>
+        <Radio value={GenderType.MALE}>男</Radio>
+        <Radio value={GenderType.FAMALE}>女</Radio>
+        <Radio value={GenderType.OTHER}>保密</Radio>
       </Radio.Group>
     </div>
   );

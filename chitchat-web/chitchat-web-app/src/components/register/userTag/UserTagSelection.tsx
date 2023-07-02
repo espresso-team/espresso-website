@@ -19,10 +19,10 @@ const TagItem = styled.div<{ selected: boolean }>`
 `;
 
 interface UserTagSelectionProps {
-    onTagsChange: (tags: string[]) => void;
-  }  
+  onTagsChange: (tags: string[]) => void;
+}
 
-  const UserTagSelection: React.FC<UserTagSelectionProps> = ({ onTagsChange }) => {
+const UserTagSelection: React.FC<UserTagSelectionProps> = ({ onTagsChange }) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const handleTagClick = (tag: string) => {
@@ -36,7 +36,7 @@ interface UserTagSelectionProps {
     // Notify parent component
     onTagsChange(newSelectedTags);
   };
-  
+
 
   return (
     <TagsContainer>

@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 const Title = styled.h2`
   font-size: ${(props) => props.theme.fontxxl};
-  text-transform: capitalize;
   width: 80%;
+  font-family: 'ZCOOL KuaiLe', sans-serif;
   color: ${(props) => props.theme.text};
   align-self: flex-start;
 
@@ -24,6 +24,9 @@ const Title = styled.h2`
   }
   .text-3{
       color: red;
+  }
+  .text-4{
+      color: white;
   }
 
   @media (max-width: 70em) {
@@ -59,7 +62,8 @@ const SubTitle = styled.h3`
 `
 
 const ButtonContainer = styled.div`
- width: 80%;
+  width: 80%;
+  margin-top: 20px;
   align-self: flex-start;
 
   @media (max-width: 48em) { 
@@ -75,7 +79,7 @@ const TypeWriterText = () => {
   return (
     <>
       <Title>
-        柒洽相伴 恰好遇见你
+        柒洽相伴·洽好遇见你
         <Typewriter
           options={{
             autoStart: true,
@@ -83,13 +87,13 @@ const TypeWriterText = () => {
           }}
           onInit={(typewriter) => {
             typewriter
-              .typeString(`<span class="text-1">聊天陪伴新纪元!</span>`)
+              .typeString(`<span class="text-4">聊天陪伴</span><span class="text-1">新纪元!</span>`)
               .pauseFor(2000)
               .deleteAll()
-              .typeString(`<span class="text-2">个性化虚拟伴侣!</span>`)
+              .typeString(`<span class="text-4"></span>个性化<span class="text-2">虚拟伴侣!</span>`)
               .pauseFor(2000)
               .deleteAll()
-              .typeString(`<span class="text-3">最懂你的AI伴侣!</span>`)
+              .typeString(`<span class="text-4"></span>最懂你<span class="text-2">的AI伴侣!</span>`)
               .pauseFor(2000)
               .deleteAll()
               .start();

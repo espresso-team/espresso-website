@@ -1,14 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
+import bannerBackGroundImage from '../assets/bannerBackground.svg'
 
 const Section = styled.section`
 width: 100vw;
-height: 25rem;
+height: 17rem;
 position: relative;
-border-top: 2px solid ${props => props.theme.text};
-border-top: 2px solid ${props => props.theme.text};
-
-background-color: ${props => `rgba(${props.theme.textRgba},0.9)`};
+background: url(${bannerBackGroundImage}) no-repeat center center;;
 
 display: flex;
 justify-content: center;
@@ -48,7 +46,7 @@ img{
 }
 `
 const Title = styled.h1`
-font-size: ${props => props.theme.fontxxxl};
+font-size: ${props => props.theme.fontxl};
 color: ${props => props.theme.body};
 padding: 1rem 2rem;
 z-index:10;
@@ -84,7 +82,7 @@ justify-content: center;
 
 const JoiNow = styled.button`
 display: inline-block;
-background-color: ${props => props.theme.body};
+background-color: #523DFF;
 color: ${props => props.theme.text};
 outline: none;
 border: none;

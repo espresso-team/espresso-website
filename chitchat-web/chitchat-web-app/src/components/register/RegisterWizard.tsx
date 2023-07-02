@@ -6,6 +6,8 @@ import UserTagSelection from './userTag/UserTagSelection';
 import AvatarSelection from './avatar/AvatarSelction';
 import GenericCollection from './profile/GenericCollection';
 import GenderCollection from './profile/GenderCollection';
+import { usePkSystemHook } from '../../state/pk-system-hook';
+import GenderType from '../../types/GenderType';
 
 interface MBTISurveyComponentProps {
   onMBTITypeChange: (value: string) => void;
@@ -41,9 +43,10 @@ const MBTIComponentWrapper: React.FC<MBTIComponentWrapperProps> = ({
 };
 
 const RegisterWizard: React.FC = () => {
+  const [state, action] = usePkSystemHook();
   const [nickname, setNickname] = useState("");
-  const [dob, setDOB] = useState(new Date);
-  const [gender, setGender] = useState("");
+  const [dob, setDOB] = useState(new Date());
+  const [gender, setGender] = useState(GenderType.UNKNOWN);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
@@ -65,7 +68,7 @@ const RegisterWizard: React.FC = () => {
   const handleDOBChange = (dob: Date) => {
     setDOB(dob);
   };
-  const handleGenderChange = (gender: string) => {
+  const handleGenderChange = (gender: GenderType) => {
     setGender(gender);
   };
   const handlePhoneNumberChange = (phoneNumber: string) => {
@@ -107,31 +110,63 @@ const RegisterWizard: React.FC = () => {
     setCurrentStep(currentStep - x);
   };
 
-  const mockSubmit = () => {
-    // Mock submit function
+  const emptySubmit = () => {
+
+  }
+
+  const nickNameSubmit = () => {
+    nickname && action.setProfileNickname(nickname);
+  }
+
+  const birthdaySubmit = () => {
+    dob && action.setProfileBirthday(dob);
+  }
+
+  const genderSubmit = () => {
+    gender && action.setProfileGender(gender);
+  }
+
+  const phoneNumberSubmit = () => {
+    phoneNumber && action.setProfilePhoneNumber(phoneNumber);
+  }
+
+  const avatarUrlSubmit = () => {
+    avatarUrl && action.setProfileAvatar(avatarUrl);
+  }
+
+  const mbtiSubmit = () => {
+    mbtiScore && action.setProfileMbtiScore(mbtiScore);
+  }
+
+  const selectedTagsSubmit = () => {
+    selectedTags && action.setProfileSelectedTags(selectedTags);
+  }
+
+  const profileSubmit = () => {
+    console.log("submitting profile", state.user.profile);
+    // TBD: Call backend
   }
 
   return (
     <div>
-      {currentStep === 0 && <ProfileCard headline="Intro" progressBarPercent={0} onNext={nextStep} onSubmit={mockSubmit} onPrevious={() => { }}>欢迎欢迎，热烈欢迎👏</ProfileCard>}
-      {currentStep === 1 && <ProfileCard headline="昵称" progressBarPercent={8} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><GenericCollection inputType='text' value={nickname} onInputChange={handleNicknameChange} /></ProfileCard>}
-      {currentStep === 2 && <ProfileCard headline="生日" progressBarPercent={16} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><GenericCollection inputType='date' value={dob} onInputChange={handleDOBChange} /></ProfileCard>}
-      {currentStep === 3 && <ProfileCard headline="性别" progressBarPercent={24} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><GenderCollection selectedOption={gender} onSelectOption={handleGenderChange} /></ProfileCard>}
-      {currentStep === 4 && <ProfileCard headline="手机号" progressBarPercent={30} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><GenericCollection value={phoneNumber} inputType='text' onInputChange={handlePhoneNumberChange} /></ProfileCard>}
-      {currentStep === 5 && <ProfileCard headline="选头像" progressBarPercent={35} onNext={nextStep} onSubmit={mockSubmit} onPrevious={prevStep}><AvatarSelection selectedAvatar={avatarUrl} onSelectAvatar={handleAvatarUrlChange} /></ProfileCard>}
-      {currentStep === 6 && <ProfileCard headline="MBTI 小调查" progressBarPercent={40} onNext={() => {
+      {currentStep === 0 && <ProfileCard headline="昵称" progressBarPercent={8} onNext={nextStep} onSubmit={nickNameSubmit} onPrevious={prevStep} isAllowGoBack={false}><GenericCollection inputType='text' value={nickname} onInputChange={handleNicknameChange} /></ProfileCard>}
+      {currentStep === 1 && <ProfileCard headline="生日" progressBarPercent={16} onNext={nextStep} onSubmit={birthdaySubmit} onPrevious={prevStep}><GenericCollection inputType='date' value={dob} onInputChange={handleDOBChange} /></ProfileCard>}
+      {currentStep === 2 && <ProfileCard headline="性别" progressBarPercent={24} onNext={nextStep} onSubmit={genderSubmit} onPrevious={prevStep}><GenderCollection selectedOption={gender} onSelectOption={handleGenderChange} /></ProfileCard>}
+      {currentStep === 3 && <ProfileCard headline="手机号" progressBarPercent={30} onNext={nextStep} onSubmit={phoneNumberSubmit} onPrevious={prevStep}><GenericCollection value={phoneNumber} inputType='text' onInputChange={handlePhoneNumberChange} /></ProfileCard>}
+      {currentStep === 4 && <ProfileCard headline="选头像" progressBarPercent={35} onNext={nextStep} onSubmit={avatarUrlSubmit} onPrevious={prevStep}><AvatarSelection selectedAvatar={avatarUrl} onSelectAvatar={handleAvatarUrlChange} /></ProfileCard>}
+      {currentStep === 5 && <ProfileCard headline="MBTI 小调查" progressBarPercent={40} onNext={() => {
         if (mbtiType === "IDK") {
           nextStep();
         } else {
           nextXSteps(5);
         }
-      }} onSubmit={mockSubmit} onPrevious={prevStep}><MBTISurveyComponent onMBTITypeChange={setMBTIType} ></MBTISurveyComponent></ProfileCard>}
-      {currentStep >= 7 && currentStep <= 10 && (
+      }} onSubmit={mbtiSubmit} onPrevious={prevStep}><MBTISurveyComponent onMBTITypeChange={setMBTIType} ></MBTISurveyComponent></ProfileCard>}
+      {currentStep >= 6 && currentStep <= 9 && (
         <ProfileCard
           headline="MBTI 小调查"
           progressBarPercent={40 + (currentStep - 6) * 8}
           onNext={nextStep}
-          onSubmit={mockSubmit}
+          onSubmit={mbtiSubmit}
           onPrevious={prevStep}
         >
           <MBTIComponentWrapper
@@ -141,14 +176,14 @@ const RegisterWizard: React.FC = () => {
           />
         </ProfileCard>
       )}
-      {currentStep === 11 && <ProfileCard headline="请选择最符合你的几项" progressBarPercent={85} onNext={nextStep} onSubmit={mockSubmit} onPrevious={() => {
+      {currentStep === 10 && <ProfileCard headline="请选择最符合你的几项" progressBarPercent={85} onNext={nextStep} onSubmit={selectedTagsSubmit} onPrevious={() => {
         if (mbtiType === "IDK") {
           prevStep();
         } else {
           prevXStep(5);
         }
       }}><UserTagSelection onTagsChange={handleTagsChange} /></ProfileCard>}
-      {currentStep === 12 && <ProfileCard headline="Step 10" progressBarPercent={95} onNext={() => { }} onSubmit={mockSubmit} onPrevious={prevStep} >ChildNode will be added here: step10</ProfileCard>}
+      {currentStep === 11 && <ProfileCard headline="开始探索" progressBarPercent={100} onNext={() => { }} onSubmit={profileSubmit} onPrevious={prevStep} >这里可以放一些具体的instructions</ProfileCard>}
     </div>
   );
 }

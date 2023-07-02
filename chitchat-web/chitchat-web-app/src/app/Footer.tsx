@@ -12,9 +12,9 @@ const Banner = lazy(() => import("./Banner"));
 
 
 const Section = styled.section`
-min-height: 100vh;
+min-height: 60vh;
 width: 100vw;
-background-color: ${props => props.theme.body};
+background: linear-gradient(180deg, rgba(38, 37, 55, 1) 0%, #262537 100%);
 position: relative;
 color: ${(props) => props.theme.text};
 

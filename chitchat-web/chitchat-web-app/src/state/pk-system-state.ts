@@ -12,6 +12,15 @@ export const pkSystemState: PkSystemState = {
         gender: GenderType.UNKNOWN,
         userName: "User",
         role: UserRole.GUEST,  // default guest
+        profile: {
+            nickname: '',
+            birthday: new Date(),
+            gender: GenderType.UNKNOWN,
+            phoneNumber: '',
+            avatar: '',
+            mbtiType: '',
+            selectedTags: [],
+        },
     },
     modelArrays: [] as Model[],
     curModelName: "AI角色",
@@ -34,9 +43,20 @@ export type PkSystemState = {
     isLoggedIn: boolean;
 };
 
+export type Profile = {
+    nickname: string,
+    birthday: Date,
+    gender: GenderType,
+    phoneNumber: string,
+    avatar: string,
+    mbtiType: string,
+    selectedTags: string[],
+}
+
 export type LoginUser = {
     id: string,
     gender: GenderType,
     userName: string,
     role: UserRole,
-} // TODO: Consolidate this with User type
+    profile: Profile
+}
