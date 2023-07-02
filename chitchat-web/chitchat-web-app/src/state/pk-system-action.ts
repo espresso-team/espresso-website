@@ -231,21 +231,23 @@ export const pkSystemAction = {
                             newMessageList.push(messageItem);
                             setState({ messageList: newMessageList });
                         })
-
-                        const initialMessage =
-                            {
-                                "text": message,
-                                "id": mID,
-                                "sender": {
-                                    "name": modelName,
-                                    "uid": uID,
-                                    "avatar": modelSrc,
-                                }
-                            } as IMessage;
-                        //pkSystemAction.updateMessageList(initialMessage);
-                        const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
-                        newMessageList.push(initialMessage);
-                        setState({ messageList: newMessageList });
+                        // If there is a message, add it to messageList
+                        if (message) {
+                            const initialMessage =
+                                {
+                                    "text": message,
+                                    "id": mID,
+                                    "sender": {
+                                        "name": modelName,
+                                        "uid": uID,
+                                        "avatar": modelSrc,
+                                    }
+                                } as IMessage;
+                            //pkSystemAction.updateMessageList(initialMessage);
+                            const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
+                            newMessageList.push(initialMessage);
+                            setState({ messageList: newMessageList });
+                        }
                     })
                     .catch((err) => console.log(err));
             }

@@ -227,15 +227,22 @@ export default class ChatGPTNodeClient extends ChatClient {
           model_id,
           chat_history
         );
-        await insertChat({
-          conv_id: conv,
-          message: return_mes,
-          is_user: false,
-        });
-        return {
-          message: return_mes,
-          return_chat_history: return_chat_history,
-        };
+        var last_msg_time = chat_history.updatedAt;
+        var now = Date.now();
+        // if the last message was sent more than 1 day ago
+        if (now - last_msg_time > 86400000) {
+          // send a greeting message
+          await insertChat({
+            conv_id: conv,
+            message: return_mes,
+            is_user: false,
+          });
+          return {
+            message: return_mes,
+            return_chat_history: return_chat_history,
+          };
+        }
+        return { return_chat_history: return_chat_history };
       }
       // init a new converstation for a new user
       var response = await this.init_conv(model_id);
