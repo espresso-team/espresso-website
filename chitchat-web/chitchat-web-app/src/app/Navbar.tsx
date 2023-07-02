@@ -11,7 +11,7 @@ import { useAuth } from './AuthContext';
 
 var console = require("console-browserify");
 const Section = styled.section`
-    background-color: ${props => props.theme.navBackground};
+    background: linear-gradient(180deg, #09071F 18.03%, rgba(9, 7, 31, 0.37) 65.47%, rgba(9, 7, 31, 0) 96.79%);
 `
 
 const Navigation = styled.nav`

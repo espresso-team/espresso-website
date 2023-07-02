@@ -12,6 +12,7 @@ type Props = {
   children: React.ReactNode;
   isAllowSkip?: boolean;
   isAllowChanged?: boolean;
+  isAllowGoBack?: boolean;
 };
 
 const ProfileCardWrapper = styled.div`
@@ -71,7 +72,7 @@ const NextButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-const ProfileCard: React.FC<Props> = ({ isAllowSkip, isAllowChanged, headline, children, onNext, onPrevious, onSubmit, progressBarPercent }) => {
+const ProfileCard: React.FC<Props> = ({ isAllowSkip, isAllowChanged, headline, children, onNext, onPrevious, onSubmit, progressBarPercent, isAllowGoBack = true}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleModalOpen = () => {
@@ -100,7 +101,10 @@ const ProfileCard: React.FC<Props> = ({ isAllowSkip, isAllowChanged, headline, c
   return (
     <ProfileCardWrapper>
       <NavigationWrapper>
-        <BackButton onClick={() => { onPrevious() }}>&lt;</BackButton>
+        {
+          isAllowGoBack && <BackButton onClick={() => { onPrevious() }}>&lt;
+          </BackButton>
+        }
         <ButtonWrapper>
           {isAllowSkip &&
             <AntdButton

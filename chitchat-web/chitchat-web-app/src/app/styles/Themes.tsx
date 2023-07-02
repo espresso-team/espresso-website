@@ -1,11 +1,12 @@
 // This file contains variables for different themes
 
 export const light = {
-    body:"#fff",
+    //body:"#202020",
     navBackground: '#f5f5f5',
-    text:"#202020", // black shade
-    bodyRgba : "255, 255, 255",
-    textRgba:"32,32,32",
+    //text:"#202020", // black shade
+    text: "#fff", // black shade
+    bodyRgba :"32,32,32" ,
+    textRgba: "255, 255, 255",
 
     carouselColor: '#EEEDDE',
 

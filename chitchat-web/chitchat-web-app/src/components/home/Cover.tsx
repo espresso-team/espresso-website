@@ -1,16 +1,17 @@
 import React, { lazy, Suspense } from 'react'
 import styled, { keyframes } from 'styled-components'
-import RoundTextBlack from '../../assets/rounded-text-landing-page.svg';
 import Loading from '../../app/Loading';
+import Navbar from '../../app/Navbar';
+import backgroundJPG from '../../assets/backgroundImage.jpg';
 
-const CoverVideo = lazy(() => import('../../app/CoverVideo'));
 const TypeWriterText = lazy(() => import('../../app/TypeWriterText'));
 
 const Section = styled.section`
 min-height: ${props => `calc(100vh - ${props.theme.navHeight})`};
 width: 100vw;
 position: relative;
-background-color: ${props => props.theme.body};
+background: url(${backgroundJPG}) no-repeat center center;
+background-size: cover;
 `
 
 const Container = styled.div`
@@ -102,6 +103,7 @@ font-size:${props => props.theme.fontlg};
 const Cover = () => {
   return (
     <Section id="home">
+      <Navbar />
       <Container>
         <Box>
           <Suspense fallback={<Loading />}>
@@ -109,17 +111,15 @@ const Cover = () => {
           </Suspense>
         </Box>
         <Box>
-          <Suspense fallback={<Loading />}>
-            <CoverVideo />
-          </Suspense>
+            
         </Box>
 
-        <Round>
+        {/* <Round>
           <Circle>
             &#x2193;
           </Circle>
           <img width={500} height={400} src={RoundTextBlack} alt="roundtext" />
-        </Round>
+        </Round> */}
       </Container>
     </Section>
   )

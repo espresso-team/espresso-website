@@ -250,7 +250,60 @@ export const pkSystemAction = {
                         }
                     })
                     .catch((err) => console.log(err));
-            }
+            },
+    // [Chitchat-V2] Set Profile Info Starts
+    setProfileNickname:
+        (nickname: string) =>
+            ({ setState, getState }: pkSystemApi) => {
+                const userNewState = _.cloneDeep(getState().user);
+                userNewState.profile.nickname = nickname;
+                setState({ user: userNewState });
+            },
+    setProfileBirthday:
+        (birthday: Date) =>
+            ({ setState, getState }: pkSystemApi) => {
+                const userNewState = _.cloneDeep(getState().user);
+                userNewState.profile.birthday = birthday;
+                setState({ user: userNewState });
+            },
+    setProfileGender:
+        (gender: GenderType) =>
+            ({ setState, getState }: pkSystemApi) => {
+                const userNewState = _.cloneDeep(getState().user);
+                userNewState.profile.gender = gender;
+                setState({ user: userNewState });
+            },
+    setProfilePhoneNumber:
+        (phoneNumber: string) =>
+            ({ setState, getState }: pkSystemApi) => {
+                const userNewState = _.cloneDeep(getState().user);
+                userNewState.profile.phoneNumber = phoneNumber;
+                setState({ user: userNewState });
+            },
+    setProfileAvatar:
+        (avatar: string) =>
+            ({ setState, getState }: pkSystemApi) => {
+                const userNewState = _.cloneDeep(getState().user);
+                userNewState.profile.avatar = avatar;
+                setState({ user: userNewState });
+            },
+    setProfileMbtiScore:
+        (mbtiScore: number) =>
+            ({ setState, getState }: pkSystemApi) => {
+                const userNewState = _.cloneDeep(getState().user);
+                // TODO: Map mbtiScore to mbtiType
+                userNewState.profile.mbtiType = "TBD: MBTI score to type";
+                setState({ user: userNewState });
+            },
+    setProfileSelectedTags:
+        (selectedTags: string[]) =>
+            ({ setState, getState }: pkSystemApi) => {
+                const userNewState = _.cloneDeep(getState().user);
+                userNewState.profile.selectedTags = selectedTags;
+                setState({ user: userNewState });
+            },
+    // [Chitchat-V2] Set Profile Info Ends
+
 };
 
 export type PkSystemAction = typeof pkSystemAction;
