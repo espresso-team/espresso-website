@@ -149,7 +149,6 @@ const RegisterWizard: React.FC = () => {
   const profileSubmit = async () => {
     console.log("submitting profile", state.user.profile);
     
-    /*
     await axios
     .post(`${ENDPOINT}/api/user-profile`, {
       user_id: state.user.id,
@@ -176,7 +175,6 @@ const RegisterWizard: React.FC = () => {
         console.error(err);
       }
     });
-    */
 
     await axios
     .post(`${ENDPOINT}/api/upsert-user-tags`, {
