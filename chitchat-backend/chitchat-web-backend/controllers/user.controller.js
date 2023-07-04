@@ -1,4 +1,4 @@
-import { getUser, getUserByUserId, insertUser, updateUser, upsertUserTags } from "../services/userProfileService.js";
+import { getUser, getUserByUserId, insertUser, updateUser, upsertUserTags as mongoUpsertUserTags } from "../services/userProfileService.js";
 
 export const getUserProfile = async (req, res) => {
   const user_id = req.params.user_id;
@@ -80,13 +80,13 @@ export const updateUserProfile = async (req, res) => {
   }
 };
 
-export const postUserTags = async (req, res) => {
+export const upsertUserTags = async (req, res) => {
+  const user_id = req.body.user_id;
   const user_tags = req.body.user_tags;
   const user_mbti_tag = req.body.user_mbti_tag;
-  const user_id = req.body.user_id;
 
   try {
-    await upsertUserTags(user_id, user_tags, user_mbti_tag);
+    await mongoUpsertUserTags(user_id, user_tags, user_mbti_tag);
     res.json({ message: `user ${user_id} tags upserted!`, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });

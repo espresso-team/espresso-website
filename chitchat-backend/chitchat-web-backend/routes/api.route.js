@@ -2,7 +2,7 @@ import { Router } from "express";
 import { upload_image } from "../controllers/image.controller.js";
 import { get_wechat_config } from "../controllers/wechat.controller.js";
 import { sendMessage, joinChat } from "../controllers/chat.controller.js";
-import { getUserProfile, postUserProfile, postUserTags, updateUserProfile } from "../controllers/user.controller.js";
+import { getUserProfile, postUserProfile, upsertUserTags, updateUserProfile } from "../controllers/user.controller.js";
 import {
   getModelProfile,
   postModelProfile,
@@ -448,9 +448,9 @@ router.post("/user-profile", postUserProfile);
 router.post("/update-user-profile", updateUserProfile);
 /**
  * @swagger
- * /user-tags:
+ * /upsert-user-tags:
  *   post:
- *     summary: Create a new user tags profile
+ *     summary: Create or update a new user tags profile
  *     requestBody:
  *       required: true
  *       content:
@@ -486,7 +486,7 @@ router.post("/update-user-profile", updateUserProfile);
  *                 error:
  *                   type: string
  */
-router.post("/user-tags", postUserTags);
+router.post("/upsert-user-tags", upsertUserTags);
 /**
  * @swagger
  * /model-profile:

@@ -8,6 +8,10 @@ import GenericCollection from './profile/GenericCollection';
 import GenderCollection from './profile/GenderCollection';
 import { usePkSystemHook } from '../../state/pk-system-hook';
 import GenderType from '../../types/GenderType';
+import axios from 'axios';
+import { ENDPOINT } from '../../types/Env';
+import { message } from 'antd';
+import { HttpStatus } from '../../types/HttpStatus';
 
 interface MBTISurveyComponentProps {
   onMBTITypeChange: (value: string) => void;
@@ -50,7 +54,7 @@ const RegisterWizard: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [mbtiType, setMBTIType] = useState("");
+  const [mbtiType, setMBTIType] = useState("IDK");
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   // TODO: post the selectedTags to backend
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -142,9 +146,44 @@ const RegisterWizard: React.FC = () => {
     selectedTags && action.setProfileSelectedTags(selectedTags);
   }
 
-  const profileSubmit = () => {
+  const profileSubmit = async () => {
     console.log("submitting profile", state.user.profile);
-    // TBD: Call backend
+    
+    /*
+    await axios
+    .post(`${ENDPOINT}/api/user-profile`, {
+      user_id: state.user.id,
+      user_name: state.user.profile.nickname,
+      gender: state.user.profile.gender,
+      birthday: state.user.profile.birthday,
+      city: state.user.profile.birthday, //???
+      phone: state.user.profile.phoneNumber,
+      profile_url: state.user.profile.avatar,
+    })
+    .then((response) => {
+      if (response.status === HttpStatus.OK) {
+        console.log("fetchModelProfile message", response.data.message);
+        message.info("注册成功!");
+      } else {
+        message.error("页面错误，请稍后重试或添加下方微信群联系管理员。");
+      }
+    })
+    .catch((err) => {
+      if (err.response && err.response.status === 409) {
+        // handle conflict error here
+        message.error("用户已存在,请稍后重试或添加下方微信群联系管理员。");
+      } else {
+        console.error(err);
+      }
+    });
+    */
+
+    await axios
+    .post(`${ENDPOINT}/api/upsert-user-tags`, {
+      user_id: state.user.id,
+      user_tags: selectedTags,
+      user_mbti_tag: mbtiType,
+    })
   }
 
   return (
