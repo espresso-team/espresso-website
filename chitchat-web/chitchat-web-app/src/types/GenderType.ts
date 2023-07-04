@@ -1,6 +1,6 @@
 export enum GenderType {
     MALE = "M",
-    FAMALE = "F",
+    FEMALE = "F",
     UNKNOWN = "U",
     OTHER = "O"
 }

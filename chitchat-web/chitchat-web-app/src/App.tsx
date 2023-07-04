@@ -15,6 +15,7 @@ import NotFound from "./components/notFound";
 import { logPageView, initialize } from "./app/GaEvent";
 import { usePkSystemHook } from "./state/pk-system-hook";
 import Register from "./components/register.component";
+import ProfileUpdate from "./components/profileUpdate.component";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const App: React.FC = () => {
             <Route path="/forum" element={<Forum />} />
             <Route path="/mybot" element={<MyBot />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profileUpdate" element={<ProfileUpdate user_id={state.user.id} profile={state.user.profile} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ThemeProvider>

@@ -122,8 +122,8 @@ const GenderSelector: React.FC = () => {
         </div>
         <div>
           <GenderButton
-            selected={selectedLoginUser.gender === GenderType.FAMALE}
-            onClick={() => handleGenderClick(GenderType.FAMALE)}
+            selected={selectedLoginUser.gender === GenderType.FEMALE}
+            onClick={() => handleGenderClick(GenderType.FEMALE)}
           >
             ♀
           </GenderButton>

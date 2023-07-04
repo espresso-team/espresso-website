@@ -236,8 +236,10 @@ const Navbar = () => {
                         </If>
                         <If condition={isLoggedIn}>
                             <div className="mobile">
-                                <Button text={`用户${state.user.id.substring(0, 7)}`} disabled={true} />
-                                <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
+                                <Link to="/profileUpdate">
+                                    <Button text={`用户${state.user.id.substring(0, 7)}`} disabled={false} />
+                                    <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
+                                </Link>
                             </div>
                         </If>
 
@@ -262,8 +264,10 @@ const Navbar = () => {
                 </If>
                 <If condition={isLoggedIn}>
                     <div className="desktop">
-                        <Button text={`用户${state.user.id.substring(0, 7)}`} disabled={true} />
-                        <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
+                        <Link to="/profileUpdate">
+                            <Button text={`用户${state.user.id.substring(0, 7)}`} disabled={false} />
+                            <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
+                        </Link>
                     </div>
                 </If>
 
