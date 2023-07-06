@@ -89,7 +89,7 @@ const ChatBox: React.FC<Props> = () => {
               "sender": {
                 "name": state.user.userName,
                 "uid": state.user.id,
-                "avatar": state.user.gender === GenderType.FAMALE ? "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4576.jpg" : "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4577.jpg",
+                "avatar": state.user.gender === GenderType.FEMALE ? "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4576.jpg" : "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4577.jpg",
               }
             } as IMessage;
 

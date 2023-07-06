@@ -43,6 +43,7 @@ export type PkSystemState = {
     isLoggedIn: boolean;
 };
 
+// TODO profile & user tables refactoring
 export type Profile = {
     nickname: string,
     birthday: Date,

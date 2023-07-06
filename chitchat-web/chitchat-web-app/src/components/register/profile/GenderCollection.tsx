@@ -18,7 +18,7 @@ const GenderCollection: React.FC<GenderCollectionProps> = ({
         onChange={(e) => onSelectOption(e.target.value)}
       >
         <Radio value={GenderType.MALE}>男</Radio>
-        <Radio value={GenderType.FAMALE}>女</Radio>
+        <Radio value={GenderType.FEMALE}>女</Radio>
         <Radio value={GenderType.OTHER}>保密</Radio>
       </Radio.Group>
     </div>
