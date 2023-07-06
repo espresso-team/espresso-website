@@ -335,9 +335,9 @@ paths:
                 properties:
                   error:
                     type: string
-  /user-tags:
+  /upsert-user-tags:
     post:
-      summary: Create a new user tags profile
+      summary: Create or update a new user tags profile
       requestBody:
         required: true
         content:
@@ -345,18 +345,12 @@ paths:
             schema:
               type: object
               properties:
-                user_id:
-                  type: string
-                user_name:
-                  type: string
-                gender:
-                  type: string
-                birthday:
-                  type: string
-                city:
-                  type: string
-                phone:
-                  type: string
+               user_id:
+                 type: string
+               user_tags:
+                 type: string[]
+               user_mbti_tag:
+                 type: string
       responses:
         200:
           description: The user tags were successfully upserted
