@@ -1,6 +1,5 @@
 import { Component } from "react";
 import Footer from "../app/Footer";
-import Game from "./pk/Game"
 import styled from "styled-components"
 import Navbar from "../app/Navbar";
 
@@ -14,7 +13,6 @@ export default class Pk extends Component {
       <>
         <Navbar />
         <PKPageWrapper>
-          <Game userId={"test1"}/>
           <Footer />
         </PKPageWrapper>
       </>
