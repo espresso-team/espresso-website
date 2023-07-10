@@ -1,5 +1,4 @@
 import Footer from "../app/Footer";
-import Game from "./pk/Game";
 import styled from "styled-components";
 import Navbar from "../app/Navbar";
 import ProfileUpdatePage from "./register/profile/ProfileUpdatePage";
