@@ -8,6 +8,7 @@ import Button from './Button';
 import { usePkSystemHook } from '../state/pk-system-hook';
 import { If } from './If';
 import { useAuth } from './AuthContext';
+import BlueButton from './BlueButton';
 
 var console = require("console-browserify");
 const Section = styled.section`
@@ -231,7 +232,7 @@ const Navbar = () => {
                     <MenuItem>
                         <If condition={!isLoggedIn}>
                             <div className="mobile">
-                                <Button text='注册登录' onClick={showModal} />
+                                <BlueButton text='注册登录' onClick={showModal} />
                             </div>
                         </If>
                         <If condition={isLoggedIn}>
@@ -259,7 +260,7 @@ const Navbar = () => {
 
                 <If condition={!isLoggedIn}>
                     <div className="desktop">
-                        <Button text='注册登录' onClick={showModal} />
+                        <BlueButton text='注册登录' onClick={showModal} />
                     </div>
                 </If>
                 <If condition={isLoggedIn}>

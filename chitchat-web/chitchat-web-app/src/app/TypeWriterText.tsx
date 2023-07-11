@@ -4,6 +4,7 @@ import Typewriter from "typewriter-effect";
 import Button from './Button';
 import "@fontsource/zcool-kuaile"
 import { Link } from "react-router-dom";
+import BlueButton from "./BlueButton";
 
 const Title = styled.h2`
   font-size: ${(props) => props.theme.fontxxl};
@@ -103,7 +104,7 @@ const TypeWriterText = () => {
       </Title>
       {/* <SubTitle>AI爱情新纪元？体验独一无二的陪伴</SubTitle> */}
       <ButtonContainer>
-        <Link to={"/pk"}><Button text="开始洽洽"/></Link>
+        <Link to={"/pk"}><BlueButton text="开始洽洽 ->"/></Link>
       </ButtonContainer>
     </>
   );
