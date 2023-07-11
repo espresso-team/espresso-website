@@ -9,11 +9,9 @@ export const pkSystemState: PkSystemState = {
     messageList: [] as IMessage[],
     user: {
         id: "unknown",
-        gender: GenderType.UNKNOWN,
-        userName: "User",
         role: UserRole.GUEST,  // default guest
         profile: {
-            nickname: '',
+            username: '',
             birthday: new Date(),
             gender: GenderType.UNKNOWN,
             phoneNumber: '',
@@ -34,7 +32,7 @@ export type PkSystemState = {
     isFlippedCardOne: boolean | undefined;
     curImageId: number;
     messageList: IMessage[];
-    user: LoginUser;
+    user: AppUser;
     modelArrays: Model[];
     curModelName: string;
     curModelSrc: string;
@@ -43,9 +41,8 @@ export type PkSystemState = {
     isLoggedIn: boolean;
 };
 
-// TODO profile & user tables refactoring
 export type Profile = {
-    nickname: string,
+    username: string,
     birthday: Date,
     gender: GenderType,
     phoneNumber: string,
@@ -54,10 +51,8 @@ export type Profile = {
     selectedTags: string[],
 }
 
-export type LoginUser = {
+export type AppUser = {
     id: string,
-    gender: GenderType,
-    userName: string,
     role: UserRole,
     profile: Profile
 }

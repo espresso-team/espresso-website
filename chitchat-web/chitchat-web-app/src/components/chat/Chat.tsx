@@ -2,18 +2,18 @@ import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import PropTypes from 'prop-types';
 import { MessageList } from './MessageList';
 // import SendMessageForm from '../SendMessageForm/SendMessageForm';
-import { User } from '../../types/User';
 import { IMessage } from '../../types/IMessage';
 import './style.css';
 import { usePkSystemHook } from '../../state/pk-system-hook';
 import { If } from '../../app/If';
 import sendIcon from '../../assets/send-icon.svg';
+import { AppUser } from '../../state/pk-system-state';
 
 interface Props {
   messages: IMessage[];
   isLoading: boolean;
   isBotTyping: boolean;
-  user: User;
+  user: AppUser;
   onSubmit: (mes: string) => void;
   pageRef: React.Ref<HTMLDivElement>
 }

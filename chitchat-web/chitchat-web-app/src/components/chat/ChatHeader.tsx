@@ -7,7 +7,6 @@ import { ENDPOINT } from '../../types/Env';
 import GenderType from '../../types/GenderType';
 import { HttpStatus } from '../../types/HttpStatus';
 import { ModelAvatar } from '../../types/ModelAvatar';
-import { User } from '../../types/User';
 import { fetchModelSrcsByModelIds } from '../../util/fetchModelByModelIds';
 import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 import { useParams } from 'react-router-dom';
@@ -63,7 +62,7 @@ const ChatHeader: React.FC = () => {
     useEffect(() => {
         const fetchChatHeaderData = async () => {
             // By default, we fetch all the public models.
-            console.log("ChatHeader - user name", state.user.userName);
+            console.log("ChatHeader - user name", state.user.profile.username);
             // if (state.curUserName === "User") {
             //     await action.fetchUserProfile(GenderType.UNKNOWN, "未命名");
             // }
@@ -101,7 +100,7 @@ const ChatHeader: React.FC = () => {
 
         };
         fetchChatHeaderData();
-    }, [modelIdLink, state.user.id, state.user.userName]);
+    }, [modelIdLink, state.user.id, state.user.profile.username]);
     return (
         <ChatHeaderWrapper>
             {[...avatarList, PlusOneIcon].map((model, index) => (

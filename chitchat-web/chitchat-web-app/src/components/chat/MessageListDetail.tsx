@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { usePkSystemHook } from '../../state/pk-system-hook';
 import { IMessage } from '../../types/IMessage';
-import { User } from '../../types/User';
 import "./style.css"
+import { AppUser } from '../../state/pk-system-state';
 
 interface Props {
-  messages: { text: string; id: string; sender: User }[];
-  user: User;
+  messages: { text: string; id: string; sender: AppUser }[];
+  user: AppUser;
   isBotTyping: boolean;
   pageRef: React.Ref<HTMLDivElement>
 }
-const isUser = (user: User, message: IMessage) => {
-  return user.uid === message.sender.uid;
+const isUser = (user: AppUser, message: IMessage) => {
+  return user.id === message.sender.id;
 }
 
 const getRenderName = (isUser: boolean, message: IMessage) => {
@@ -19,7 +19,7 @@ const getRenderName = (isUser: boolean, message: IMessage) => {
   if (isUser) {
     renderName = null;
   } else {
-    renderName = <div className='sender-name'>{message.sender.name}</div>;
+    renderName = <div className='sender-name'>{message.sender.profile.username}</div>;
   }
   return renderName
 }
@@ -45,7 +45,7 @@ export const MessageListDetail = ({ messages, user, isBotTyping, pageRef }: Prop
             className='chat-bubble-row'
             style={{ flexDirection: isUser(user, message) ? 'row-reverse' : 'row' }}>
             <img
-              src={message.sender.avatar}
+              src={message.sender.profile.avatar}
               alt='未命名'
               className='avatar'
               style={isUser(user, message) ? { marginLeft: '15px' } : { marginRight: '15px' }}
