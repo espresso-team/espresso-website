@@ -18,11 +18,11 @@ import { useDispatch } from "react-redux";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import axios from "axios";
-import { HttpStatus } from "../types/HttpStatus";
-import { usePkSystemHook } from "../state/pk-system-hook";
-import { ENDPOINT } from "../types/Env";
-import { useAuth } from "./AuthContext";
-import UserRole from "../types/UserRole";
+import { HttpStatus } from "../../types/HttpStatus";
+import { usePkSystemHook } from "../../state/pk-system-hook";
+import { ENDPOINT } from "../../types/Env";
+import UserRole from "../../types/UserRole";
+import { useAuth } from "../../app/AuthContext";
 
 var console = require("console-browserify");
 
@@ -42,7 +42,44 @@ const rules = {
   phoneNumber: [{ required: true, message: "请输入电话号码" }],
 };
 
-const RegisterBlock = () => {
+const PageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: #f5f5f5;
+`;
+
+const LoginFormWrapper = styled.div`
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  .ant-form-item-explain {
+    text-align: left;
+    font-size: 13px;
+  }
+  .footer-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: auto;
+    width: 100%;
+  }
+  .code-text {
+    min-width: 120px;
+  }
+  .login-section {
+    margin-top: 2rem;
+    margin-left: 0.7rem;
+  }
+  .login-form-button {
+    background-color: black;
+  }
+`;
+
+const LoginPage = () => {
   const [state, action] = usePkSystemHook();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [isGettingCapcha, setIsGettingCapcha] = useState(false);
@@ -169,7 +206,7 @@ const RegisterBlock = () => {
   };
 
   const getCapcha = async () => {
-    console.log("[debug]getCapcha is being called - isGettingCapcha", isGettingCapcha);
+    console.log("[debug]getCapcha is being called");
     if (isGettingCapcha) {
       return;
     }
@@ -182,7 +219,7 @@ const RegisterBlock = () => {
     };
     console.log("data.phoneNumber", data.phoneNumber);
     const res = await axios
-      .post(`${ENDPOINT}/api/auth/login_with_otp`, {
+      .post(`${ENDPOINT}/api/auth/login_or_register`, {
         phone: data.phoneNumber,
       })
       .then((response) => {
@@ -230,7 +267,8 @@ const RegisterBlock = () => {
   }, [timer]);
 
   return (
-    <Style>
+    <PageWrapper>
+      <LoginFormWrapper>
       <p style={{ color: "grey" }}>
         登录账号以保存聊天记录并解锁所有功能。未注册请先注册哦~
       </p>
@@ -347,31 +385,8 @@ const RegisterBlock = () => {
           <Spin />
         )}
       </section>
-    </Style>
+      </LoginFormWrapper>
+    </PageWrapper>
   );
 };
-export default React.memo(RegisterBlock);
-
-const Style = styled.div`
-  .ant-form-item-explain {
-    text-align: left;
-    font-size: 13px;
-  }
-  .footer-btn {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin: auto;
-    width: 100%;
-  }
-  .code-text {
-    min-width: 120px;
-  }
-  .login-section {
-    margin-top: 2rem;
-    margin-left: 0.7rem;
-  }
-  .login-form-button {
-    background-color: black;
-  }
-`;
+export default LoginPage

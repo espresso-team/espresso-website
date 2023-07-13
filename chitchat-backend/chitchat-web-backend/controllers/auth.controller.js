@@ -40,7 +40,6 @@ export async function loginUsingOtp(req, res, next) {
     await regitser_user.save();
     // send otp to phone number
     await fast2sms(otp, regitser_user.phone);
-
     res.status(201).json({
       type: "success",
       message: "验证码已发送，请查收。",
@@ -49,13 +48,14 @@ export async function loginUsingOtp(req, res, next) {
       },
     });
   } catch (error) {
-    if (error.response.status === 403) {
-      res.status(403).json({
-        type: "error",
-        message: "验证码操作频繁，请稍后重试。",
-        data: {},
-      });
-    }
+    console.log("debug error",error)
+    // if (error.response.status === 403) {
+    //   res.status(403).json({
+    //     type: "error",
+    //     message: "验证码操作频繁，请稍后重试。",
+    //     data: {},
+    //   });
+    // }
   } finally {
   }
 }
