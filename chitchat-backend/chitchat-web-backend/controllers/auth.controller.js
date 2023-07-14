@@ -16,41 +16,19 @@ import { generateOTP, fast2sms } from "../utils/otp.util.js";
 
 const COOKIE_NAME = "auth_token";
 
-// --------------------- create new user ---------------------------------
-export async function loginOrRegisterUser(req, res, next) {
+// --------------------- User log in using otp ---------------------------------
+export async function loginUsingOtp(req, res, next) {
   try {
     const { phone } = req.body;
-    /** TZ TODO review after the new registration process
-    var user = await findByPhone(phone);
-    if (!user) {
-      res.status(500).json({
-        type: "error",
-        message: "未注册手机。请先注册！",
-        data: {},
-      });
-      return;
-    }
-     */
+
     var regitser_user = await findByPhone(phone);
     // register if a new user
     if (!regitser_user) {
-      await createNewUser(phone, next);
-      user = await findByPhone(phone);
-      if (user) {
-        res.status(200).json({
-          type: "success",
-          message: "Account created OTP sended to mobile number",
-          data: {
-            userId: user.id,
-          },
-        });
-      } else {
-        res.status(500).json({
-          type: "error",
-          message: "页面错误，请稍后重试。",
-          data: {},
-        });
-      }
+      res.status(400).json({
+        type: "error",
+        message: "手机用户不存在，请先注册哦!",
+        data: {},
+      });
 
       return;
     }
@@ -67,7 +45,7 @@ export async function loginOrRegisterUser(req, res, next) {
       type: "success",
       message: "验证码已发送，请查收。",
       data: {
-        userId: user.user_id,
+        userId: regitser_user.id,
       },
     });
   } catch (error) {
@@ -79,30 +57,6 @@ export async function loginOrRegisterUser(req, res, next) {
       });
     }
   } finally {
-  }
-}
-
-async function createNewUser(phone, next) {
-  try {
-    // create new user
-    const createUser = new UserModel({
-      // TZ TODO id?
-      phone,
-      role: phone === process.env.ADMIN_PHONE ? "ADMIN" : "USER",
-    });
-
-    // save user
-    const user = await createUser.save();
-
-    // generate otp
-    const otp = generateOTP(6);
-    // save otp to user collection
-    user.phoneOtp = otp;
-    await user.save();
-    // send otp to phone number
-    await fast2sms(otp, user.phone, next);
-  } catch (error) {
-    next(error);
   }
 }
 
