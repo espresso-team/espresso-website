@@ -220,7 +220,7 @@ const RegisterWizard: React.FC = () => {
       if (mbtiMap.has(mbtiScore)) {
         mbtiString = mbtiMap.get(mbtiScore)!;
       } else {
-        console.error("mbtiScore not found in mbtiMap");
+        console.error("mbtiScore not found in mbtiMap, score is", mbtiScore);
       }
     }
     await axios.post(`${ENDPOINT}/api/upsert-user-tags`, {
