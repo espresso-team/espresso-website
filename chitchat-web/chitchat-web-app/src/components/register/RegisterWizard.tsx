@@ -310,8 +310,8 @@ const RegisterWizard: React.FC = () => {
           onPrevious={prevStep}
         >
           <MBTIComponentWrapper
-            question={mbtiQuestions[currentStep - 7]}
-            options={mbtiOptions[currentStep - 7]}
+            question={mbtiQuestions[currentStep - 6]}
+            options={mbtiOptions[currentStep - 6]}
             onOptionSelect={handleOptionClick.bind(null, currentStep - 7)}
           />
         </ProfileCard>
