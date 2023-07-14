@@ -5,9 +5,9 @@ const router = Router();
 
 import { checkAuth } from "../middlewares/checkAuth.js";
 import { checkAdmin } from "../middlewares/checkAdmin.js";
-import { fetchCurrentUser, loginOrRegisterUser, verifyOTP, handleAdmin } from "../controllers/auth.controller.js";
+import { fetchCurrentUser, loginUsingOtp, verifyOTP, handleAdmin } from "../controllers/auth.controller.js";
 
-router.post("/login_or_register", loginOrRegisterUser);
+router.post("/login_with_otp", loginUsingOtp);
 
 
 router.post("/verify", verifyOTP);

@@ -182,7 +182,7 @@ const RegisterBlock = () => {
     };
     console.log("data.phoneNumber", data.phoneNumber);
     const res = await axios
-      .post(`${ENDPOINT}/api/auth/login_or_register`, {
+      .post(`${ENDPOINT}/api/auth/login_with_otp`, {
         phone: data.phoneNumber,
       })
       .then((response) => {
