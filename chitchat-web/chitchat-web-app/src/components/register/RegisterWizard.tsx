@@ -69,11 +69,30 @@ const RegisterWizard: React.FC = () => {
     "当接到一项工作/任务时",
   ];
   const mbtiOptions = [
-    ["救命！急需独处回血！", "明天咱还能聚一回吗"],
-    ["满脑子想法乱窜到后半夜", "呀！困了...睡"],
-    ["从他怎么了联想到天下苍生", "世界就是这样默默滑过"],
-    ["马上开始行动计划", "卧敲！明天要交？"],
+    ["救命！急需独处回血！", "明天咱还能聚一回吗"], //I, E
+    ["满脑子想法乱窜到后半夜", "呀！困了...睡"], // N, S
+    ["从他怎么了联想到天下苍生", "世界就是这样默默滑过"], // F, T
+    ["马上开始行动计划", "卧敲！明天要交？"], // J, P
   ];
+  // Used for map mbtiScore to mbtiType
+  const mbtiMap: Map<number, string> = new Map([
+    [0, "INFJ"], // 0000
+    [1, "INFP"], // 0001
+    [2, "INTJ"], // 0010
+    [3, "INTP"], // 0011
+    [4, "ISFJ"], // 0100
+    [5, "ISFP"], // 0101
+    [6, "ISTJ"], // 0110
+    [7, "ISTP"], // 0111
+    [8, "ENFJ"], // 1000
+    [9, "ENFP"], // 1001
+    [10, "ENTJ"], // 1010
+    [11, "ENTP"], // 1011
+    [12, "ESFJ"], // 1100
+    [13, "ESFP"], // 1101
+    [14, "ESTJ"], // 1110
+    [15, "ESTP"], // 1111
+  ]);
   const handleUsernameChange = (username: string) => {
     setUsername(username);
   };
@@ -90,8 +109,6 @@ const RegisterWizard: React.FC = () => {
     setAvatarUrl(avatarUrl);
   };
 
-  // TODO: store the mbtiScore in state and post to backend
-  // TODO: if user select MBTI type, transform into a score
   const mbtiScore = selectedOptions.reduce((accumulator, current, index) => {
     return accumulator + current * questionsScores[index];
   }, 0);
@@ -198,11 +215,18 @@ const RegisterWizard: React.FC = () => {
           console.error(err);
         }
       });
-
+    var mbtiString = mbtiType;
+    if (mbtiType === "IDK") {
+      if (mbtiMap.has(mbtiScore)) {
+        mbtiString = mbtiMap.get(mbtiScore)!;
+      } else {
+        console.error("mbtiScore not found in mbtiMap, score is", mbtiScore);
+      }
+    }
     await axios.post(`${ENDPOINT}/api/upsert-user-tags`, {
       user_id: state.user.id,
       user_tags: selectedTags,
-      user_mbti_tag: mbtiType,
+      user_mbti_tag: mbtiString,
     });
   };
 
