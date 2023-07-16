@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import styled from "styled-components";
 import Navbar from "../app/Navbar";
 import Footer from "../app/Footer";
 import backgroundJPG from '../assets/BGIWithoutCharacter.png';
+import { useAuth } from './AuthContext';
 
 const Section = styled.section`
 min-height: ${props => `calc(110vh - ${props.theme.navHeight})`};
@@ -18,10 +19,8 @@ interface AuthenticatedLayoutProps {
 }
 
 const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
-    // check userToken to check the login status
-    const userToken = localStorage.getItem('userToken');
-    
-    if (!userToken) {
+    const { isLoggedIn } = useAuth();
+    if (!isLoggedIn) {
         return <Navigate to="/login" />;
     }
 
