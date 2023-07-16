@@ -26,6 +26,9 @@ a{
     color: inherit;
     text-decoration:none;
 }
+.ant-form-item-label > label {
+    color: white !important;
+  }
 `
 
 export default GlobalStyles;

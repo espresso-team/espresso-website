@@ -6,7 +6,6 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./app/styles/GlobalStyles";
 import { light } from "./app/styles/Themes";
 import Home from "./components/home.component";
-import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
 import Forum from "./components/forum.component";
 import MyBot from "./components/myBot.component";
@@ -34,7 +33,6 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/index" element={<Home />} />
-            <Route path="/pk" element={<Pk />} />
             <Route path="/chat/:modelIdLink?" element={<Chat />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/mybot" element={<MyBot />} />

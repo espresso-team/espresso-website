@@ -9,6 +9,7 @@ import { usePkSystemHook } from '../state/pk-system-hook';
 import { If } from './If';
 import { useAuth } from './AuthContext';
 import BlueButton from './BlueButton';
+import { useRedirectToNewPage } from '../util/redirectToNewPage';
 
 var console = require("console-browserify");
 const Section = styled.section`
@@ -205,13 +206,11 @@ const Navbar = () => {
     useEffect(() => {
     }, [state.modalOpen, state.user.id]);
 
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
+    const redirectToNewPage = useRedirectToNewPage();
 
-    const showModal = () => {
-        action.setModelOpen(true);
-    };
+    const handleLogin = () => {
+        redirectToNewPage("/login")
+    }
 
     const handleCancel = () => {
         action.setModelOpen(false);
@@ -225,14 +224,13 @@ const Navbar = () => {
                 </HamburgerMenu>
                 <Menu click={click}>
                     <MenuItem><StyledLink to={"/"} >主页</StyledLink></MenuItem>
-                    <MenuItem><StyledLink to={"/pk"} >洽洽</StyledLink></MenuItem>
                     <MenuItem><StyledLink to={"/chat"} >聊天</StyledLink></MenuItem>
                     <MenuItem><StyledLink to={"/forum"} >探索</StyledLink></MenuItem>
                     <MenuItem><StyledLink to={"/mybot"}>自洽</StyledLink></MenuItem>
                     <MenuItem>
                         <If condition={!isLoggedIn}>
                             <div className="mobile">
-                                <BlueButton text='注册登录' onClick={showModal} />
+                                <BlueButton text='注册登录' onClick={handleLogin} />
                             </div>
                         </If>
                         <If condition={isLoggedIn}>
@@ -260,7 +258,7 @@ const Navbar = () => {
 
                 <If condition={!isLoggedIn}>
                     <div className="desktop">
-                        <BlueButton text='注册登录' onClick={showModal} />
+                        <BlueButton text='注册登录' onClick={handleLogin} />
                     </div>
                 </If>
                 <If condition={isLoggedIn}>
@@ -285,7 +283,7 @@ const Navbar = () => {
                 </Modal>
 
 
-                <Modal
+                {/* <Modal
                     centered
                     title="登录"
                     open={state.modalOpen}
@@ -294,7 +292,7 @@ const Navbar = () => {
                     closable={false}
                 >
                     <RegisterBlock />
-                </Modal>
+                </Modal> */}
 
             </Navigation>
         </Section>
