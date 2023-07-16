@@ -13,6 +13,7 @@ import { ENDPOINT } from "../../types/Env";
 import { List, message, Modal } from "antd";
 import { HttpStatus } from "../../types/HttpStatus";
 import { validateUserProfile } from "../../util/validate";
+import { useRedirectToNewPage } from "../../util/redirectToNewPage";
 
 interface MBTISurveyComponentProps {
   onMBTITypeChange: (value: string) => void;
@@ -169,6 +170,8 @@ const RegisterWizard: React.FC = () => {
     selectedTags && action.setProfileSelectedTags(selectedTags);
   };
 
+  const redirectToNewPage = useRedirectToNewPage();
+
   const profileSubmit = async () => {
     console.log("submitting profile", state.user.profile);
     // TODO: add the mbti and user tags as well
@@ -228,6 +231,8 @@ const RegisterWizard: React.FC = () => {
       user_tags: selectedTags,
       user_mbti_tag: mbtiString,
     });
+    // Jump to login page
+    redirectToNewPage("/login");
   };
 
   return (
@@ -359,13 +364,13 @@ const RegisterWizard: React.FC = () => {
       )}
       {currentStep === 11 && (
         <ProfileCard
-          headline="开始探索"
+          headline="即将起航"
           progressBarPercent={100}
           onNext={() => {}}
           onSubmit={profileSubmit}
           onPrevious={prevStep}
         >
-          这里可以放一些具体的instructions
+          欢迎加入柒洽，快去登录并探索你喜欢的角色吧~
         </ProfileCard>
       )}
       <Modal

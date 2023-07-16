@@ -2,12 +2,12 @@ import React, { lazy, Suspense } from 'react'
 import styled, { keyframes } from 'styled-components'
 import Loading from '../../app/Loading';
 import Navbar from '../../app/Navbar';
-import backgroundJPG from '../../assets/backgroundImage.jpg';
+import backgroundJPG from '../../assets/BGIWithCharacter.png';
 
 const TypeWriterText = lazy(() => import('../../app/TypeWriterText'));
 
 const Section = styled.section`
-min-height: ${props => `calc(100vh - ${props.theme.navHeight})`};
+min-height: ${props => `calc(110vh - ${props.theme.navHeight})`};
 width: 100vw;
 position: relative;
 background: url(${backgroundJPG}) no-repeat center center;
@@ -110,16 +110,6 @@ const Cover = () => {
             <TypeWriterText />
           </Suspense>
         </Box>
-        <Box>
-            
-        </Box>
-
-        {/* <Round>
-          <Circle>
-            &#x2193;
-          </Circle>
-          <img width={500} height={400} src={RoundTextBlack} alt="roundtext" />
-        </Round> */}
       </Container>
     </Section>
   )

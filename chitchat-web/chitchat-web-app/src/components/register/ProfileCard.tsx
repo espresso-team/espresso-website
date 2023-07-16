@@ -125,7 +125,7 @@ const ProfileCard: React.FC<Props> = ({ isAllowSkip, isAllowChanged, headline, c
 
       <NextButtonWrapper>
         <Button
-          text={"下一步"}
+          text={"登录"}
           onClick={
             () => {
               onNext();

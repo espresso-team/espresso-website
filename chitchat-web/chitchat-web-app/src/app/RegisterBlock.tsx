@@ -23,6 +23,7 @@ import { usePkSystemHook } from "../state/pk-system-hook";
 import { ENDPOINT } from "../types/Env";
 import { useAuth } from "./AuthContext";
 import UserRole from "../types/UserRole";
+import { useRedirectToNewPage } from "../util/redirectToNewPage";
 
 var console = require("console-browserify");
 
@@ -50,10 +51,12 @@ const RegisterBlock = () => {
   // State for the register modal
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
 
-  // Open the register modal
-  const showRegisterModal = () => {
-    setIsRegisterModalVisible(true);
-  };
+  const redirectToNewPage = useRedirectToNewPage();
+  
+  // Jump to register page
+  const showRegisterPage = () => {
+    redirectToNewPage("/register");
+  }
 
   // Close the register modal
   const handleCancel = () => {
@@ -169,7 +172,7 @@ const RegisterBlock = () => {
   };
 
   const getCapcha = async () => {
-    console.log("[debug]getCapcha is being called");
+    console.log("[debug]getCapcha is being called - isGettingCapcha", isGettingCapcha);
     if (isGettingCapcha) {
       return;
     }
@@ -290,7 +293,7 @@ const RegisterBlock = () => {
             <div className="footer-btn">
               <Button
                 type="primary"
-                onClick={showRegisterModal}
+                onClick={showRegisterPage}
                 style={{ marginRight: "10px" }}
               >
                 注册

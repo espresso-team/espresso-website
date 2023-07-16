@@ -6,7 +6,6 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./app/styles/GlobalStyles";
 import { light } from "./app/styles/Themes";
 import Home from "./components/home.component";
-import Pk from "./components/pk.component";
 import Chat from "./components/chat.component";
 import Forum from "./components/forum.component";
 import MyBot from "./components/myBot.component";
@@ -16,6 +15,7 @@ import { logPageView, initialize } from "./app/GaEvent";
 import { usePkSystemHook } from "./state/pk-system-hook";
 import Register from "./components/register.component";
 import ProfileUpdate from "./components/profileUpdate.component";
+import Login from "./components/login.component";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -33,11 +33,11 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/index" element={<Home />} />
-            <Route path="/pk" element={<Pk />} />
             <Route path="/chat/:modelIdLink?" element={<Chat />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/mybot" element={<MyBot />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/profileUpdate" element={<ProfileUpdate user_id={state.user.id} profile={state.user.profile} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
