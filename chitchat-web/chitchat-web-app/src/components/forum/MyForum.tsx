@@ -160,11 +160,11 @@ const MyForum: React.FC = () => {
   );
 };
 const UpvoteIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 8h-5.612l1.123-3.367c.202-.608.1-1.282-.275-1.802S14.253 2 13.612 2H12c-.297 0-.578.132-.769.36L6.531 8H4c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h13.307a2.01 2.01 0 0 0 1.873-1.298l2.757-7.351A1 1 0 0 0 22 12v-2c0-1.103-.897-2-2-2zM4 10h2v9H4v-9zm16 1.819L17.307 19H8V9.362L12.468 4h1.146l-1.562 4.683A.998.998 0 0 0 13 10h7v1.819z"></path></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M20 8h-5.612l1.123-3.367c.202-.608.1-1.282-.275-1.802S14.253 2 13.612 2H12c-.297 0-.578.132-.769.36L6.531 8H4c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h13.307a2.01 2.01 0 0 0 1.873-1.298l2.757-7.351A1 1 0 0 0 22 12v-2c0-1.103-.897-2-2-2zM4 10h2v9H4v-9zm16 1.819L17.307 19H8V9.362L12.468 4h1.146l-1.562 4.683A.998.998 0 0 0 13 10h7v1.819z"></path></svg>
 );
 
 const DownvoteIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 3H6.693A2.01 2.01 0 0 0 4.82 4.298l-2.757 7.351A1 1 0 0 0 2 12v2c0 1.103.897 2 2 2h5.612L8.49 19.367a2.004 2.004 0 0 0 .274 1.802c.376.52.982.831 1.624.831H12c.297 0 .578-.132.769-.36l4.7-5.64H20c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-8.469 17h-1.145l1.562-4.684A1 1 0 0 0 11 14H4v-1.819L6.693 5H16v9.638L11.531 20zM18 14V5h2l.001 9H18z"></path></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M20 3H6.693A2.01 2.01 0 0 0 4.82 4.298l-2.757 7.351A1 1 0 0 0 2 12v2c0 1.103.897 2 2 2h5.612L8.49 19.367a2.004 2.004 0 0 0 .274 1.802c.376.52.982.831 1.624.831H12c.297 0 .578-.132.769-.36l4.7-5.64H20c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-8.469 17h-1.145l1.562-4.684A1 1 0 0 0 11 14H4v-1.819L6.693 5H16v9.638L11.531 20zM18 14V5h2l.001 9H18z"></path></svg>
 );
 
 // 不想显示在Modal里的键的列表
@@ -200,10 +200,10 @@ const Pagination = styled.div`
 `;
 
 const PageButton = styled.button`
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: #523DFF;
+  border: 1px solid #523DFF;
   border-radius: 5px;
-  color: #333;
+  color: #ffffff;
   cursor: pointer;
   font-size: 14px;
   margin: 0 5px;
@@ -211,7 +211,7 @@ const PageButton = styled.button`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #503dff73;
   }
 
   &.active {
@@ -231,10 +231,11 @@ const StyledSelect = styled.select`
   height: 40px;
   font-size: 16px;
   padding: 4px 12px;
-  border: 1px solid #ced4da;
+  border: none;
   border-radius: 5px;
-  color: #495057;
-  background-color: #fff;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
   appearance: none;
 `;
 
@@ -243,8 +244,8 @@ const Container = styled.div`
   max-width: 1700px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f8f9fa;
   font-family: 'Roboto', sans-serif;
+  color: white;
 `;
 
 const ModelList = styled.div`
@@ -254,9 +255,9 @@ const ModelList = styled.div`
 `;
 
 const ModelItem = styled.div`
-  background-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
   border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -290,14 +291,14 @@ const ModelInfo = styled.div`
   h3 {
     font-size: 18px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 
     5px;
     }
 
     p {
     font-size: 14px;
-    color: #777;
+    color: #d4d4d4;
     margin-bottom: 5px;
     }
 
@@ -317,7 +318,7 @@ const VoteButton = styled.button`
   border: none;
   display: flex;
   align-items: center;
-  color: #777;
+  color: #dfdfdf;
   cursor: pointer;
 
   i {
@@ -330,7 +331,7 @@ const VoteButton = styled.button`
   }
 
   &:hover {
-    color: #333;
+    color: #a2a2a2d5;
   }
 `;
 
