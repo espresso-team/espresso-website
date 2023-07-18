@@ -49,8 +49,8 @@ const PageWrapper = styled.div`
 
 const LoginFormWrapper = styled.div`
   color: white;
-  background: #060519;
-  box-shadow: 0px 4px 10px 0px rgba(82, 61, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
   padding: 20px;
   border-radius: 10px;
   .ant-input {
