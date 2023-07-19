@@ -14,8 +14,10 @@ import { useShareToWechat } from './shareToWeChat';
 import { useRedirectToNewPage } from '../../util/redirectToNewPage';
 import GenderType from '../../types/GenderType';
 import { defaultAvatarUrl } from '../../types/DefaultAvatarUrl';
+import Button from '../../app/Button';
 
 const Container = styled.div`
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +26,10 @@ const Container = styled.div`
   padding: 20px;
   box-sizing: border-box;
   margin: 0 auto;
+  margin: 30px auto;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
 `;
 
 const Title = styled.h1`
@@ -54,16 +60,22 @@ const InputContainer = styled.div`
 `;
 
 const StyledInput = styled.input`
+  background: radial-gradient(100% 100% at 50% 0%, rgba(255, 133, 133, 0.20) 0%, rgba(255, 133, 133, 0.00) 100%), rgba(255, 255, 255, 0.05);
+  color: #ffffff;
   width: 100%;
   padding: 5px;
   margin-bottom:5px;
   margin-top:5px;
   border-radius: 5px;
+
+  &::placeholder {
+    color: #9d9d9d;
+  }
 `;
 
 const StyledLabel = styled.label`
   font-size: 14px;
-  color: #666;
+  color: #ffffff70;
   margin-right: 10px;
 `;
 
@@ -82,13 +94,19 @@ const TagItem = styled.div<{ selected: boolean }>`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
-  background-color: ${(props) => (props.selected ? "#000" : "#f0f0f0")};
-  color: ${(props) => (props.selected ? "#fff" : "#000")};
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: ${(props) => (props.selected ? "none" : "0px 4px 10px 0px rgba(0, 0, 0, 0.10)")};
+  border: ${(props) => (props.selected ? "1px solid transparent" : "none")};
+  border-image: ${(props) => (props.selected ? "linear-gradient(87deg, #523DFF 0%, #FF679E 100%)" : "none")};
+  border-image-slice: 1;
+  color: #ffffff;
   margin: 5px;
   cursor: pointer;
 `;
 
+
 const StyledTextarea = styled.textarea`
+  background: radial-gradient(100% 100% at 50% 0%, rgba(255, 133, 133, 0.20) 0%, rgba(255, 133, 133, 0.00) 100%), rgba(255, 255, 255, 0.05);
   width: 100%;
   min-height: 100px;
   padding: 5px;
@@ -196,15 +214,16 @@ const StyledRadioButtonLabel = styled.label`
   padding: 6px 12px;
   margin-right: 10px;
   font-size: 14px;
-  color: #333;
-  background-color: #fff;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
   border: 1px solid #333;
   border-radius: 5px;
   cursor: pointer;
   user-select: none;
 
   &:hover {
-    background-color: #f8f9fa;
+    background-color: #333;
   }
 `;
 
@@ -212,8 +231,9 @@ const StyledRadioButton = styled.input.attrs({ type: "radio" })`
   display: none;
 
   &:checked + ${StyledRadioButtonLabel} {
-    background-color: #333;
     color: #fff;
+    border-image: linear-gradient(87deg, #523DFF 0%, #FF679E 100%);
+    border-image-slice: 1;
   }
 `;
 
@@ -248,6 +268,9 @@ const CenteredContainer = styled.div`
 `;
 
 const StyledSelect = styled.select`
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  color: #ffffff;
   padding: 0.5em;
   font-size: 1em;
   border: 1px solid #000;
@@ -667,7 +690,7 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
 
         <StyledLabel>公开后其他人可以在探索页面查看</StyledLabel>
       </SwitchContainer>
-      <StyledButton primary onClick={handleSubmit}>创建AI</StyledButton>
+      <Button onClick={handleSubmit} text="创建AI" />
 
       <Modal
         centered
