@@ -43,14 +43,16 @@ To get the project running, follow these steps:
 	cd chitchat-backend/chitchat-web-backend/
 	npm install
 	```
-3. Install all the required packages for the frontend:
+	Setup the .env file for backend:
+	https://www.notion.so/espresso-dao/Env-for-backend-9517bdfbc1b641b698f5d9dee050dc84?pvs=4
+4. Install all the required packages for the frontend:
 
 		Navigate to the frontend directory:
 	```bash
 	cd chitchat-web/chitchat-web-app/
 	npm install
 	```
-4. Start backend and frontend
+5. Start backend and frontend
 	 Create a new terminal session
     ```bash
 	cd chitchat-backend/chitchat-web-backend/
@@ -61,5 +63,5 @@ To get the project running, follow these steps:
 	cd chitchat-web/chitchat-web-app/
 	npm run start
     ```
-5. Navigate to `localhost:3001`
-6. Navigate to `localhost:3000/api-docs` for the api spec
+6. Navigate to `localhost:3001`
+7. Navigate to `localhost:3000/api-docs` for the api spec
