@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import Navbar from "../app/Navbar";
 import Footer from "../app/Footer";
-import backgroundJPG from '../assets/BGIWithoutCharacter.png';
+import backgroundJPG from '../assets/BGIWithoutCharacterCompressed.jpg';
 
 const Section = styled.section`
 min-height: ${props => `calc(110vh - ${props.theme.navHeight})`};
