@@ -17,11 +17,16 @@ type Props = {
 
 const ProfileCardWrapper = styled.div`
   border-radius: 17px;
-  background: #FFF;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   box-shadow: 0px 4px 10px 0px rgba(82, 61, 255, 0.25);
   max-width: 600px;
-  margin: 35px auto;
+  margin: 100px auto;
   padding: 40px;
+  .ant-input {
+    color: white !important;
+    background: radial-gradient(100% 100% at 50% 0%, rgba(255, 133, 133, 0.20) 0%, rgba(255, 133, 133, 0.00) 100%), rgba(255, 255, 255, 0.05) !important;
+  }
 `;
 
 const NavigationWrapper = styled.div`
@@ -32,6 +37,7 @@ const NavigationWrapper = styled.div`
 `;
 
 const BackButton = styled.button`
+  color:#ffffff;
   font-size: 26px;
   padding: 0px;
   border: none;
@@ -43,6 +49,9 @@ const ProgressBar = styled(Progress)`
   margin: 10px;
   .ant-progress-bg {
     background-image: linear-gradient(89deg, #523DFF 0%, #FF679E 100%);
+  }
+  .ant-progress-inner {
+    background-color: #3c3c3c;
   }
 `;
 
@@ -125,7 +134,7 @@ const ProfileCard: React.FC<Props> = ({ isAllowSkip, isAllowChanged, headline, c
 
       <NextButtonWrapper>
         <Button
-          text={"登录"}
+          text={"下一步"}
           onClick={
             () => {
               onNext();

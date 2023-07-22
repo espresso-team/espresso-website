@@ -1,6 +1,13 @@
 import React from 'react';
 import { Radio } from 'antd';
+import styled from 'styled-components';
 import GenderType from '../../../types/GenderType';
+
+const StyledRadioGroup = styled(Radio.Group)`
+  .ant-radio-wrapper {
+    color: white;
+  }
+`;
 
 interface GenderCollectionProps {
   selectedOption?: GenderType | undefined;
@@ -13,14 +20,14 @@ const GenderCollection: React.FC<GenderCollectionProps> = ({
 }) => {
   return (
     <div>
-      <Radio.Group
+      <StyledRadioGroup
         value={selectedOption}
         onChange={(e) => onSelectOption(e.target.value)}
       >
         <Radio value={GenderType.MALE}>男</Radio>
         <Radio value={GenderType.FEMALE}>女</Radio>
         <Radio value={GenderType.OTHER}>保密</Radio>
-      </Radio.Group>
+      </StyledRadioGroup>
     </div>
   );
 };
