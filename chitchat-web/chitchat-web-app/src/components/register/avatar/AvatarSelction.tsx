@@ -33,7 +33,7 @@ const AvatarSelection: React.FC<AvatarSelectionProps> = ({
             src={avatarUrl}
             alt={`Avatar ${index + 1}`}
             style={{
-              width: '100%',
+              width: '80%',
               height: 'auto',
               borderRadius: '50%',
               cursor: 'pointer',
