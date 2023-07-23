@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import styled from "styled-components";
 import Navbar from "../app/Navbar";
 import Footer from "../app/Footer";
-import backgroundJPG from '../assets/BGIWithoutCharacter.png';
+import backgroundJPG from '../assets/BGIWithoutCharacterCompressed.jpg';
 import { useAuth } from './AuthContext';
 
 const Section = styled.section`

@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react'
 import styled, { keyframes } from 'styled-components'
 import Loading from '../../app/Loading';
 import Navbar from '../../app/Navbar';
-import backgroundJPG from '../../assets/BGIWithCharacter.png';
+import backgroundJPG from '../../assets/BGIWithCharacterCompressed.jpg';
 
 const TypeWriterText = lazy(() => import('../../app/TypeWriterText'));
 
