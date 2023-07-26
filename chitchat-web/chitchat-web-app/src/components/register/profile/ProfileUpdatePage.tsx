@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
-import { Input, DatePicker, Button, Radio, RadioChangeEvent } from 'antd';
+import { Input, DatePicker, Button, Radio, RadioChangeEvent, Row, Col, Card, Form } from 'antd';
 import styled from 'styled-components';
 import dayjs, { Dayjs } from 'dayjs';
 import GenderType from '../../../types/GenderType';
-
-const FormContainer = styled.div`
-  max-width: 400px;
-  margin: 0 auto;
-`;
-
-const FormItem = styled.div`
-  margin-bottom: 16px;
-`;
 
 interface ProfileUpdateProps {
   user_id: string;
@@ -52,39 +43,95 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
     // Show banner if the update succeeded / failed.
   };
 
+  const WhiteText = styled.div`color: #ffffff`
+
   const dayjsBirthday = dayjs(birthday);
+  const genderOptions = [
+    { label: <WhiteText>男</WhiteText>, value: 'M'},
+    { label: <WhiteText>女</WhiteText>, value: 'F'},
+    { label: <WhiteText>保密</WhiteText>, value: 'S'},
+  ]
 
   return (
-    <FormContainer>
-      <h1>信息更新</h1>
-      <FormItem>
-        <label>昵称:</label>
-        <Input value={username} onChange={handleUsernameChange} />
-      </FormItem>
-      <FormItem>
-        <label>生日:</label>
-        <DatePicker value={dayjsBirthday} onChange={handleBirthdayChange} />
-      </FormItem>
-      <FormItem>
-        <label>性别:</label>
-        <div>
-          <Radio.Group value={selectedGender} onChange={handleGenderChange}>
-            <Radio value={GenderType.MALE}>男</Radio>
-            <Radio value={GenderType.FEMALE}>女</Radio>
-            <Radio value={GenderType.OTHER}>保密</Radio>
-          </Radio.Group>
-        </div>
-      </FormItem>
-      <FormItem>
-        <label>手机号:</label>
-        <Input value={phoneNumber} onChange={handlePhoneNumberChange} />
-      </FormItem>
-      <FormItem>
-        <Button type="primary" onClick={handleFormSubmit}>
-          更新
-        </Button>
-      </FormItem>
-    </FormContainer>
+    <Row
+      align="middle"
+      style={{margin: "5em"}}
+    >
+      <Col
+        span={12}
+        offset={6}
+      >
+        <Card
+          bordered={false}
+          title={
+            <div style={{ textAlign: 'center'}}>
+              信息更新
+            </div>}
+          headStyle={{
+            backgroundColor: '#ff6791',
+            color: '#ffffff'
+          }}
+          bodyStyle={{ backgroundColor: '#1d1f66' }}
+        >
+          <Form
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 16 }}
+          >
+            <Form.Item
+              label='昵称'
+            >
+              <div
+                style={{ margin:"10px" }}
+              /> 
+              <Input
+                value={username}
+                onChange={handleUsernameChange}
+              />
+            </Form.Item>
+            <Form.Item
+              label="生日"
+            >
+              <div
+                style={{margin:"10px"}}
+              />
+              <DatePicker
+                value={dayjsBirthday}
+                onChange={handleBirthdayChange}
+              />
+            </Form.Item>
+            <Form.Item
+              label="性别"
+            >
+              <div style={{margin:"15px"}} />
+              <Radio.Group
+                value={selectedGender}
+                onChange={handleGenderChange}
+                options={genderOptions}
+              />
+            </Form.Item>
+            <Form.Item
+              label="手机号码"
+            >
+              <div style={{margin:"10px"}} />
+              <Input
+                value={phoneNumber}
+                onChange={handlePhoneNumberChange}
+              />
+            </Form.Item>
+            <Form.Item
+              wrapperCol={{ offset: 4}}
+            >
+              <Button
+                type="primary"
+                onClick={handleFormSubmit}
+              >
+                更新
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </Col>
+    </Row>
   );
 };
 
