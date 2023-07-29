@@ -9,6 +9,6 @@ export async function upsertUserTags(user_id, user_tags, user_mbti_tag) {
     );
 }
 
-export async function findById(user_id) {
+export async function findTagById(user_id) {
     return await UserTagsModel.findOne({user_id: user_id});
 }
