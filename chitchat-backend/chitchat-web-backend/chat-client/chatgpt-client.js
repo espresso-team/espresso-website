@@ -3,7 +3,9 @@ import ChatGPTClient from "@waylaidwanderer/chatgpt-api";
 import * as fs from "fs";
 import dotenv from "dotenv";
 import { findById } from "../services/userServices.js";
+import { findTagById } from "../services/userTagServices.js";
 import { getModelByModelId } from "../services/modelProfileService.js";
+import { getConvByConvId } from "../services/conversationService.js";
 import axios from "axios";
 import ChatClient from "./chat-client.js";
 import {
@@ -78,14 +80,25 @@ export default class ChatGPTNodeClient extends ChatClient {
     console.log("Chat client inited!");
   }
 
-  async read_init_prompt(model_id) {
+  async prompt_amendment(user_id) {
+    var user_tag = await findTagById(user_id);
+    var mbti = user_tag.user_mbti_tag;
+    var user_tags = user_tag.user_tags;
+    var prompt = fs.readFileSync(`${file_prefix}self-prompt-amendment.txt`, "utf8");
+    const replaced = prompt
+    .replace("{$mbti}", mbti)
+    .replace("{$user_tags}", user_tags.join(", "));
+    return replaced;
+  }
+
+  async read_init_prompt(model_id, user_id) {
     if (initial_model_ids.includes(model_id)) {
       const text = fs.readFileSync(
         `${file_prefix}initial-prompt-${model_id}.txt`,
         "utf8"
       );
       console.log("Inital prompt is: " + text);
-      return text;
+      return text + "\n" + await this.prompt_amendment(user_id);
     }
     var model = await getModelByModelId(model_id);
     const init_prompt = model.model_metadata.initial_prompt;
@@ -93,13 +106,13 @@ export default class ChatGPTNodeClient extends ChatClient {
       throw new Error("Init prompt not found for model " + model_id);
     }
     console.log("Inital prompt is: " + init_prompt);
-    return init_prompt;
+    return init_prompt + "\n" + await this.prompt_amendment(user_id);
   }
 
   // Initialize first conv for a new user
-  async init_conv(model_id) {
+  async init_conv(model_id, user_id) {
     try {
-      var text = await this.read_init_prompt(model_id);
+      var text = await this.read_init_prompt(model_id, user_id);
       if (external_model_ids.includes(model_id)) {
         text = "Hi";
       }
@@ -176,7 +189,9 @@ export default class ChatGPTNodeClient extends ChatClient {
   // Resend the initial prompt to an exitsing conv
   async reinit_conv(conv_id, last_msg_id, model_id, chat_history = null) {
     // Fix the Invalid Encoding error handling.
-    const text = await this.read_init_prompt(model_id);
+    var con = await getConvByConvId(conv_id);
+    var user_id = con.user_id;
+    const text = await this.read_init_prompt(model_id, user_id);
     if (chat_history == null) {
       var chat_history = await getChatHistoryByConvId(conv_id);
     }
@@ -245,11 +260,11 @@ export default class ChatGPTNodeClient extends ChatClient {
         return { return_chat_history: return_chat_history };
       }
       // init a new converstation for a new user
-      var response = await this.init_conv(model_id);
+      var response = await this.init_conv(model_id, user_id);
       console.log(response);
       // retry if response contains forbidden words
       if (is_response_include_forbidden_words(response.response)) {
-        response = await this.init_conv(model_id);
+        response = await this.init_conv(model_id, user_id);
       }
 
       var msg = response.response;
@@ -302,7 +317,7 @@ export default class ChatGPTNodeClient extends ChatClient {
     chat_history = null
   ) {
     // Fix the Invalid Encoding error handling.
-    const text = await this.read_init_prompt(model_id);
+    const text = await this.read_init_prompt(model_id, user_id);
     if (chat_history == null) {
       var chat_history = await getChatHistoryByConvId(conv_id);
     }
