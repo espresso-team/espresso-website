@@ -24,10 +24,6 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
   const [birthdayState, setProfileBirthday] = useState<Date>(birthday);
   const [phoneNumberState, setProfilePhoneNumber] = useState(phoneNumber);
 
-  console.log("user_id: " + user_id);
-  console.log("username: " + username);
-  console.log("phoneNumber: " + phoneNumber);
-
   // TODO no state from previous page (App or Navbar I forgot) yet.
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileUsername(e.target.value);
