@@ -20,23 +20,30 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
   phoneNumber,
 }) => {
   const [selectedGender, setSelectedGender] = useState<GenderType>(gender);
+  const [usernameState, setProfileUsername] = useState(username);
+  const [birthdayState, setProfileBirthday] = useState<Date>(birthday);
+  const [phoneNumberState, setProfilePhoneNumber] = useState(phoneNumber);
 
   // TODO no state from previous page (App or Navbar I forgot) yet.
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Handle username change
+    setProfileUsername(e.target.value);
   };
 
+  // TODO: Add date validation.
   const handleBirthdayChange = (date: Dayjs | null, dateString: string) => {
-    // Handle birthday change
+    if (date != null) {
+      setProfileBirthday(date.toDate());
+    }
   };
 
   const handleGenderChange = (e: RadioChangeEvent) => {
     setSelectedGender(e.target.value as GenderType);
   };
-
+  // TODO: Add phone validation.
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Handle phone number change
+    setProfilePhoneNumber(e.target.value);
   };
+  const dayjsBirthday = dayjs(birthdayState);
 
   const handleFormSubmit = () => {
     // Talk to backend to update profile
@@ -44,12 +51,10 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
   };
 
   const WhiteText = styled.div`color: #ffffff`
-
-  const dayjsBirthday = dayjs(birthday);
   const genderOptions = [
     { label: <WhiteText>男</WhiteText>, value: 'M'},
     { label: <WhiteText>女</WhiteText>, value: 'F'},
-    { label: <WhiteText>保密</WhiteText>, value: 'S'},
+    { label: <WhiteText>保密</WhiteText>, value: 'U'},
   ]
 
   return (
@@ -84,7 +89,7 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
                 style={{ margin:"10px" }}
               /> 
               <Input
-                value={username}
+                value={usernameState}
                 onChange={handleUsernameChange}
               />
             </Form.Item>
@@ -114,7 +119,7 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
             >
               <div style={{margin:"10px"}} />
               <Input
-                value={phoneNumber}
+                value={phoneNumberState}
                 onChange={handlePhoneNumberChange}
               />
             </Form.Item>
