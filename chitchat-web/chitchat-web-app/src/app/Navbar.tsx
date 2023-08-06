@@ -3,7 +3,6 @@ import Logo from './Logo'
 import { Link } from 'react-router-dom'
 import { Modal } from 'antd';
 import { useEffect, useState } from 'react';
-import RegisterBlock from './RegisterBlock';
 import Button from './Button';
 import { usePkSystemHook } from '../state/pk-system-hook';
 import { If } from './If';
@@ -281,19 +280,6 @@ const Navbar = () => {
                 >
                     <p>你确定要退出登录吗?</p>
                 </Modal>
-
-
-                {/* <Modal
-                    centered
-                    title="登录"
-                    open={state.modalOpen}
-                    footer={null}
-                    onCancel={handleCancel}
-                    closable={false}
-                >
-                    <RegisterBlock />
-                </Modal> */}
-
             </Navigation>
         </Section>
     )
