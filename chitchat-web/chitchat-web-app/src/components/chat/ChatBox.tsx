@@ -10,6 +10,8 @@ import ChatHeader from './ChatHeader';
 import { logSendMessageEvent } from '../../app/GaEvent';
 import { useNavigate } from "react-router-dom";
 import { AppUser } from '../../state/pk-system-state';
+import { defaultMaleAvatarUrl, defaultFemaleAvatarUrl } from '../../types/DefaultAvatarUrl';
+import { useAuth } from '../../app/AuthContext';
 
 
 interface Props {
@@ -29,6 +31,7 @@ var console = require("console-browserify")
 
 const ChatBox: React.FC<Props> = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const { modelIdLink } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const messagesEnd = useRef<HTMLDivElement>(null);
@@ -74,6 +77,14 @@ const ChatBox: React.FC<Props> = () => {
     }
   }, [modelIdLink, state.user.id]);
 
+  const getUserAvatar = () => {
+    if (isLoggedIn) {
+      return state.user.profile.avatar;
+    }
+    return state.user.profile.gender === GenderType.FEMALE ?
+      defaultFemaleAvatarUrl : defaultMaleAvatarUrl;
+  };
+
   return (
     <>
       <ChatHeader />
@@ -92,7 +103,7 @@ const ChatBox: React.FC<Props> = () => {
                 id: state.user.id,
                 profile: {
                   username: state.user.profile.username,
-                  avatar: state.user.profile.gender === GenderType.FEMALE ? "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4576.jpg" : "https://chichat-images-1317940514.cos.ap-nanjing.myqcloud.com/static/WechatIMG4577.jpg",
+                  avatar: getUserAvatar(),
                 }
               }
             } as IMessage;
