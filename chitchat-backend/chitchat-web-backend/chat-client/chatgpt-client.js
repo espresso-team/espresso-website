@@ -87,7 +87,7 @@ export default class ChatGPTNodeClient extends ChatClient {
     var prompt = fs.readFileSync(`${file_prefix}self-prompt-amendment.txt`, "utf8");
     const replaced = prompt
     .replace("{$mbti}", mbti)
-    .replace("{$user_tags}", user_tags.join(", "));
+    .replace("{$topics}", user_tags.join(", "));
     return replaced;
   }
 

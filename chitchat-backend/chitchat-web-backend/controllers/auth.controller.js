@@ -49,13 +49,13 @@ export async function loginUsingOtp(req, res, next) {
     });
   } catch (error) {
     console.log("debug error",error)
-    // if (error.response.status === 403) {
-    //   res.status(403).json({
-    //     type: "error",
-    //     message: "验证码操作频繁，请稍后重试。",
-    //     data: {},
-    //   });
-    // }
+    if (error.response.status === 403) {
+      res.status(403).json({
+        type: "error",
+        message: "验证码操作频繁，请稍后重试。",
+        data: {},
+      });
+    }
   } finally {
   }
 }
