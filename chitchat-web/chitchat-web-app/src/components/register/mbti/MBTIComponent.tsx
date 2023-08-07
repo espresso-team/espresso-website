@@ -19,7 +19,7 @@ const MBTIComponent: React.FC<MBTIComponentProps> = ({ question, option1, option
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '50vh' }}>
-      <Title level={2} style={{ textAlign: 'center', marginBottom: '24px' }}>{question}</Title>
+      <Title level={2} style={{ textAlign: 'center', marginBottom: '24px', color: 'white', fontFamily: '"微软雅黑", sans-serif' }}>{question}</Title>
       <Row gutter={[16, 16]} justify="center" style={{ marginBottom: '12px' }}>
         <Col xs={24} sm={12} md={10} lg={8}>
           <Card 
