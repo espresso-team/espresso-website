@@ -284,18 +284,19 @@ const RegisterWizard: React.FC = () => {
       )}
       {currentStep === 3 && (
         <ProfileCard
-          headline="手机号"
-          progressBarPercent={30}
-          onNext={nextStep}
-          onSubmit={phoneNumberSubmit}
-          onPrevious={prevStep}
-        >
-          <GenericCollection
-            value={phoneNumber}
-            inputType="text"
-            onInputChange={handlePhoneNumberChange}
-          />
-        </ProfileCard>
+        headline="手机号"
+        progressBarPercent={30}
+        onNext={nextStep}
+        onSubmit={phoneNumberSubmit}
+        onPrevious={prevStep}
+      >
+        <div style={{marginBottom: '10px'}}>手机号将用于登录，所以请确保输入正确无误。目前仅支持中国手机号。</div>
+        <GenericCollection
+          value={phoneNumber}
+          inputType="text"
+          onInputChange={handlePhoneNumberChange}
+        />
+      </ProfileCard>
       )}
       {currentStep === 4 && (
         <ProfileCard
