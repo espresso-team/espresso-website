@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 
 const ChatHeaderWrapper = styled.section`
   margin: 0rem 3rem 1rem 5rem;
-  background-color: #e9d6d6;
+  background-color: rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
