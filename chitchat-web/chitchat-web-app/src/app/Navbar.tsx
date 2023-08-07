@@ -1,7 +1,11 @@
 import styled from 'styled-components'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
-import { Modal } from 'antd';
+import { Avatar, Space, Button as AntButton, Modal } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import type { MenuProps as AntMenuProps } from 'antd';
+import { Dropdown as AntDropdown } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import Button from './Button';
 import { usePkSystemHook } from '../state/pk-system-hook';
@@ -39,6 +43,11 @@ const Navigation = styled.nav`
 
     }
 `
+
+const DropdownMenuText = styled.div`
+    color: black;
+`;
+
 interface MenuProps {
     click: boolean;
 }
@@ -98,19 +107,6 @@ const MenuItem = styled.li`
     }
     }
 `
-const HamburgerWrapper = styled.div`
-    display: none;
-
-    @media (max-width: 64em) {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 2rem;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-`;
 
 const StyledLink = styled(Link)`
     text-decoration: none;
@@ -182,14 +178,58 @@ const LogoutButton = styled(Button)`
     }
 `;
 
+const ButtonGroup = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & > *:not(:last-child) {
+        margin-right: 1rem;
+    }
+`;
+
+const StyledAvatar = styled(Avatar)`
+    border: 1px solid white;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.2);
+    }
+`;
+
+
 var console = require("console-browserify")
 
 const Navbar = () => {
     const [state, action] = usePkSystemHook();
-    const [menuOpen, setMenuOpen] = useState(false);
     const [click, setClick] = useState(false);
     const { isLoggedIn, setIsLoggedIn } = useAuth();
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+
+    const userMenuItems: AntMenuProps['items'] = [
+        {
+          label: (
+            <Space>
+              <Avatar src={state.user.profile.avatar} />
+              <DropdownMenuText>用户{state.user.profile.username}</DropdownMenuText>
+            </Space>
+          ),
+          disabled: true,
+          key: 'profile',
+        },
+        {
+          type: 'divider',
+        },
+        {
+            label: (
+                <ButtonGroup>
+                    <Button onClick={() => redirectToNewPage("/profileUpdate")} text='更新信息' />
+                    <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} />
+                </ButtonGroup>
+            ),
+            key: 'logout',
+        },
+      ];
 
     const handleLogout = () => {
         // This is where you will perform the actual logout operation.
@@ -234,10 +274,11 @@ const Navbar = () => {
                         </If>
                         <If condition={isLoggedIn}>
                             <div className="mobile">
-                                <Link to="/profileUpdate">
-                                    <Button text={`用户${state.user.id.substring(0, 7)}`} disabled={false} />
-                                    <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
-                                </Link>
+                                <AntDropdown menu={{ items: userMenuItems }} placement="bottom" trigger={['click']}>
+                                    <a onClick={(e) => e.preventDefault()}>
+                                        <StyledAvatar src={state.user.profile.avatar} size={50} />
+                                    </a>
+                                </AntDropdown>
                             </div>
                         </If>
 
@@ -262,10 +303,11 @@ const Navbar = () => {
                 </If>
                 <If condition={isLoggedIn}>
                     <div className="desktop">
-                        <Link to="/profileUpdate">
-                            <Button text={`用户${state.user.id.substring(0, 7)}`} disabled={false} />
-                            <LogoutButton text='退出登录' onClick={() => setLogoutModalVisible(true)} /> {/* New Logout button */}
-                        </Link>
+                        <AntDropdown menu={{ items: userMenuItems }} placement="bottom" trigger={['click']} arrow>
+                            <a onClick={(e) => e.preventDefault()}>
+                                <StyledAvatar src={state.user.profile.avatar} size={53}/>
+                            </a>
+                        </AntDropdown>
                     </div>
                 </If>
 

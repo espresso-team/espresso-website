@@ -1,10 +1,8 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import styled from "styled-components";
 import Navbar from "../app/Navbar";
 import Footer from "../app/Footer";
 import backgroundJPG from '../assets/BGIWithoutCharacterCompressed.jpg';
-import { useAuth } from './AuthContext';
 
 const Section = styled.section`
 min-height: ${props => `calc(110vh - ${props.theme.navHeight})`};
@@ -18,12 +16,7 @@ interface AuthenticatedLayoutProps {
     children: React.ReactNode;
 }
 
-const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
-    const { isLoggedIn } = useAuth();
-    if (!isLoggedIn) {
-        return <Navigate to="/login" />;
-    }
-
+const UnAuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
     return (
         <Section>
             <Navbar />
@@ -33,4 +26,4 @@ const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
     );
 };
 
-export default AuthenticatedLayout;
+export default UnAuthenticatedLayout;
