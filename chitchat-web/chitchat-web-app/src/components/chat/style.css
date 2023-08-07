@@ -67,12 +67,12 @@
 }
 
 .input-group {
-  display: flex;  /* 添加这行 */
-  align-items: center;  /* 添加这行 */
+  display: flex;
+  align-items: center;
   margin-right: 20px;
   border-top: 1px solid #fff;
   width: 100% !important;
-  background-color: #e9d6d6;
+  background-color: rgba(255, 255, 255, 0.9);
   height: 110%;
   border-radius: 0 0 30px 30px;
 }
@@ -80,7 +80,7 @@
 .input-group input {
   flex-grow: 1;
   margin-top: 1rem;
-  background: #e9d6d6;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .input-group ::placeholder {
@@ -90,10 +90,11 @@
 .form-control {
   border: none !important;
   border-radius: 20px !important;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .input-group-text {
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.1) !important;
   border: none !important;
 }
 
@@ -117,7 +118,7 @@
 .form-control:focus {
   border-color: none !important;
   box-shadow: none !important;
-  background-color: #e9d6d6;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
 }
 
@@ -146,7 +147,7 @@
   position: relative;
   height: 600px;
   letter-spacing: 0.5px;
-  background: #e9d6d6;
+  background: rgba(255, 255, 255, 0.15);
   padding: 0 !important;
   box-sizing: border-box;
   margin: 0rem 3rem 5rem 5rem;
@@ -162,6 +163,7 @@
 
 .message-input {
   padding: 6px 20px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .empty-chat-sub-title {
@@ -211,7 +213,7 @@
 .is-other {
   background-color: #FFF;
   -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1)
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .chat-box-bottom {
@@ -223,11 +225,11 @@
 }
 
 .send-button {
-  flex-shrink: 0;  /* 添加这行 */
-  background-color: transparent; /* 使按钮背景透明 */
-  border: none; /* 移除边框 */
-  outline: none; /* 移除轮廓 */
-  cursor: pointer; /* 将鼠标指针变为手指形状 */
+  flex-shrink: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
   margin-right: 1rem;
 }
 
@@ -260,4 +262,3 @@
   50% { opacity: 1; }
   100% { opacity: 0; }
 }
-
