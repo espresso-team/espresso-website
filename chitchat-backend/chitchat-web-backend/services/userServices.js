@@ -5,7 +5,7 @@ export async function insertUser(user) {
 }
 
 export async function updateUser(user) {
-    return await UserModel.findOneAndUpdate({ id: user.user_id }, { $set: user });
+    return await UserModel.findOneAndUpdate({ id: user.id }, { $set: user });
 }
 
 export async function findById(user_id) {
