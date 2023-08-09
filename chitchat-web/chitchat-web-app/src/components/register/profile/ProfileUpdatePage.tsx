@@ -179,6 +179,7 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
                 更新
               </Button>
               <Modal title="错误的用户信息"
+                cancelButtonProps={{ style: { display: 'none' } }}
                 open={isValidationErrorModalVisible}
                 onOk={() => setIsValidationErrorModalVisible(false)}>
                   <List
