@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Input, DatePicker, Button, Radio, RadioChangeEvent, Row, Col, Card, Form } from 'antd';
+import { Input, DatePicker, Button, Radio, RadioChangeEvent, Row, Col, Card, Form,  Modal, List, message } from 'antd';
 import styled from 'styled-components';
 import dayjs, { Dayjs } from 'dayjs';
+import { usePkSystemHook } from "../../../state/pk-system-hook";
+import axios from "axios";
 import GenderType from '../../../types/GenderType';
+import { ENDPOINT } from "../../../types/Env";
+import { HttpStatus } from "../../../types/HttpStatus";
+import { validateUserProfile } from "../../../util/validate";
 
 interface ProfileUpdateProps {
   user_id: string;
@@ -19,10 +24,14 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
   gender,
   phoneNumber,
 }) => {
+
+  const [state, action] = usePkSystemHook();
   const [selectedGender, setSelectedGender] = useState<GenderType>(gender);
   const [usernameState, setProfileUsername] = useState(username);
   const [birthdayState, setProfileBirthday] = useState<Date>(birthday);
   const [phoneNumberState, setProfilePhoneNumber] = useState(phoneNumber);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [isValidationErrorModalVisible, setIsValidationErrorModalVisible] = useState(false);
 
   // TODO no state from previous page (App or Navbar I forgot) yet.
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,9 +54,46 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
   };
   const dayjsBirthday = dayjs(birthdayState);
 
-  const handleFormSubmit = () => {
-    // Talk to backend to update profile
-    // Show banner if the update succeeded / failed.
+  const handleFormSubmit = async () => {
+    // TODO: add the mbti and user tags as well
+    const userProfile = {
+      user_id: state.user.id,
+      user_name: usernameState,
+      gender: selectedGender,
+      birthday: birthdayState,
+      phone: phoneNumberState,
+      profile_url: state.user.profile.avatar,
+    };
+
+    const validationErrors = await validateUserProfile(userProfile);
+
+    if (Object.keys(validationErrors).length > 0) {
+      // TODO: show error message on front end and ask User to input again.
+      setErrors(Object.values(validationErrors));
+      setIsValidationErrorModalVisible(true); // Show the modal
+      return;
+    }
+    await axios
+      .post(`${ENDPOINT}/api/update-user-profile`, {
+        user_id: userProfile.user_id,
+        user_name: userProfile.user_name,
+        gender: userProfile.gender,
+        birthday: userProfile.birthday,
+        phone: userProfile.phone,
+        profile_url: userProfile.profile_url,
+      })
+      .then((response) => {
+        if (response.status === HttpStatus.OK) {
+          console.log("update-user-profile message", response.data.message);
+          message.info("修改成功!");
+        } else {
+          message.error("修改失败，请稍后重试或添加下方微信群联系管理员。");
+        }
+      })
+      .catch((err) => {
+        message.error("未知原因, 请检查您的输入并重试。若仍然失败，请添加下方微信群联系管理员。", err);
+        console.error(err);
+      });
   };
 
   const WhiteText = styled.div`color: #ffffff`
@@ -132,6 +178,16 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
               >
                 更新
               </Button>
+              <Modal title="错误的用户信息"
+                cancelButtonProps={{ style: { display: 'none' } }}
+                open={isValidationErrorModalVisible}
+                onOk={() => setIsValidationErrorModalVisible(false)}>
+                  <List
+                    bordered
+                    dataSource={errors}
+                    renderItem={(error) => <List.Item>{error}</List.Item>}
+                  />
+                </Modal>
             </Form.Item>
           </Form>
         </Card>
