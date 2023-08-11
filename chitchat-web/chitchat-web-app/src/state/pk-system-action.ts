@@ -87,7 +87,7 @@ export const pkSystemAction = {
     setUserId:
         (uId: string) =>
             ({ setState, getState }: pkSystemApi) => {
-                //console.log("set userId: ", uId)
+                console.log("calling set userId: ", uId)
                 const userNewState = _.cloneDeep(getState().user);
                 userNewState.id = uId;
                 setState({ user: userNewState });
@@ -241,7 +241,7 @@ export const pkSystemAction = {
                                     id: mID,
                                     sender: {
                                         profile: {
-                                            username: modelName, 
+                                            username: modelName,
                                             avatar: modelSrc
                                         },
                                         id: uID,
@@ -306,6 +306,26 @@ export const pkSystemAction = {
                 userNewState.profile.selectedTags = selectedTags;
                 setState({ user: userNewState });
             },
+    fetchUserProfile:
+        (userId: string) =>
+            async ({ setState }: pkSystemApi) => {
+                const value = `${ENDPOINT}/api/user-profile/${userId}`;
+                console.log("fetchUserProfile value", value);
+                await axios
+                    .get(value) // 你也可以直接使用上面定义的value变量
+                    .then((response) => {
+                        if (response.status === HttpStatus.OK) {
+                            const curUserProfile = response.data.data;
+                            console.log("curUserProfile", curUserProfile);
+                        } else {
+                            message.error("获取用户信息失败，请稍后重试或添加下方微信群联系管理员。");
+                        }
+                    })
+                    .catch((err) => {
+                        message.error("获取用户信息失败，请稍后重试或添加下方微信群联系管理员。");
+                        console.error(err);
+                    });
+            }
     // [Chitchat-V2] Set Profile Info Ends
 
 };

@@ -151,6 +151,9 @@ const LoginPage = () => {
           setLoading(false);
           // Set the isLoggedIn state to true
           setIsLoggedIn(true);
+          // Fetching user profile data and store to front end state
+          console.log("calling action.fetchUserProfile, id", state.user)
+          action.fetchUserProfile(state.user.id)
           // Jump to forum page
           redirectToNewPage("/forum")
         } else {
