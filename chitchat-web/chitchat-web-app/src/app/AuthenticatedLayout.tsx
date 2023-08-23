@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import Navbar from "../app/Navbar";
 import Footer from "../app/Footer";
@@ -20,7 +20,11 @@ interface AuthenticatedLayoutProps {
 
 const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
     const { isLoggedIn } = useAuth();
-    if (!isLoggedIn) {
+    const allowedModelId = ['ovo0SqW3SS'];
+    const location = useLocation();
+    const isAllowedChatPath = allowedModelId.some(id => location.pathname === `/chat/${id}`);
+    // If the user is not logged in and the current path is not one of the allowed chat paths, navigate them to the login page
+    if (!isLoggedIn && !isAllowedChatPath) {
         return <Navigate to="/login" />;
     }
 
