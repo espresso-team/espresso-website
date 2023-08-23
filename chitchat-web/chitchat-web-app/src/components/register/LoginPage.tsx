@@ -171,10 +171,8 @@ const LoginPage = () => {
     var console = require("console-browserify");
     if (e.key == "2") {
       setCountry("+1");
-      console.log("美国号码");
     } else {
       setCountry("+86");
-      console.log("中国号码");
     }
   };
 
@@ -203,7 +201,6 @@ const LoginPage = () => {
       operationType: "login",
       phoneNumber: form.getFieldsValue().phone,
     };
-    console.log("data.phoneNumber", data.phoneNumber);
     const res = await axios
       .post(`${ENDPOINT}/api/auth/login_with_otp`, {
         phone: data.phoneNumber,

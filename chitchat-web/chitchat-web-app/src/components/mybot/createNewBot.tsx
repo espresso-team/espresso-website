@@ -350,7 +350,6 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
 
         // Assuming the backend returns the uploaded image URL in the response
         const image_url = result.image_url;
-        console.log("[UploadImageDebug]image_url", image_url);
         setIsUploading(false);
 
         // Add the uploaded image URL to the state
@@ -453,7 +452,6 @@ const CreateNewBot = ({ modelId }: { modelId: string }) => {
   };
 
   const handleStartChat = () => {
-    console.log("modelId used for join chat", modelId);
     redirectToNewPage(CHAT_URL);
   };
 

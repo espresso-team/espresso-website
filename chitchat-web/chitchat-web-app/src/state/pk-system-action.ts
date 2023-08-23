@@ -18,7 +18,6 @@ export const pkSystemAction = {
     registerNewUserProfile: (gender: GenderType, userName: string) =>
         async ({ setState, getState }: pkSystemApi) => {
             let curUserId = getState().user.id;
-            console.log("Set GA user id", curUserId);
             initialize();
             setGAUserId(curUserId);
             //console.log("fetchUserProfile gender", gender, "userName:", userName, "userID:", curUserId);
@@ -31,7 +30,6 @@ export const pkSystemAction = {
                     })
                 .then((response) => {
                     if (response.status === HttpStatus.OK) {
-                        console.log("fetchModelProfile message", response.data.message)
                     }
                     else {
                         message.error("获取用户信息错误，请稍后重试或添加下方微信群联系管理员。")
@@ -51,7 +49,6 @@ export const pkSystemAction = {
         (gender: GenderType) =>
             async ({ setState, getState }: pkSystemApi) => {
                 // send reqire models
-                console.log("gender", gender, "genderToRequiredGender", genderToRequiredGender[gender])
                 await axios
                     .get(`${ENDPOINT}/api/model-profile`,
                         {
@@ -87,7 +84,6 @@ export const pkSystemAction = {
     setUserId:
         (uId: string) =>
             ({ setState, getState }: pkSystemApi) => {
-                console.log("calling set userId: ", uId)
                 const userNewState = _.cloneDeep(getState().user);
                 userNewState.id = uId;
                 setState({ user: userNewState });
@@ -149,7 +145,6 @@ export const pkSystemAction = {
             ({ getState, setState }: pkSystemApi) => {
                 const newMessageList: IMessage[] = JSON.parse(JSON.stringify(getState().messageList));
                 newMessageList.push(message);
-                console.log("updateMessageList, current messageList", newMessageList)
                 setState({ messageList: newMessageList });
             },
     initailMessageList:
@@ -315,7 +310,6 @@ export const pkSystemAction = {
                     .then((response) => {
                         if (response.status === HttpStatus.OK) {
                             const curUserProfile = response.data.data;
-                            console.log("curUserProfile", curUserProfile);
                             // set user profile
                             const userNewState = _.cloneDeep(getState().user);
                             userNewState.id = curUserProfile.id;
