@@ -173,7 +173,6 @@ const RegisterWizard: React.FC = () => {
   const redirectToNewPage = useRedirectToNewPage();
 
   const profileSubmit = async () => {
-    console.log("submitting profile", state.user.profile);
     // TODO: add the mbti and user tags as well
     const userProfile = {
       user_id: state.user.id,
@@ -187,7 +186,6 @@ const RegisterWizard: React.FC = () => {
     const validationErrors = await validateUserProfile(userProfile);
     if (Object.keys(validationErrors).length > 0) {
       // TODO: show error message on front end and ask User to input again.
-      console.log("validationErrors", validationErrors);
       setErrors(Object.values(validationErrors));
       setIsModalVisible(true); // Show the modal
       return;
@@ -204,7 +202,6 @@ const RegisterWizard: React.FC = () => {
       })
       .then((response) => {
         if (response.status === HttpStatus.OK) {
-          console.log("fetchModelProfile message", response.data.message);
           message.info("注册成功!");
         } else {
           message.error("页面错误，请稍后重试或添加下方微信群联系管理员。");

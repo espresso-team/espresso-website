@@ -84,7 +84,6 @@ const ProfileUpdatePage: React.FC<ProfileUpdateProps> = ({
       })
       .then((response) => {
         if (response.status === HttpStatus.OK) {
-          console.log("update-user-profile message", response.data.message);
           message.info("修改成功!");
         } else {
           message.error("修改失败，请稍后重试或添加下方微信群联系管理员。");
