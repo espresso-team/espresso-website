@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import Navbar from '../app/Navbar';
-import Footer from '../app/Footer';
+import styled from "styled-components";
+import Navbar from "../app/Navbar";
+import Footer from "../app/Footer";
 import backgroundJPG from '../assets/BGIWithoutCharacterCompressed.jpg';
 import { useAuth } from './AuthContext';
 
