@@ -2,6 +2,7 @@ import { IMessage } from "../types/IMessage";
 import GenderType from "../types/GenderType"
 import { Model } from "../types/Model";
 import UserRole from "../types/UserRole";
+import { DEFAULT_AVATAR_URL } from "../types/DefaultAvatarUrl";
 
 export const pkSystemState: PkSystemState = {
     isFlippedCardOne: false,
@@ -15,7 +16,7 @@ export const pkSystemState: PkSystemState = {
             birthday: new Date(),
             gender: GenderType.UNKNOWN,
             phoneNumber: '',
-            avatar: '',
+            avatar: DEFAULT_AVATAR_URL,
             mbtiType: '',
             selectedTags: [],
         },

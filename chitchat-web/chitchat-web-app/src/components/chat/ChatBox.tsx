@@ -10,7 +10,7 @@ import ChatHeader from './ChatHeader';
 import { logSendMessageEvent } from '../../app/GaEvent';
 import { useNavigate } from "react-router-dom";
 import { AppUser } from '../../state/pk-system-state';
-import { defaultMaleAvatarUrl, defaultFemaleAvatarUrl } from '../../types/DefaultAvatarUrl';
+import { DEFAULT_MALE_AVATAR_URL, DEFAULT_FEMALE_AVATAR_URL } from '../../types/DefaultAvatarUrl';
 import { useAuth } from '../../app/AuthContext';
 
 
@@ -82,7 +82,7 @@ const ChatBox: React.FC<Props> = () => {
       return state.user.profile.avatar;
     }
     return state.user.profile.gender === GenderType.FEMALE ?
-      defaultFemaleAvatarUrl : defaultMaleAvatarUrl;
+      DEFAULT_FEMALE_AVATAR_URL : DEFAULT_MALE_AVATAR_URL;
   };
 
   return (

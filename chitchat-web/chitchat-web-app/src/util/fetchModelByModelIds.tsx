@@ -1,5 +1,5 @@
 import axios from "axios";
-import { defaultAvatarUrl } from "../types/DefaultAvatarUrl";
+import { DEFAULT_AVATAR_URL } from "../types/DefaultAvatarUrl";
 import { ENDPOINT } from "../types/Env";
 import { HttpStatus } from "../types/HttpStatus";
 import { Model } from "../types/Model";
@@ -20,12 +20,12 @@ export const fetchModelSrcByModelId = async (modelId: string) => {
       return curModelArray[0].model_metadata.image_url;
     }
     else {
-      return defaultAvatarUrl;
+      return DEFAULT_AVATAR_URL;
     }
   })
   .catch((err) => {
     //console.log("fetchModelSrcByModelId Error", err)
-    return defaultAvatarUrl;
+    return DEFAULT_AVATAR_URL;
   });
 }
 
@@ -44,7 +44,7 @@ export const fetchModelSrcsByModelIds = async (modelIds: string[]): Promise<Mode
   } catch (err) {
     console.log("fetchModelSrcsByModelIds Error", err);
     // Return an array of default avatars in case of error
-    return modelIds.map(modelId => ({ modelId, avatarSrc: defaultAvatarUrl }));
+    return modelIds.map(modelId => ({ modelId, avatarSrc: DEFAULT_AVATAR_URL }));
   }
 }
 

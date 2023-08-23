@@ -13,6 +13,7 @@ import { If } from './If';
 import { useAuth } from './AuthContext';
 import BlueButton from './BlueButton';
 import { useRedirectToNewPage } from '../util/redirectToNewPage';
+import { DEFAULT_AVATAR_URL } from '../types/DefaultAvatarUrl';
 
 var console = require("console-browserify");
 const Section = styled.section`
@@ -205,7 +206,6 @@ const Navbar = () => {
     const [click, setClick] = useState(false);
     const { isLoggedIn, setIsLoggedIn } = useAuth();
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-
     const userMenuItems: AntMenuProps['items'] = [
         {
           label: (
@@ -243,7 +243,7 @@ const Navbar = () => {
         action.setUserId(randomId); // reset the user id or other related user information
     };
     useEffect(() => {
-    }, [state.modalOpen, state.user.id]);
+    }, [state.modalOpen, state.user.id, state.user.profile.avatar]);
 
     const redirectToNewPage = useRedirectToNewPage();
 

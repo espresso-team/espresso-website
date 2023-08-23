@@ -43,7 +43,7 @@ export const MessageList = ({ isBotTyping, isLoading, messages, user, pageRef }:
                     </div>
 
                     <div>
-                        <h2> 你好欢迎使用柒洽 </h2>
+                        <h2 className='welcome-to-chitchat'> 你好欢迎使用柒洽 </h2>
                         <h6 className='empty-chat-sub-title'>
                             先去洽洽页面选一个你喜欢的伴侣吧~
                         </h6>

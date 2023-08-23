@@ -308,15 +308,26 @@ export const pkSystemAction = {
             },
     fetchUserProfile:
         (userId: string) =>
-            async ({ setState }: pkSystemApi) => {
+            async ({ setState, getState }: pkSystemApi) => {
                 const value = `${ENDPOINT}/api/user-profile/${userId}`;
-                console.log("fetchUserProfile value", value);
                 await axios
-                    .get(value) // 你也可以直接使用上面定义的value变量
+                    .get(value)
                     .then((response) => {
                         if (response.status === HttpStatus.OK) {
                             const curUserProfile = response.data.data;
                             console.log("curUserProfile", curUserProfile);
+                            // set user profile
+                            const userNewState = _.cloneDeep(getState().user);
+                            userNewState.id = curUserProfile.id;
+                            userNewState.profile.avatar = curUserProfile.profileUrl;
+                            userNewState.profile.birthday = curUserProfile.birthday;
+                            userNewState.profile.gender = curUserProfile.gender;
+                            userNewState.profile.phoneNumber = curUserProfile.phone;
+                            userNewState.profile.username = curUserProfile.username;
+                            //TODO, add mbti and tag in the same table
+                            // userNewState.profile.mbtiType = 
+                            // userNewState.profile.selectedTag = 
+                            setState({user: userNewState})
                         } else {
                             message.error("获取用户信息失败，请稍后重试或添加下方微信群联系管理员。");
                         }
