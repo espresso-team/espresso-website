@@ -5,7 +5,11 @@ import { ChatClientType } from "../chat-client/chat-client-factory.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const allowed_model_ids = process.env.ALLOWED_MODEL_IDS.split(",");
+const allowed_model_string = process.env.ALLOWED_MODEL_IDS;
+var allowed_model_ids = [];
+if (allowed_model_string) {
+  allowed_model_ids = allowed_model_string.split(",");
+}
 
 export const sendMessage = async (req, res) => {
   try {
