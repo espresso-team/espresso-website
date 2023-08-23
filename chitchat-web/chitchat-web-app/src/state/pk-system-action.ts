@@ -87,7 +87,7 @@ export const pkSystemAction = {
     setUserId:
         (uId: string) =>
             ({ setState, getState }: pkSystemApi) => {
-                //console.log("set userId: ", uId)
+                console.log("calling set userId: ", uId)
                 const userNewState = _.cloneDeep(getState().user);
                 userNewState.id = uId;
                 setState({ user: userNewState });
@@ -241,7 +241,7 @@ export const pkSystemAction = {
                                     id: mID,
                                     sender: {
                                         profile: {
-                                            username: modelName, 
+                                            username: modelName,
                                             avatar: modelSrc
                                         },
                                         id: uID,
@@ -306,6 +306,37 @@ export const pkSystemAction = {
                 userNewState.profile.selectedTags = selectedTags;
                 setState({ user: userNewState });
             },
+    fetchUserProfile:
+        (userId: string) =>
+            async ({ setState, getState }: pkSystemApi) => {
+                const value = `${ENDPOINT}/api/user-profile/${userId}`;
+                await axios
+                    .get(value)
+                    .then((response) => {
+                        if (response.status === HttpStatus.OK) {
+                            const curUserProfile = response.data.data;
+                            console.log("curUserProfile", curUserProfile);
+                            // set user profile
+                            const userNewState = _.cloneDeep(getState().user);
+                            userNewState.id = curUserProfile.id;
+                            userNewState.profile.avatar = curUserProfile.profileUrl;
+                            userNewState.profile.birthday = curUserProfile.birthday;
+                            userNewState.profile.gender = curUserProfile.gender;
+                            userNewState.profile.phoneNumber = curUserProfile.phone;
+                            userNewState.profile.username = curUserProfile.username;
+                            //TODO, add mbti and tag in the same table
+                            // userNewState.profile.mbtiType = 
+                            // userNewState.profile.selectedTag = 
+                            setState({user: userNewState})
+                        } else {
+                            message.error("获取用户信息失败，请稍后重试或添加下方微信群联系管理员。");
+                        }
+                    })
+                    .catch((err) => {
+                        message.error("获取用户信息失败，请稍后重试或添加下方微信群联系管理员。");
+                        console.error(err);
+                    });
+            }
     // [Chitchat-V2] Set Profile Info Ends
 
 };
