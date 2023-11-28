@@ -16,7 +16,7 @@ const SanofiDemoPage = () => {
     return (
         <FullScreenSection>
             <iframe 
-                src="https://link.chitchat-ai.com/3CDxZs" 
+                src="https://app.customgpt.ai/projects/16947/ask-me-anything?embed=1&shareable_slug=b7696cc0e51938c154de96728372839f" 
                 width="100%" 
                 height="100%" 
                 frameBorder="0" // 移除边框
